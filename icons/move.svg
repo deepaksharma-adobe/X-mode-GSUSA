@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <g id="move">
+    <g id="Property 1=Dark Grey">
+      <mask id="mask0_2695_221159" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+        <rect id="Bounding box" x="24" y="1.04907e-06" width="24" height="24" transform="rotate(90 24 1.04907e-06)" fill="white" />
+      </mask>
+      <g mask="url(#mask0_2695_221159)">
+        <path id="move_up" d="M4 8C4 6.05 4.67917 4.39583 6.0375 3.0375C7.39583 1.67917 9.05 1 11 1C12.7833 1 14.3375 1.5875 15.6625 2.7625C16.9875 3.9375 17.75 5.40833 17.95 7.175L19.6 5.6L21 7L17 11L13 7L14.425 5.6L15.9 7.075C15.6667 5.89167 15.0917 4.91667 14.175 4.15C13.2583 3.38333 12.2 3 11 3C9.61667 3 8.4375 3.4875 7.4625 4.4625C6.4875 5.4375 6 6.61667 6 8L6 11L4 11L4 8ZM13 13L20 13L20 22L13 22L13 13ZM4 13L11 13L11 22L4 22L4 13ZM6 15L6 20L9 20L9 15L6 15Z" fill="currentColor" />
+      </g>
+    </g>
+  </g>
+</svg>

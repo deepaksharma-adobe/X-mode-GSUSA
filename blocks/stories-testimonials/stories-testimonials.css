@@ -1,0 +1,544 @@
+/* ===== Stories & Testimonials (Figma 2751:46705) =====
+   Coverflow image carousel + two-line quote + KNOW MORE CTA, under a centered
+   serif heading. Section backdrop applied at section level; header is full-bleed
+   via wrapper override (values pattern); slider content constrained via body div. */
+
+/* Marine-blue backdrop — full-bleed across the section. */
+main .section.stories-testimonials-container {
+  background-color: color-mix(in srgb, var(--color-gs-marine) 15%, transparent);
+  margin: 0;
+  padding-block: var(--spacing-xxbig); /* 48px mobile */
+}
+
+/* Full-bleed wrapper — values pattern; header fills edge-to-edge naturally. */
+main .section .stories-testimonials-wrapper {
+  max-width: none;
+  padding: 0;
+}
+
+.stories-testimonials {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===== Decorative curve header (Figma 5168:208537) =====
+   Full-bleed white band pulled up to cancel the section top padding.
+   Wave shape (marine 15%) via CSS mask; tree pinned to the right of the grid. */
+.stories-testimonials .stories-testimonials-header {
+  position: relative;
+  width: 100%;
+  height: 121px;
+  margin-top: calc(-1 * var(--spacing-xxbig)); /* cancel container top padding */
+  background-color: var(--color-neutral-50);
+}
+
+.stories-testimonials .stories-testimonials-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 121px;
+  background-color: color-mix(in srgb, var(--color-gs-marine) 15%, transparent);
+  mask: url('/icons/wave-left.svg') no-repeat center / 100% 100%;
+  pointer-events: none;
+}
+
+/* Inner header — constrains the tree graphic to the centered grid frame. */
+.stories-testimonials .stories-testimonials-header-inner {
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1; /* above the ::after white overlay */
+  width: 100%;
+  max-width: var(--grid-max-width);
+  height: 100%;
+  margin-inline: auto;
+  padding-inline: var(--grid-1-margins);
+}
+
+.stories-testimonials .stories-testimonials-header-graphic {
+  position: absolute;
+  top: 14px;
+  right: var(--grid-1-margins);
+  width: 74px;
+  height: 92px;
+  background: url('/icons/stories-tree.svg') no-repeat center / contain;
+}
+
+/* ===== Body — slider + quote + CTA; constrained to the centered grid. ===== */
+.stories-testimonials .stories-testimonials-body {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-medium); /* 24px mobile/tablet */
+  width: 100%;
+  max-width: var(--grid-max-width);
+  margin-inline: auto;
+  padding-inline: var(--grid-1-margins);
+  padding-block: var(--spacing-xxbig); /* match section top padding */
+}
+
+/* Heading — Girl Scout light, centered. 26/31 mobile+tablet, 36/43 desktop. */
+.stories-testimonials .stories-testimonials-heading {
+  margin: 0;
+  font: normal normal 300 2.6rem/3.1rem var(--type-display-font-family);
+  color: var(--color-neutral-900);
+  text-align: center;
+}
+
+/* ===== Viewport ===== */
+
+/* Mobile/tablet: one image at a time, but all slides stay stacked (absolute)
+   so the active can crossfade in/out smoothly instead of popping. */
+.stories-testimonials .stories-testimonials-viewport {
+  position: relative;
+  width: 100%;
+  height: 218px; /* Figma mobile image height (328x218) */
+  overflow: hidden;
+}
+
+/* Mobile/tablet: CSS scroll snap — browser handles touch swipe natively. */
+.stories-testimonials .stories-testimonials-track {
+  display: flex;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.stories-testimonials .stories-testimonials-track::-webkit-scrollbar {
+  display: none;
+}
+
+.stories-testimonials .stories-testimonials-slide {
+  position: relative;
+  flex: 0 0 100%;
+  height: 100%;
+  margin: 0;
+  scroll-snap-align: start;
+  pointer-events: auto;
+}
+
+.stories-testimonials .stories-testimonials-media {
+  position: relative; /* anchors the click-to-play button overlay */
+  overflow: clip;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+}
+
+.stories-testimonials .stories-testimonials-media picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.stories-testimonials .stories-testimonials-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== Shared content (active slide's quote + CTA) ===== */
+.stories-testimonials .stories-testimonials-content-area {
+  display: flex;
+  width: 100%;
+}
+
+.stories-testimonials .stories-testimonials-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xsmall); /* 8px between the two quote lines (Figma) */
+  width: 100%;
+}
+
+/* Quote — two centered paragraphs. 16/19 mobile+tablet, 20/24 desktop. */
+.stories-testimonials .stories-testimonials-content p {
+  margin: 0;
+  font: normal normal 400 1.6rem/1.9rem var(--type-base-font-family);
+  color: var(--color-neutral-900);
+  text-align: center;
+}
+
+/* First quote line is medium weight (Figma). */
+.stories-testimonials .stories-testimonials-content p:first-child {
+  font-weight: 500;
+}
+
+/* CTA — bordered forest-green "KNOW MORE" button. Full-width on mobile.
+   Larger gap above (Figma 24px mobile/tablet, 32px desktop) separates it from
+   the tightly-grouped quote lines. */
+
+/* p.cta-wrapper: needs the element tag to outrank `.content p { margin: 0 }`. */
+.stories-testimonials p.stories-testimonials-cta-wrapper {
+  margin: var(--spacing-medium) 0 0;
+  width: 100%;
+}
+
+.stories-testimonials a.button.stories-testimonials-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xxsmall);
+  width: 100%;
+  height: 46px;
+  padding: var(--spacing-small) var(--spacing-big);
+  border: 2px solid var(--color-gs-forest);
+  border-radius: var(--radius-md);
+  background: transparent;
+  font: normal normal 500 1.6rem/2.1rem var(--type-base-font-family);
+  color: var(--color-gs-forest);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.stories-testimonials a.button.stories-testimonials-cta:hover,
+.stories-testimonials a.button.stories-testimonials-cta:focus-visible {
+  background: var(--color-gs-forest);
+  color: var(--color-neutral-50);
+}
+
+/* ===== Arrows — 40px pale-green circles (desktop only) ===== */
+.stories-testimonials .stories-testimonials-arrow {
+  position: absolute;
+  top: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--color-gs-green-hover-surface);
+  border-radius: var(--radius-full);
+
+  /* Solid pale-green (Figma #f0faf4 ≈ --color-positive-200) so it reads as
+     near-white over the marine section instead of tinting blue. */
+  background: var(--color-positive-200);
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: background-color var(--transition-base);
+  z-index: 2;
+}
+
+.stories-testimonials .stories-testimonials-arrow::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-gs-forest);
+  mask: url('../../icons/chevron-right.svg') center / contain no-repeat;
+}
+
+.stories-testimonials .stories-testimonials-arrow-prev::before {
+  transform: scaleX(-1);
+}
+
+.stories-testimonials .stories-testimonials-arrow:hover:not(:disabled),
+.stories-testimonials .stories-testimonials-arrow:focus-visible:not(:disabled) {
+  background: color-mix(in srgb, var(--color-gs-green) 12%, var(--color-positive-200));
+}
+
+.stories-testimonials .stories-testimonials-arrow:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ===== Video — inline player + click-to-play poster overlay ===== */
+.stories-testimonials .stories-testimonials-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+
+/* Circular play button centred over the poster. Only the active (centred)
+   slide is interactive; peeks keep the button hidden so they stay poster-only. */
+.stories-testimonials .stories-testimonials-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 1px solid var(--color-gs-green-hover-surface);
+  border-radius: var(--radius-full);
+  background: var(--color-positive-200);
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: background-color var(--transition-base);
+  z-index: 2;
+}
+
+.stories-testimonials .stories-testimonials-slide.is-active .stories-testimonials-play {
+  display: inline-flex;
+}
+
+/* Triangle "play" glyph (CSS-drawn, forest green). */
+.stories-testimonials .stories-testimonials-play::before {
+  content: '';
+  width: 0;
+  height: 0;
+  margin-left: 4px; /* optically centre the triangle */
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 20px solid var(--color-gs-forest);
+}
+
+.stories-testimonials .stories-testimonials-play:hover,
+.stories-testimonials .stories-testimonials-play:focus-visible {
+  background: color-mix(in srgb, var(--color-gs-green) 12%, var(--color-positive-200));
+}
+
+/* ===== Dots — dynamic forest-green pager (all breakpoints) ===== */
+.stories-testimonials .stories-testimonials-dots ol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xsmall);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stories-testimonials .stories-testimonials-dots li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 10px;
+}
+
+.stories-testimonials .stories-testimonials-dot {
+  width: 6px;
+  height: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-gs-forest);
+  opacity: 0.5;
+  cursor: pointer;
+  transition:
+    width var(--transition-base),
+    height var(--transition-base),
+    opacity var(--transition-base);
+}
+
+.stories-testimonials .stories-testimonials-dot[data-distance='2'] {
+  width: 5px;
+  height: 5px;
+}
+
+.stories-testimonials .stories-testimonials-dot[data-distance='3'] {
+  width: 4px;
+  height: 4px;
+  opacity: 0.35;
+}
+
+.stories-testimonials .stories-testimonials-dot[aria-current='true'] {
+  width: 10px;
+  height: 10px;
+  opacity: 1;
+}
+
+.stories-testimonials .stories-testimonials-dot:focus-visible {
+  outline: 2px solid var(--color-button-focus);
+  outline-offset: 2px;
+}
+
+/* ===== Tablet (768) — 56px section gap, 24px content margins, larger image ===== */
+@media (min-width: 768px) {
+  main .section.stories-testimonials-container {
+    padding-block: calc(var(--spacing-xxbig) + var(--spacing-xsmall)); /* 56px (Figma section-gap) */
+  }
+
+  .stories-testimonials .stories-testimonials-header {
+    margin-top: calc(-1 * (var(--spacing-xxbig) + var(--spacing-xsmall))); /* cancel 56px section padding */
+  }
+
+  .stories-testimonials .stories-testimonials-viewport {
+    height: 360px; /* Figma tablet image height (full-width × 360px) */
+  }
+
+  .stories-testimonials .stories-testimonials-header-inner {
+    padding-inline: var(--grid-3-margins);
+  }
+
+  .stories-testimonials .stories-testimonials-header-graphic {
+    left: var(--grid-3-margins);
+  }
+
+  .stories-testimonials .stories-testimonials-body {
+    padding-inline: var(--spacing-medium); /* 24px (Figma px-[24px] at 768) */
+    padding-block: calc(var(--spacing-xxbig) + var(--spacing-xsmall)); /* 56px */
+  }
+
+  .stories-testimonials p.stories-testimonials-cta-wrapper {
+    width: auto;
+  }
+
+  .stories-testimonials a.button.stories-testimonials-cta {
+    width: auto;
+    height: 46px;
+  }
+}
+
+/* ===== Desktop (1280) — coverflow, arrows, larger type ===== */
+@media (min-width: 1280px) {
+  main .section.stories-testimonials-container {
+    padding-block: var(--spacing-xlarge); /* 72px — closest to Figma 80px */
+  }
+
+  /* Header pulls up to cancel the larger desktop top padding. */
+  .stories-testimonials .stories-testimonials-header {
+    margin-top: calc(-1 * var(--spacing-xlarge));
+  }
+
+  .stories-testimonials .stories-testimonials-header-inner {
+    padding-inline: var(--grid-4-margins);
+  }
+
+  .stories-testimonials .stories-testimonials-header-graphic {
+    right: var(--grid-4-margins);
+  }
+
+  .stories-testimonials .stories-testimonials-body {
+    gap: var(--spacing-big); /* 32px */
+    padding-inline: var(--grid-4-margins);
+    padding-block: var(--spacing-xlarge);
+    overflow-x: clip; /* clip peek slides at body padding edge; arrows remain visible */
+  }
+
+  /* Larger gap above CTA on desktop (Figma 32px). */
+  .stories-testimonials p.stories-testimonials-cta-wrapper {
+    margin-top: var(--spacing-big);
+  }
+
+  .stories-testimonials .stories-testimonials-heading {
+    font: normal normal 300 3.6rem/4.3rem var(--type-display-font-family);
+  }
+
+  /* Coverflow: fixed-height stage; active centred, prev/next peek + dim.
+     overflow: visible so peek slides and arrows are not clipped. */
+  .stories-testimonials .stories-testimonials-viewport {
+    height: 393px;
+    overflow: visible;
+  }
+
+  .stories-testimonials .stories-testimonials-track {
+    display: block; /* cancel mobile flex / scroll-snap layout */
+    position: relative;
+    height: 100%;
+    overflow: visible; /* cancel mobile overflow-x: scroll */
+    scroll-snap-type: none;
+  }
+
+  /* Every slide is a fixed 590x393 stage box centred at the viewport middle;
+     it animates transform + opacity together so the whole rail glides. The
+     inner media is what visually resizes (active full, peeks scaled down). */
+
+  /* All slides render on desktop (coverflow); they animate, never display-toggle. */
+  .stories-testimonials .stories-testimonials-slide,
+  .stories-testimonials .stories-testimonials-slide:not(.is-active) {
+    position: absolute;
+    inset: auto;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: 590px;
+    height: 393px;
+    margin: 0;
+    transition:
+      transform var(--transition-base),
+      opacity var(--transition-base);
+    will-change: transform, opacity;
+  }
+
+  .stories-testimonials .stories-testimonials-media {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Active — centred, full size, on top. */
+  .stories-testimonials .stories-testimonials-slide.is-active {
+    z-index: 2;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+
+  /* Side peeks — shifted out and scaled to ~461/590; dimmed via overlay. */
+  .stories-testimonials .stories-testimonials-slide.is-prev,
+  .stories-testimonials .stories-testimonials-slide.is-next {
+    z-index: 1;
+    opacity: 1;
+    cursor: pointer;
+  }
+
+  .stories-testimonials .stories-testimonials-slide.is-prev {
+    transform: translate(calc(-50% - 274px), -50%) scale(0.781);
+  }
+
+  .stories-testimonials .stories-testimonials-slide.is-next {
+    transform: translate(calc(-50% + 274px), -50%) scale(0.781);
+  }
+
+  /* Dark overlay only on the peeking sides (Figma #00000066). */
+  .stories-testimonials .stories-testimonials-slide.is-prev .stories-testimonials-media::after,
+  .stories-testimonials .stories-testimonials-slide.is-next .stories-testimonials-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-md);
+    background: rgb(0 0 0 / 0.4);
+  }
+
+  /* Far slides park further out, fully transparent — they slide in from the
+     edge on navigation rather than fading at centre (no ghost). */
+  .stories-testimonials .stories-testimonials-slide.is-far-prev,
+  .stories-testimonials .stories-testimonials-slide.is-far-next {
+    z-index: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .stories-testimonials .stories-testimonials-slide.is-far-prev {
+    transform: translate(calc(-50% - 550px), -50%) scale(0.781);
+  }
+
+  .stories-testimonials .stories-testimonials-slide.is-far-next {
+    transform: translate(calc(-50% + 550px), -50%) scale(0.781);
+  }
+
+  /* Quote — 20/24, first line medium. */
+  .stories-testimonials .stories-testimonials-content p {
+    font-size: 2rem;
+    line-height: 2.4rem;
+  }
+
+  /* CTA — 52px tall on desktop. */
+  .stories-testimonials a.button.stories-testimonials-cta {
+    height: 52px;
+  }
+
+  /* Arrows visible, centred on the image stage. */
+  .stories-testimonials .stories-testimonials-arrow {
+    display: inline-flex;
+  }
+
+  /* Arrows at 59px from the viewport edge — Figma: centred on the outer edge of the peek slide. */
+  .stories-testimonials .stories-testimonials-arrow-prev {
+    left: 59px;
+  }
+
+  .stories-testimonials .stories-testimonials-arrow-next {
+    right: 59px;
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "definitions": [
+    {
+      "title": "Stories & Testimonials",
+      "id": "stories-testimonials",
+      "model": "stories-testimonials",
+      "filter": "stories-testimonials"
+    },
+    {
+      "title": "Stories & Testimonials (Infinite Loop)",
+      "id": "stories-testimonials-infinite-loop",
+      "model": "stories-testimonials",
+      "filter": "stories-testimonials",
+      "plugins": {
+        "da": {
+          "classes": ["infinite-loop"]
+        }
+      }
+    },
+    {
+      "title": "Story Slide",
+      "id": "stories-testimonials-slide",
+      "model": "stories-testimonials-slide",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 2,
+          "fields": [
+            { "name": "image", "selector": "div:nth-child(1)>picture>img[src]" },
+            { "name": "imageAlt", "selector": "div:nth-child(1)>picture>img[alt]" },
+            { "name": "video", "selector": "div:nth-child(1)>p>a[href]" },
+            { "name": "content", "selector": "div:nth-child(2)" }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "stories-testimonials-slide",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "imageAlt",
+          "label": "Image Alt"
+        },
+        {
+          "component": "aem-content",
+          "valueType": "string",
+          "name": "video",
+          "label": "Video (optional .mp4 — click-to-play, image is the poster)"
+        },
+        {
+          "component": "richtext",
+          "name": "content",
+          "label": "Quote (two lines) + KNOW MORE link",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "stories-testimonials",
+      "components": ["stories-testimonials-slide"]
+    }
+  ]
+}

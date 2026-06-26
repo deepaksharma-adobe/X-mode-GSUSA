@@ -1,0 +1,58 @@
+{
+  "definitions": [
+    {
+      "title": "Values",
+      "id": "values",
+      "model": "values",
+      "filter": "values"
+    },
+    {
+      "title": "Value Card",
+      "id": "values-card",
+      "model": "values-card",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 2,
+          "fields": [
+            { "name": "icon", "selector": "div:nth-child(1)>picture>img[src]" },
+            { "name": "iconAlt", "selector": "div:nth-child(1)>picture>img[alt]" },
+            { "name": "text", "selector": "div:nth-child(2)" }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "values-card",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "icon",
+          "label": "Icon",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "iconAlt",
+          "label": "Icon Alt"
+        },
+        {
+          "component": "richtext",
+          "name": "text",
+          "label": "Text",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "values",
+      "components": ["values-card"]
+    }
+  ]
+}

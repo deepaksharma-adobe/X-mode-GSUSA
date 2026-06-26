@@ -1,0 +1,10 @@
+<svg width="74" height="92" viewBox="0 0 74 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- trunk -->
+  <rect x="22" y="74" width="11" height="18" rx="2" fill="#743700"/>
+  <!-- pine tiers (mint green) -->
+  <path d="M27.5 8 L42 34 H13 Z" fill="#A9DCC3"/>
+  <path d="M27.5 28 L48 58 H7 Z" fill="#A9DCC3"/>
+  <path d="M27.5 50 L50 80 H5 Z" fill="#A9DCC3"/>
+  <!-- star (violet) -->
+  <path d="M60 6 L63.4 13.1 L71 14.1 L65.3 19.4 L66.8 27 L60 23.3 L53.2 27 L54.7 19.4 L49 14.1 L56.6 13.1 Z" fill="#C9A9F0"/>
+</svg>

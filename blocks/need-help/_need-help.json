@@ -1,0 +1,46 @@
+{
+  "definitions": [
+    {
+      "title": "Need Help",
+      "id": "need-help",
+      "model": "need-help",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 2,
+          "fields": [
+            { "name": "heading", "selector": "div:nth-child(1)" },
+            { "name": "link", "selector": "div:nth-child(2)>a[href]" },
+            { "name": "linkText", "selector": "div:nth-child(2)>a" }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "need-help",
+      "fields": [
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "heading",
+          "label": "Heading"
+        },
+        {
+          "component": "aem-content",
+          "valueType": "string",
+          "name": "link",
+          "label": "Link"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "linkText",
+          "label": "Link Text"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

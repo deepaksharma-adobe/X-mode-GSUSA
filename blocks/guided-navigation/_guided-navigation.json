@@ -1,0 +1,69 @@
+{
+  "definitions": [
+    {
+      "title": "Guided Navigation",
+      "id": "guided-navigation",
+      "model": "guided-navigation",
+      "filter": "guided-navigation"
+    },
+    {
+      "title": "Navigation Link",
+      "id": "guided-navigation-link",
+      "model": "guided-navigation-link",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            { "name": "link", "selector": "a[href]" },
+            { "name": "linkText", "selector": "a" }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "guided-navigation",
+      "fields": [
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "label",
+          "label": "Label text",
+          "value": "I am looking for"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "button",
+          "label": "Button text",
+          "value": "Go"
+        }
+      ]
+    },
+    {
+      "id": "guided-navigation-link",
+      "fields": [
+        {
+          "component": "aem-content",
+          "valueType": "string",
+          "name": "link",
+          "label": "Link"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "linkText",
+          "label": "Label (shown in the dropdown)"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "guided-navigation",
+      "components": ["guided-navigation-link"]
+    }
+  ]
+}

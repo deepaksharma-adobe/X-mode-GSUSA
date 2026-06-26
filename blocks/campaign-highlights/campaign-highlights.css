@@ -1,0 +1,373 @@
+/* ===== Campaign Highlights (Figma 2831:51217) =====
+   Desktop 2824:51131 / mobile 2831:51218 / tablet 2908:17857.
+   Horizontal scroll carousel of alternating 256×332 image + text tiles over a
+   sky-blue doodle background. Heading + subheading above; KNOW MORE CTA below.
+   Arrows on desktop, dot pager on mobile/tablet. Px-perfect all breakpoints. */
+
+.campaign-highlights {
+  /* ===== TILES ===== */
+  --ch-tile-width: 256px;            /* Figma 256.155px */
+  --ch-tile-height: 332px;           /* Figma 331.93px */
+  --ch-tile-border: 1px;             /* Figma border-[1px] tone border on images */
+  --ch-tilt: -2.95deg;               /* visible scrapbook tilt on the inner card */
+
+  /* ===== TRACK / SPACING ===== */
+  --ch-gap: var(--spacing-medium);          /* 24px (Figma gap-[24px]) */
+  --ch-head-gap: var(--spacing-xsmall);     /* 8px heading→subheading */
+  --ch-stack-gap: var(--spacing-medium);    /* 24px between heading/track/CTA */
+  --ch-head-track-gap: var(--spacing-big);  /* 32px head→track */
+
+  /* ===== TYPOGRAPHY ===== */
+  --ch-heading-font: normal normal 300 2.6rem/3.1rem var(--type-display-font-family); /* 26/31 mobile/tablet */
+  --ch-heading-font-desktop: normal normal 300 3.6rem/4.3rem var(--type-display-font-family); /* 36/43 desktop */
+  --ch-heading-color: var(--color-neutral-900);
+  --ch-subheading-font: normal normal 400 1.6rem/2.1rem var(--type-base-font-family); /* 16/21 */
+  --ch-subheading-color: var(--color-neutral-800);
+  --ch-panel-font: normal normal 400 1.8rem/1.4 var(--type-display-font-family); /* 18px ~1.4 */
+  --ch-panel-color: var(--color-neutral-900);
+  --ch-panel-padding: var(--spacing-medium); /* 24px inner inset */
+
+  /* ===== TONE PALETTE (Figma exact) ===== */
+  --ch-tone-cream: #f6f3ec;
+  --ch-tone-lavender: #d0b0ff;
+  --ch-tone-yellow: #f4f0d1;
+  --ch-border-cream: #f6f3ec;
+  --ch-border-lavender: #d0b0ff;
+  --ch-border-yellow: #ffefba;
+
+  /* ===== ARROWS ===== */
+  --ch-arrow-size: 40px;
+  --ch-arrow-bg: var(--color-positive-200);
+  --ch-arrow-border: var(--color-gs-green-hover-surface);
+  --ch-arrow-icon: var(--color-gs-forest);
+  --ch-arrow-icon-size: 20px;
+
+  /* ===== MEDIA ===== */
+  --ch-media-radius: var(--radius-md);
+
+
+  position: relative;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ch-stack-gap);
+}
+
+/* ===== Section background — sky/river tint + doodle overlay + center glow =====
+   Mobile/tablet: river-blue @15%. Doodle illustration (provided as a PNG) sits
+   at 70% opacity behind the content; a soft river-blue ellipse glow centers it.
+   The doodle PNG drops into /icons/campaign-doodle.png; until present, the tint
+   alone shows. */
+.campaign-highlights-container {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: color-mix(in srgb, var(--color-gs-river) 15%, transparent);
+  padding-block: var(--spacing-xxbig); /* 48px mobile/tablet (Figma py-48) */
+}
+
+.campaign-highlights-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: url('/images/campaign-highlights-bg.png') left top / cover repeat;
+  opacity: 0.5;
+  pointer-events: none;
+  background-size: contain;
+}
+
+/* Soft center glow (Figma Ellipse 46 — river-blue @15%, blurred). */
+.campaign-highlights-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    60% 70% at 50% 45%,
+    color-mix(in srgb, var(--color-gs-river) 15%, transparent) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* ===== Heading + subheading ===== */
+.campaign-highlights .campaign-highlights-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ch-head-gap);
+  width: 100%;
+  margin-bottom: var(--spacing-xsmall); /* extra air before track (head-track-gap) */
+}
+
+.campaign-highlights .campaign-highlights-heading {
+  margin: 0;
+  font: var(--ch-heading-font);
+  color: var(--ch-heading-color);
+  text-align: center;
+}
+
+.campaign-highlights .campaign-highlights-subheading {
+  margin: 0;
+  font: var(--ch-subheading-font);
+  color: var(--ch-subheading-color);
+  text-align: center;
+}
+
+/* ===== Track ===== */
+.campaign-highlights .campaign-highlights-viewport {
+  position: relative;
+  width: 100%;
+}
+
+.campaign-highlights .campaign-highlights-track {
+  display: flex;
+  align-items: center;
+  gap: var(--ch-gap);
+  margin: 0;
+  padding: var(--spacing-xsmall) 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.campaign-highlights .campaign-highlights-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== Tiles — fixed 256×332 box; absorbs the card's rotation overflow ===== */
+.campaign-highlights .campaign-highlights-tile {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 var(--ch-tile-width);
+  width: var(--ch-tile-width);
+  height: var(--ch-tile-height);
+  scroll-snap-align: start;
+}
+
+/* Inner card — fills the tile and carries the visible scrapbook tilt. */
+.campaign-highlights .campaign-highlights-card {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: rotate(var(--ch-tilt));
+}
+
+/* Image card — 1px tone border (matches its paired text panel). */
+.campaign-highlights .campaign-highlights-tile-image .campaign-highlights-card {
+  overflow: clip;
+}
+
+.campaign-highlights .campaign-highlights-tile-image[data-tone='lavender'] .campaign-highlights-card {
+  border-color: var(--ch-border-lavender);
+}
+
+.campaign-highlights .campaign-highlights-tile-image[data-tone='yellow'] .campaign-highlights-card {
+  border-color: var(--ch-border-yellow);
+}
+
+.campaign-highlights .campaign-highlights-media {
+  position: absolute;
+  inset: 0;
+}
+
+.campaign-highlights .campaign-highlights-media picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.campaign-highlights .campaign-highlights-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Text panel card — solid tone fill, centered copy. */
+.campaign-highlights .campaign-highlights-tile-text .campaign-highlights-card[data-tone='cream'] {
+  background: var(--ch-tone-cream);
+}
+
+.campaign-highlights .campaign-highlights-tile-text .campaign-highlights-card[data-tone='lavender'] {
+  background: var(--ch-tone-lavender);
+}
+
+.campaign-highlights .campaign-highlights-tile-text .campaign-highlights-card[data-tone='yellow'] {
+  background: var(--ch-tone-yellow);
+}
+
+.campaign-highlights .campaign-highlights-panel {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: var(--ch-panel-padding);
+}
+
+.campaign-highlights .campaign-highlights-panel p {
+  margin: 0;
+  font: var(--ch-panel-font);
+  color: var(--ch-panel-color);
+  text-align: center;
+}
+
+/* ===== CTA — bordered forest-green "KNOW MORE" (.button.secondary) ===== */
+.campaign-highlights .campaign-highlights-cta-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.campaign-highlights a.button.campaign-highlights-cta {
+  width: 100%;
+  text-transform: uppercase;
+}
+
+/* ===== Arrows — 40px solid pale-green circles (desktop only) ===== */
+.campaign-highlights .campaign-highlights-arrow {
+  position: absolute;
+  top: var(--ch-arrow-top, 50%);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--ch-arrow-size);
+  height: var(--ch-arrow-size);
+  padding: 0;
+  border: 1px solid var(--ch-arrow-border);
+  border-radius: var(--radius-full);
+  background: var(--ch-arrow-bg);
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: background-color var(--transition-base);
+  z-index: 2;
+}
+
+.campaign-highlights .campaign-highlights-arrow::before {
+  content: '';
+  width: var(--ch-arrow-icon-size);
+  height: var(--ch-arrow-icon-size);
+  background-color: var(--ch-arrow-icon);
+  mask: url('../../icons/chevron-right.svg') center / contain no-repeat;
+}
+
+.campaign-highlights .campaign-highlights-arrow-prev::before {
+  transform: scaleX(-1);
+}
+
+.campaign-highlights .campaign-highlights-arrow:hover:not(:disabled),
+.campaign-highlights .campaign-highlights-arrow:focus-visible:not(:disabled) {
+  background: color-mix(in srgb, var(--color-gs-green) 12%, var(--color-positive-200));
+}
+
+.campaign-highlights .campaign-highlights-arrow:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ===== Dots — dynamic forest-green pager (mobile/tablet only) ===== */
+.campaign-highlights .campaign-highlights-dots ol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xsmall);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.campaign-highlights .campaign-highlights-dots li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 10px;
+}
+
+.campaign-highlights .campaign-highlights-dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-gs-forest);
+  opacity: 0.5;
+  cursor: pointer;
+  transition:
+    width var(--transition-base),
+    height var(--transition-base),
+    opacity var(--transition-base);
+}
+
+.campaign-highlights .campaign-highlights-dot[data-distance='2'] {
+  width: 5px;
+  height: 5px;
+}
+
+.campaign-highlights .campaign-highlights-dot[data-distance='3'] {
+  width: 4px;
+  height: 4px;
+  opacity: 0.35;
+}
+
+.campaign-highlights .campaign-highlights-dot[aria-current='true'] {
+  width: 10px;
+  height: 10px;
+  opacity: 1;
+}
+
+.campaign-highlights .campaign-highlights-dot:focus-visible {
+  outline: 2px solid var(--color-button-focus);
+  outline-offset: 2px;
+}
+
+/* ===== Tablet (768) — wider CTA, dots still ===== */
+@media (min-width: 768px) {
+  .campaign-highlights a.button.campaign-highlights-cta {
+    width: auto;
+  }
+}
+
+/* ===== Desktop (1280) — 80px padding, sky-blue bg, larger heading, arrows ===== */
+@media (min-width: 1280px) {
+  .campaign-highlights {
+    --ch-stack-gap: var(--spacing-medium); /* 24px (Figma gap-[24px]) */
+  }
+
+  .campaign-highlights-container {
+    background-color: color-mix(in srgb, var(--color-gs-sky) 40%, transparent);
+    padding-block: var(--spacing-xlarge); /* ~80px target (Figma py-80; xlarge=72px nearest) */
+  }
+
+  .campaign-highlights .campaign-highlights-heading {
+    font: var(--ch-heading-font-desktop);
+  }
+
+  .campaign-highlights .campaign-highlights-arrow {
+    display: inline-flex;
+  }
+
+  /* Arrows straddle the tile-band edge (Figma: arrow centre on the content
+     edge — half over the end tile, half in the side margin). */
+  .campaign-highlights .campaign-highlights-arrow-prev {
+    left: calc(-1 * var(--ch-arrow-size) / 2);
+  }
+
+  .campaign-highlights .campaign-highlights-arrow-next {
+    right: calc(-1 * var(--ch-arrow-size) / 2);
+  }
+
+  .campaign-highlights .campaign-highlights-dots {
+    display: none;
+  }
+}

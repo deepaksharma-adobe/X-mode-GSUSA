@@ -1,0 +1,175 @@
+main .section .guided-navigation-wrapper {
+  max-width: none;
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  padding: 0;
+}
+
+.guided-navigation {
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-xsmall) var(--spacing-medium);
+  width: 100%;
+  background: var(--color-gs-green);
+  padding: var(--spacing-small) var(--grid-1-margins);
+}
+
+.guided-navigation .guided-navigation-label {
+  font: var(--type-body-1-strong-font);
+  color: var(--color-neutral-900);
+  white-space: nowrap;
+}
+
+/* Mobile: label takes the full row so the dropdown + GO wrap below it. */
+.guided-navigation .guided-navigation-label {
+  flex: 0 0 100%;
+}
+
+/* ===== Custom combobox ===== */
+.guided-navigation .guided-navigation-combo {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* Trigger — underlined row with the selected label + chevron (Figma). */
+.guided-navigation .guided-navigation-trigger {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-xsmall-plus);
+  width: 100%;
+  height: 32px;
+  min-height: 0;
+  margin: 0;
+  padding: 0 0 var(--spacing-xxsmall);
+  border: 0;
+  border-bottom: 1px solid var(--color-neutral-700);
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.guided-navigation .guided-navigation-trigger-text {
+  overflow: hidden;
+  font: var(--type-button-1-font);
+  color: var(--color-neutral-900);
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Chevron — rotates when open. */
+.guided-navigation .guided-navigation-trigger::after {
+  content: "";
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  background-color: var(--color-neutral-900);
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>') center / contain no-repeat;
+  transition: transform var(--transition-base);
+}
+
+.guided-navigation .guided-navigation-trigger[aria-expanded="true"]::after {
+  transform: rotate(180deg);
+}
+
+.guided-navigation .guided-navigation-trigger:focus-visible {
+  outline: 2px solid var(--color-button-focus);
+  outline-offset: 2px;
+}
+
+/* Panel — white rounded card with shadow, dropped below the trigger (Figma). */
+.guided-navigation .guided-navigation-panel {
+  position: absolute;
+  top: calc(100% + var(--spacing-xxsmall));
+  left: 0;
+  z-index: var(--z-dropdown);
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 238px;
+  padding: var(--spacing-xsmall);
+  border-radius: var(--radius-lg);
+  background: var(--color-neutral-50);
+  box-shadow: var(--shadow-md);
+}
+
+.guided-navigation .guided-navigation-panel[hidden] {
+  display: none;
+}
+
+/* Option list — rows px16/py12; selected/active = pale-green surface (Figma). */
+.guided-navigation .guided-navigation-list {
+  max-height: 280px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.guided-navigation .guided-navigation-option {
+  margin: 0;
+  padding: var(--spacing-xsmall) var(--spacing-small);
+  font: var(--type-body-1-default-font);
+  color: var(--color-neutral-900);
+  cursor: pointer;
+}
+
+.guided-navigation .guided-navigation-option[hidden] {
+  display: none;
+}
+
+.guided-navigation .guided-navigation-option.is-active,
+.guided-navigation .guided-navigation-option[aria-selected="true"] {
+  background: var(--color-gs-green-hover-surface);
+}
+
+/* GO button — forest-green, white uppercase (Figma). */
+.guided-navigation a.guided-navigation-go,
+.guided-navigation button.guided-navigation-go {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  min-height: 0;
+  padding: var(--spacing-xsmall) var(--spacing-small);
+  border-radius: var(--radius-sm);
+  background: var(--color-gs-forest);
+  color: var(--color-neutral-50);
+  font: var(--type-body-2-semibold-font);
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.guided-navigation button.guided-navigation-go:hover,
+.guided-navigation button.guided-navigation-go:focus-visible {
+  background: var(--color-gs-dark-green);
+}
+
+/* ===== Tablet & desktop: single centered row (desktop design) ===== */
+@media (min-width: 768px) {
+  .guided-navigation {
+    justify-content: center;
+    padding-inline: var(--grid-3-margins);
+  }
+
+  /* Label rejoins the single row; combo reverts to its fixed Figma width. */
+  .guided-navigation .guided-navigation-label {
+    flex: 0 0 auto;
+  }
+
+  .guided-navigation .guided-navigation-combo {
+    flex: 0 0 auto;
+    width: 238px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .guided-navigation {
+    padding-inline: var(--grid-4-margins);
+  }
+}

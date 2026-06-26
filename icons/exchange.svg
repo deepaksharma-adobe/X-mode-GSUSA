@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <g id="Exchanged">
+    <g id="Color=Grey, Style=Line, Size=24">
+      <mask id="mask0_2695_221159" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+        <rect id="Bounding box" width="24" height="24" fill="white" />
+      </mask>
+      <g mask="url(#mask0_2695_221159)">
+        <path id="Subtract" fill-rule="evenodd" clip-rule="evenodd" d="M7.97656 11.4229L5.10156 14.2998H12.7012V15.7002H5.10156L5.6123 16.2129L7.97656 18.5771L6.99707 19.5732L2.42383 15L6.99707 10.4268L7.97656 11.4229ZM13 14V14.001H5.8252L13 14ZM21.5762 9L17.002 13.5732L16.0215 12.5771L18.9004 9.7002H11.3008V8.2998H18.9004L18.3877 7.78809L16.0215 5.42285L17.002 4.42676L21.5762 9ZM18.1748 8.00098H11V8L18.1748 8.00098Z" fill="currentColor" />
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,65 @@
+{
+  "definitions": [
+    {
+      "title": "Category Grid",
+      "id": "category-grid",
+      "model": "category-grid",
+      "filter": "category-grid"
+    },
+    {
+      "title": "Category Card",
+      "id": "category-grid-card",
+      "model": "category-grid-card",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 3,
+          "fields": [
+            { "name": "image", "selector": "div:nth-child(1)>picture>img[src]" },
+            { "name": "imageAlt", "selector": "div:nth-child(1)>picture>img[alt]" },
+            { "name": "content", "selector": "div:nth-child(2)" },
+            { "name": "options", "selector": "div:nth-child(3)" }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "category-grid-card",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "imageAlt",
+          "label": "Image Alt"
+        },
+        {
+          "component": "richtext",
+          "name": "content",
+          "label": "Content (heading + body + link for banner, or label text)",
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "options",
+          "label": "Options (color + size, e.g. 'yellow tile')"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "category-grid",
+      "components": ["category-grid-card"]
+    }
+  ]
+}

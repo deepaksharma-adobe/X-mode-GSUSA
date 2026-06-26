@@ -1,0 +1,335 @@
+/* ===== Shop By Collection (Figma 5168:208534) =====
+   Horizontally-scrolling carousel of collection cards under a centered
+   "Shop By Collection" heading, with circular prev/next arrows and dot
+   indicators. Mobile shows 1 card, tablet 2, desktop 4. The block sits inside
+   the shared section frame, so it inherits the responsive horizontal margins
+   from `main > .section > div` — no own max-width here. */
+
+.shop-by-collection {
+  --sbc-cards: 1; /* cards per view; overridden per breakpoint */
+  --sbc-gap: var(--spacing-small);   /* 16px mobile (Figma); overridden tablet/desktop */
+  --sbc-peek: var(--spacing-large);  /* 64px mobile → card ≈ 240px at 320px viewport */
+
+  position: relative;
+}
+
+/* Section heading — authored as default content above the block.
+   Figma: 26px mobile/tablet, 36px desktop (Girl Scout light). */
+.shop-by-collection-container .default-content-wrapper h2 {
+  margin: 0 0 var(--spacing-medium);
+  font: normal normal 300 2.6rem/3.1rem var(--type-display-font-family);
+  text-align: center;
+}
+
+/* Figma section vertical padding: 48px mobile / 56px tablet / 80px desktop. */
+.shop-by-collection-container {
+  padding-block: var(--spacing-xxbig);
+}
+
+/* ===== Track ===== */
+.shop-by-collection .shop-by-collection-viewport {
+  overflow: hidden;
+}
+
+.shop-by-collection .shop-by-collection-track {
+  display: flex;
+  gap: var(--sbc-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.shop-by-collection .shop-by-collection-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== Card ===== */
+.shop-by-collection .shop-by-collection-card {
+  display: flex;
+  flex: 0 0 calc(
+    (100% - var(--sbc-peek) - var(--sbc-cards) * var(--sbc-gap)) / var(--sbc-cards)
+  );
+  flex-direction: column;
+  gap: var(--spacing-small);
+  scroll-snap-align: start;
+}
+
+.shop-by-collection .shop-by-collection-media {
+  position: relative;
+  width: 100%;
+  height: 182px; /* Figma mobile image height (242x182); object-fit covers the flexing width */
+  overflow: clip;
+}
+
+/* Absolutely-position the picture so the media height is driven purely by the
+   4:5 aspect-ratio — otherwise a portrait source image stretches the box. */
+.shop-by-collection .shop-by-collection-media picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.shop-by-collection .shop-by-collection-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.shop-by-collection .shop-by-collection-card:hover .shop-by-collection-media img,
+.shop-by-collection .shop-by-collection-card:focus-within .shop-by-collection-media img {
+  transform: scale(1.05);
+}
+
+.shop-by-collection .shop-by-collection-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxsmall); /* 4px mobile/tablet; 12px desktop (Figma) */
+}
+
+.shop-by-collection .shop-by-collection-title {
+  margin: 0;
+  font: normal normal 400 1.6rem/1.9rem var(--type-display-font-family);
+  color: var(--color-neutral-900);
+}
+
+.shop-by-collection .shop-by-collection-cta-wrapper {
+  margin: 0;
+}
+
+/* CTA — "Collection" text link with a trailing chevron.
+   Mobile/tablet: dark-green 14px semibold. Desktop: forest-green 16px medium.
+   The label underlines on hover/focus only (not by default). */
+.shop-by-collection a.button.shop-by-collection-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xxsmall);
+  height: auto;
+  padding: var(--spacing-xsmall) 0;
+  border: none;
+  background: transparent;
+  font: var(--type-body-2-semibold-font);
+  color: var(--color-gs-dark-green);
+  text-decoration: none;
+  text-transform: none;
+}
+
+/* Label text underlines on hover/focus only — never on default, never the arrow. */
+.shop-by-collection .shop-by-collection-cta-text {
+  text-decoration: none;
+}
+
+/* Trailing chevron — masked SVG icon so it inherits the link colour. */
+.shop-by-collection a.button.shop-by-collection-cta::after {
+  content: '';
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  background-color: currentcolor;
+  mask: url('../../icons/chevron-right.svg') center / contain no-repeat;
+}
+
+.shop-by-collection a.button.shop-by-collection-cta:hover,
+.shop-by-collection a.button.shop-by-collection-cta:focus-visible {
+  background: transparent;
+  color: var(--color-gs-dark-green);
+}
+
+.shop-by-collection a.button.shop-by-collection-cta:hover .shop-by-collection-cta-text,
+.shop-by-collection a.button.shop-by-collection-cta:focus-visible .shop-by-collection-cta-text {
+  text-decoration: underline;
+}
+
+/* ===== Arrows — 40px solid pale-green circles =====
+   Matches the stories-testimonials arrows: solid --color-positive-200 fill with
+   a forest-green chevron-right.svg mask (prev mirrored). Vertically centred on
+   the image band via --sbc-arrow-top (set in JS to half the image height, since
+   the image ratio differs per breakpoint). */
+.shop-by-collection .shop-by-collection-arrow {
+  position: absolute;
+  top: var(--sbc-arrow-top, 50%);
+  display: none; /* shown from tablet up where peeking/overflow occurs */
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--color-gs-green-hover-surface);
+  border-radius: var(--radius-full);
+  background: var(--color-positive-200);
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: background-color var(--transition-base);
+  z-index: 2;
+}
+
+/* Chevron glyph via mask so it inherits a tokenised colour. */
+.shop-by-collection .shop-by-collection-arrow::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-gs-forest);
+  mask: url('../../icons/chevron-right.svg') center / contain no-repeat;
+}
+
+.shop-by-collection .shop-by-collection-arrow-prev::before {
+  transform: scaleX(-1);
+}
+
+.shop-by-collection .shop-by-collection-arrow:hover:not(:disabled),
+.shop-by-collection .shop-by-collection-arrow:focus-visible:not(:disabled) {
+  background: color-mix(in srgb, var(--color-gs-green) 12%, var(--color-positive-200));
+}
+
+.shop-by-collection .shop-by-collection-arrow:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ===== Dots — dynamic pager, tablet + mobile only (Figma 3064:114424) =====
+   Desktop uses arrows instead; dots are hidden at >=1280px below.
+   Inactive dots are forest-green at 50% alpha and taper with distance from the
+   active dot; the active dot is a larger solid forest-green circle. */
+.shop-by-collection .shop-by-collection-dots ol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xsmall);
+  margin: var(--spacing-medium) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Each list item is a fixed 10px slot (the largest dot size) that centres its
+   dot. Fixed slots keep the row's total width constant as dots resize, so the
+   cluster never shifts horizontally when the active dot moves. */
+.shop-by-collection .shop-by-collection-dots li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 10px;
+}
+
+.shop-by-collection .shop-by-collection-dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-gs-forest);
+  opacity: 0.5;
+  cursor: pointer;
+  transition:
+    width var(--transition-base),
+    height var(--transition-base),
+    opacity var(--transition-base);
+}
+
+/* Dynamic taper: dots farther from the active one shrink (Swiper-style). */
+.shop-by-collection .shop-by-collection-dot[data-distance='2'] {
+  width: 5px;
+  height: 5px;
+}
+
+.shop-by-collection .shop-by-collection-dot[data-distance='3'] {
+  width: 4px;
+  height: 4px;
+  opacity: 0.35;
+}
+
+/* Active dot — larger solid forest-green circle (Figma: 10px #005640). */
+.shop-by-collection .shop-by-collection-dot[aria-current='true'] {
+  width: 10px;
+  height: 10px;
+  opacity: 1;
+}
+
+.shop-by-collection .shop-by-collection-dot:focus-visible {
+  outline: 2px solid var(--color-button-focus);
+  outline-offset: 2px;
+}
+
+/* ===== Tablet (768) — 2 cards + peek, dots only, 56px section padding ===== */
+@media (min-width: 768px) {
+  .shop-by-collection {
+    --sbc-cards: 2;
+    --sbc-gap: var(--spacing-medium);  /* 24px (Figma) */
+
+    /* peek = 728 - 2×255 - 2×24 = 170px ≈ var(--spacing-xxlarge)+var(--spacing-xlarge) = 168px
+       → card ≈ 256px (Figma: 255px) */
+    --sbc-peek: calc(var(--spacing-xxlarge) + var(--spacing-xlarge));
+  }
+
+  .shop-by-collection-container {
+    padding-block: calc(var(--spacing-xxbig) + var(--spacing-xsmall)); /* 56px (Figma) */
+  }
+
+  .shop-by-collection .shop-by-collection-media {
+    height: 191px; /* Figma tablet image height (255×191) */
+  }
+}
+
+/* ===== Desktop (1280) — 3 cards (≈374px), 80px padding, 4:5 images, arrows ===== */
+@media (min-width: 1280px) {
+  .shop-by-collection {
+    --sbc-cards: 3;
+    --sbc-gap: var(--spacing-medium);       /* 24px (Figma) */
+
+    /* Negative peek removes the phantom trailing gap from the formula so that
+       3 cards × 374px fill the 1168px track exactly (≈373px per card).
+       Formula: (1168 − (−24) − 3×24) / 3 = (1168+24−72)/3 = 1120/3 ≈ 373px */
+    --sbc-peek: calc(-1 * var(--sbc-gap));
+  }
+
+  .shop-by-collection-container {
+    padding-block: calc(var(--spacing-large) + var(--spacing-small)); /* 80px (Figma) */
+  }
+
+  /* Arrows are desktop-only; dots are tablet/mobile-only (Figma). */
+  .shop-by-collection .shop-by-collection-arrow {
+    display: inline-flex;
+  }
+
+  /* Arrows straddle the card-band edge (matches campaign-highlights: arrow
+     centre on the content edge — half over the end card, half in the margin). */
+  .shop-by-collection .shop-by-collection-arrow-prev {
+    left: calc(-1 * 40px / 2);
+  }
+
+  .shop-by-collection .shop-by-collection-arrow-next {
+    right: calc(-1 * 40px / 2);
+  }
+
+  .shop-by-collection .shop-by-collection-dots {
+    display: none;
+  }
+
+  .shop-by-collection-container .default-content-wrapper h2 {
+    margin: 0 0 var(--spacing-big);
+    font: normal normal 300 3.6rem/4.3rem var(--type-display-font-family);
+  }
+
+  .shop-by-collection .shop-by-collection-media {
+    height: 468px; /* Figma desktop image height (374x468) */
+  }
+
+  .shop-by-collection .shop-by-collection-content {
+    gap: var(--spacing-xsmall-plus); /* 12px */
+  }
+
+  .shop-by-collection .shop-by-collection-title {
+    font: normal normal 400 1.8rem/2.2rem var(--type-display-font-family);
+  }
+
+  /* Desktop CTA: forest-green 16px medium (underline-on-hover is inherited). */
+  .shop-by-collection a.button.shop-by-collection-cta {
+    font: normal normal 500 1.6rem/1.9rem var(--type-base-font-family);
+    color: var(--color-gs-forest);
+  }
+}

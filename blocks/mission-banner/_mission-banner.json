@@ -1,0 +1,41 @@
+{
+  "definitions": [
+    {
+      "title": "Mission Banner",
+      "id": "mission-banner",
+      "model": "mission-banner",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 1
+        }
+      }
+    },
+    {
+      "title": "Mission Banner (Art)",
+      "id": "mission-banner-art",
+      "model": "mission-banner",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 1,
+          "classes": ["art"]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "mission-banner",
+      "fields": [
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "content",
+          "label": "Content"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

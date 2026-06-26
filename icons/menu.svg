@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <g id="menu_open">
+    <g id="Property 1=Dark Grey">
+      <mask id="mask0_2695_221159" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+        <rect id="Bounding box" width="24" height="24" fill="white" />
+      </mask>
+      <g mask="url(#mask0_2695_221159)">
+        <path id="menu_open_2" d="M3 18V16H16V18H3ZM19.6 17L14.6 12L19.6 7L21 8.4L17.4 12L21 15.6L19.6 17ZM3 13V11H13V13H3ZM3 8V6H16V8H3Z" fill="currentColor" />
+      </g>
+    </g>
+  </g>
+</svg>

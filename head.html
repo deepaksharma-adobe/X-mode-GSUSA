@@ -1,0 +1,94 @@
+<meta
+  http-equiv="Content-Security-Policy"
+  content="script-src 'nonce-aem' 'strict-dynamic' 'unsafe-inline' http: https:; base-uri 'self'; object-src 'none';"
+  move-to-http-header="true"
+>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script nonce="aem" type="speculationrules">
+    {
+        "prerender": [{
+            "where": {
+                "href_matches": "/*"
+            },
+            "eagerness": "moderate"
+        }]
+    }
+</script>
+<script nonce="aem" type="importmap">
+    {
+        "imports": {
+            "@dropins/storefront-account/": "/scripts/__dropins__/storefront-account/",
+            "@dropins/storefront-auth/": "/scripts/__dropins__/storefront-auth/",
+            "@dropins/storefront-cart/": "/scripts/__dropins__/storefront-cart/",
+            "@dropins/storefront-checkout/": "/scripts/__dropins__/storefront-checkout/",
+            "@dropins/storefront-order/": "/scripts/__dropins__/storefront-order/",
+            "@dropins/storefront-payment-services/": "/scripts/__dropins__/storefront-payment-services/",
+            "@dropins/storefront-pdp/": "/scripts/__dropins__/storefront-pdp/",
+            "@dropins/storefront-recommendations/": "/scripts/__dropins__/storefront-recommendations/",
+            "@dropins/storefront-wishlist/": "/scripts/__dropins__/storefront-wishlist/",
+            "@dropins/storefront-personalization/": "/scripts/__dropins__/storefront-personalization/",
+            "@dropins/storefront-product-discovery/": "/scripts/__dropins__/storefront-product-discovery/",
+            "@dropins/storefront-quote-management/": "/scripts/__dropins__/storefront-quote-management/",
+            "@dropins/storefront-company-switcher/": "/scripts/__dropins__/storefront-company-switcher/",
+            "@dropins/storefront-company-management/": "/scripts/__dropins__/storefront-company-management/",
+            "@dropins/storefront-requisition-list/": "/scripts/__dropins__/storefront-requisition-list/",
+            "@dropins/storefront-purchase-order/": "/scripts/__dropins__/storefront-purchase-order/",
+            "@dropins/storefront-quick-order/": "/scripts/__dropins__/storefront-quick-order/",
+            "@dropins/tools/": "/scripts/__dropins__/tools/"
+        }
+    }
+</script>
+
+<link rel="stylesheet" href="/styles/styles.css" />
+<!-- Audience redirect: if user previously chose the Leader experience, send them there
+     before any content renders. Runs sync so there is no flash of the wrong page. -->
+<script nonce="aem">
+  try {
+    if (localStorage.getItem('gs-audience') === 'leader'
+        && !window.location.pathname.startsWith('/leaders')) {
+      window.location.replace('/leaders');
+    }
+  } catch (e) {
+    /* localStorage unavailable */
+  }
+</script>
+<!-- CLS: apply shorter header min-height before first paint when offer was dismissed this session (header loads lazy). -->
+<script nonce="aem">
+  try {
+    if (sessionStorage.getItem('gs-header-offer-dismissed') === 'true') {
+      document.documentElement.classList.add('header-offer-dismissed');
+    }
+  } catch (e) {
+    /* sessionStorage unavailable */
+  }
+</script>
+<!-- CLS: pre-apply the cached no-offer header height (offer is always delayed 3 s) so the spacer is correct before JS runs. -->
+<script nonce="aem">
+  try {
+    var gs_h = localStorage.getItem('gs-header-nav-height');
+    if (gs_h) document.documentElement.style.setProperty('--gs-header-height-cache', gs_h);
+  } catch (e) { /* storage unavailable */ }
+</script>
+
+<script nonce="aem" type="module">
+    if (!(HTMLScriptElement.supports?.('importmap'))) {
+        import('/scripts/__dropins__/tools/shims/importmap.js');
+    }
+</script>
+
+<script nonce="aem" src="/scripts/aem.js" type="module"></script>
+<script nonce="aem" src="/scripts/scripts.js" type="module"></script>
+<script nonce="aem" src="/scripts/commerce.js" type="module"></script>
+
+<link rel="modulepreload" href="/scripts/__dropins__/tools/lib/aem/configs.js" />
+<link rel="modulepreload" href="/scripts/initializers/index.js" />
+<link rel="modulepreload" href="/scripts/initializers/auth.js" />
+<link rel="modulepreload" href="/scripts/initializers/personalization.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/storefront-auth/api.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/event-bus.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/fetch-graphql.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/initializer.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/preact.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/preact-compat.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/preact-hooks.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/components.js" />

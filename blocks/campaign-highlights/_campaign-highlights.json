@@ -1,0 +1,123 @@
+{
+  "definitions": [
+    {
+      "title": "Campaign Highlights",
+      "id": "campaign-highlights",
+      "model": "campaign-highlights",
+      "filter": "campaign-highlights"
+    },
+    {
+      "title": "Campaign Highlights (Infinite Loop)",
+      "id": "campaign-highlights-infinite-loop",
+      "model": "campaign-highlights",
+      "filter": "campaign-highlights",
+      "plugins": {
+        "da": {
+          "classes": ["infinite-loop"]
+        }
+      }
+    },
+    {
+      "title": "Campaign Heading",
+      "id": "campaign-highlights-heading",
+      "model": "campaign-highlights-heading",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            { "name": "content", "selector": "div:nth-child(1)" }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Campaign Tile",
+      "id": "campaign-highlights-tile",
+      "model": "campaign-highlights-tile",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 2,
+          "fields": [
+            { "name": "image", "selector": "div:nth-child(1)>picture>img[src]" },
+            { "name": "imageAlt", "selector": "div:nth-child(1)>picture>img[alt]" },
+            { "name": "panel", "selector": "div:nth-child(2)" }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Campaign CTA",
+      "id": "campaign-highlights-cta",
+      "model": "campaign-highlights-cta",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            { "name": "cta", "selector": "div:nth-child(1)" }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "campaign-highlights-heading",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "content",
+          "label": "Heading + subheading (two lines)",
+          "valueType": "string"
+        }
+      ]
+    },
+    {
+      "id": "campaign-highlights-tile",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "imageAlt",
+          "label": "Image Alt"
+        },
+        {
+          "component": "richtext",
+          "name": "panel",
+          "label": "Text panel copy",
+          "valueType": "string"
+        }
+      ]
+    },
+    {
+      "id": "campaign-highlights-cta",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "cta",
+          "label": "KNOW MORE link",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "campaign-highlights",
+      "components": [
+        "campaign-highlights-heading",
+        "campaign-highlights-tile",
+        "campaign-highlights-cta"
+      ]
+    }
+  ]
+}

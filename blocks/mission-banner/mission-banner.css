@@ -1,0 +1,196 @@
+/* ===== Mission Banner (Figma 2749:47687) =====
+   Khaki CTA card, constrained to the centered grid frame. */
+main .section .mission-banner-wrapper {
+  max-width: none;
+}
+
+.mission-banner {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--grid-max-width);
+  margin-inline: auto;
+  padding-inline: var(--grid-1-margins);
+}
+
+.mission-banner .mission-banner-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-small);
+  padding: var(--spacing-large) var(--spacing-medium);
+  border-radius: var(--radius-xs);
+  background: var(--color-gs-khaki);
+  text-align: center;
+}
+
+/* ===== Typography ===== */
+.mission-banner .mission-banner-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xsmall);
+}
+
+.mission-banner .mission-banner-heading {
+  margin: 0;
+  font: normal normal 300 2.6rem/3.1rem var(--type-display-font-family);
+  color: var(--color-neutral-800);
+}
+
+.mission-banner .mission-banner-body {
+  margin: 0;
+  font: normal normal 400 1.6rem/2.1rem var(--type-base-font-family);
+  color: var(--color-neutral-800);
+}
+
+/* ===== CTA — mobile: underlined green text link ===== */
+.mission-banner .mission-banner-cta-wrapper {
+  display: flex;
+}
+
+.mission-banner a.button.mission-banner-cta {
+  height: auto;
+  padding: var(--spacing-xsmall) 0;
+  border: none;
+  background: transparent;
+  color: var(--color-gs-dark-green);
+  font: normal normal 600 1.6rem/2.1rem var(--type-base-font-family);
+  text-transform: uppercase;
+  text-decoration: underline;
+}
+
+.mission-banner a.button.mission-banner-cta:hover,
+.mission-banner a.button.mission-banner-cta:focus-visible {
+  background: transparent;
+  color: var(--color-gs-forest);
+}
+
+/* ===== Art variant — decorative signpost + flower ===== */
+.mission-banner.art .mission-banner-card {
+  overflow: visible;
+  padding-top: var(--spacing-large);
+}
+
+/* Mobile order: content first, then signpost, then CTA (Figma 3052:108189) */
+.mission-banner.art .mission-banner-signpost {
+  order: 2;
+  width: 136px;
+  height: 124px;
+  background: url('/icons/mission-signpost.svg') no-repeat center / contain;
+}
+
+.mission-banner.art .mission-banner-content {
+  order: 1;
+}
+
+.mission-banner.art .mission-banner-cta-wrapper {
+  order: 3;
+}
+
+/* Art variant keeps the solid green pill button at all breakpoints (Figma) */
+.mission-banner.art a.button.mission-banner-cta {
+  height: 52px;
+  padding: 0 var(--spacing-medium);
+  border-radius: var(--radius-full);
+  background: var(--color-gs-forest);
+  color: var(--color-neutral-50);
+  text-decoration: none;
+}
+
+.mission-banner.art a.button.mission-banner-cta:hover,
+.mission-banner.art a.button.mission-banner-cta:focus-visible {
+  background: var(--color-gs-dark-green);
+  color: var(--color-neutral-50);
+}
+
+.mission-banner.art .mission-banner-flower {
+  position: absolute;
+  top: -22px;
+  left: var(--spacing-small);
+  width: 52px;
+  height: 43px;
+  background: url('/icons/mission-flower.svg') no-repeat center / contain;
+}
+
+/* ===== Tablet ===== */
+@media (min-width: 768px) {
+  .mission-banner {
+    padding-inline: var(--grid-3-margins);
+  }
+}
+
+/* ===== Desktop — row layout, solid green button (Figma 2749:47686) ===== */
+@media (min-width: 1280px) {
+  .mission-banner {
+    padding-inline: var(--grid-4-margins);
+  }
+
+  .mission-banner .mission-banner-card {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-small);
+    padding: var(--spacing-big) var(--spacing-big);
+    text-align: left;
+  }
+
+  .mission-banner .mission-banner-content {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .mission-banner .mission-banner-heading {
+    font: normal normal 300 3.6rem/4.3rem var(--type-display-font-family);
+  }
+
+  /* Desktop CTA — solid green button */
+  .mission-banner .mission-banner-cta-wrapper {
+    flex-shrink: 0;
+  }
+
+  .mission-banner a.button.mission-banner-cta {
+    height: 52px;
+    padding: 0 var(--spacing-medium);
+    border-radius: var(--btn-radius-lg);
+    background: var(--color-gs-forest);
+    color: var(--color-neutral-50);
+    text-decoration: none;
+  }
+
+  .mission-banner a.button.mission-banner-cta:hover,
+  .mission-banner a.button.mission-banner-cta:focus-visible {
+    background: var(--color-gs-dark-green);
+    color: var(--color-neutral-50);
+  }
+
+  /* Art variant desktop: signpost left, pill button, overflowing flower */
+  .mission-banner.art .mission-banner-card {
+    padding-top: var(--spacing-big);
+  }
+
+  .mission-banner.art .mission-banner-signpost {
+    width: 203px;
+    height: 185px;
+    flex-shrink: 0;
+    order: 0;
+    align-self: center;
+  }
+
+  .mission-banner.art .mission-banner-content {
+    order: 0;
+  }
+
+  .mission-banner.art .mission-banner-cta-wrapper {
+    order: 0;
+  }
+
+  .mission-banner.art a.button.mission-banner-cta {
+    border-radius: var(--radius-full);
+  }
+
+  .mission-banner.art .mission-banner-flower {
+    top: -27px;
+    left: calc(-1 * var(--spacing-small));
+    width: 65px;
+    height: 54px;
+  }
+}

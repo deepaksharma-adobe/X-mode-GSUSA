@@ -1,0 +1,410 @@
+{
+  "nav": [
+    {
+      "label": "New",
+      "href": "/new",
+      "description": "Check out what's new",
+      "children": [
+        { "label": "Customized Girl Scout Uniforms", "href": "/new/customized-girl-scout-uniforms" },
+        { "label": "New Summer Favorites", "href": "/new/summer" },
+        { "label": "Summer Bucket List", "href": "/new/summer-bucket-list" },
+        { "label": "Bridging Essentials", "href": "/new/bridging-essentials" },
+        { "label": "Camping Essentials", "href": "/new/camp-essentials" },
+        { "label": "Commemorate America", "href": "/new/commemorate-america" },
+        { "label": "Girl Scouts Unite", "href": "/new/girl-scouts-unite-2026" },
+        { "label": "The Best Gifts Say Girl Scouts", "href": "/new/girl-scout-gifts" },
+        { "label": "Girl Scout Charming Jewelry", "href": "/new/girl-scout-charming-jewelry" },
+        { "label": "I AM Personal Pins", "href": "/new/i-am-personal-pins" },
+        { "label": "Girl Scouts Super Fun Patches", "href": "/new/girl-scouts-super-fun-patches" },
+        {
+          "label": "New Uniforms and Official Apparel",
+          "href": "/new/uniform-apparel",
+          "children": [
+            { "label": "Daisy", "href": "/new/uniform-apparel/daisy" },
+            { "label": "Brownie", "href": "/new/uniform-apparel/brownie" },
+            { "label": "Junior", "href": "/new/uniform-apparel/junior" },
+            { "label": "Cadette, Senior, Ambassador", "href": "/new/uniform-apparel/cadette-senior-ambassador" },
+            { "label": "Adult", "href": "/new/uniform-apparel/adult" }
+          ]
+        },
+        { "label": "Trefoil Fun Finds", "href": "/new/trefoil-fun-finds" },
+        {
+          "label": "Latest Program Releases",
+          "href": "/new/new_program_releases",
+          "children": [
+            { "label": "Body Appreciation", "href": "/new/new_program_releases/body-appreciation" },
+            { "label": "Leadership Awards", "href": "/new/new_program_releases/leadership-awards" }
+          ]
+        },
+        { "label": "Girl Scout Book Series", "href": "/new/girl-scout-books" },
+        { "label": "Juliette Gordon Low Inspired", "href": "/new/juliette-gordon-low-inspired" },
+        { "label": "Cookie Collectibles", "href": "/new/new-cookie-collectibles" },
+        { "label": "Cookie Booth Essentials", "href": "/new/cookie-booth-essentials" }
+      ]
+    },
+    {
+      "label": "Girls",
+      "href": "/girls",
+      "description": "Uniforms, clothing, accessories & more",
+      "children": [
+        { "label": "New & Featured Items", "href": "/girls/new" },
+        {
+          "label": "Girl Scout Kits",
+          "href": "/girls/girl-scout-kits",
+          "children": [
+            { "label": "Bridging Kits", "href": "/girls/girl-scout-kits/bridging-kits" }
+          ]
+        },
+        {
+          "label": "Uniforms",
+          "href": "/girls/uniforms",
+          "children": [
+            { "label": "Daisy", "href": "/girls/uniforms/daisy" },
+            { "label": "Brownie", "href": "/girls/uniforms/brownie" },
+            { "label": "Junior", "href": "/girls/uniforms/junior" },
+            { "label": "Cadette", "href": "/girls/uniforms/cadette" },
+            { "label": "Senior", "href": "/girls/uniforms/senior" },
+            { "label": "Ambassador", "href": "/girls/uniforms/ambassador" },
+            { "label": "Customized Girl Scout Uniforms", "href": "/girls/uniforms/customized-girl-scout-uniforms" }
+          ]
+        },
+        {
+          "label": "Clothing",
+          "href": "/girls/clothing",
+          "children": [
+            { "label": "Official Apparel", "href": "/girls/clothing/official-apparel" },
+            { "label": "Tops", "href": "/girls/clothing/girls-tops" },
+            { "label": "Bottoms", "href": "/girls/clothing/girls-bottoms" }
+          ]
+        },
+        {
+          "label": "Fun Patches & Pins",
+          "href": "/girls/fun-patches-pins",
+          "children": [
+            { "label": "My Girl Scout Values", "href": "/girls/fun-patches-pins/my-girl-scout-value-fun-patches" },
+            { "label": "Proud to Belong", "href": "/girls/fun-patches-pins/proud-to-belong" },
+            { "label": "Outdoors & Things to Do", "href": "/girls/fun-patches-pins/outdoors-things-to-do" },
+            { "label": "Girl Scout Cookies", "href": "/girls/fun-patches-pins/cookies" },
+            { "label": "Holidays & Celebrations", "href": "/girls/fun-patches-pins/holiday-celebrations" },
+            { "label": "Make a Difference", "href": "/girls/fun-patches-pins/make-a-difference" }
+          ]
+        },
+        {
+          "label": "Accessories",
+          "href": "/girls/accessories",
+          "children": [
+            { "label": "Jewelry", "href": "/girls/accessories/jewelry" },
+            { "label": "Bags & Totes", "href": "/girls/accessories/bags-totes" },
+            { "label": "Hats & Hair Accessories", "href": "/girls/accessories/hats-hair-accessories" },
+            { "label": "Socks & Shoes", "href": "/girls/accessories/socks-shoes" },
+            { "label": "Health & Safety", "href": "/girls/accessories/health-and-safety" },
+            { "label": "Girl Scout CHARM IT! Collection", "href": "/girls/accessories/charm_It" },
+            { "label": "More", "href": "/girls/accessories/more" }
+          ]
+        },
+        { "label": "Online Only", "href": "/girls/online-only" },
+        { "label": "Trefoil Fun Finds", "href": "/girls/trefoil-fun-finds" },
+        {
+          "label": "Gifts",
+          "href": "/girls/gifts",
+          "children": [
+            { "label": "Cookie Collectibles", "href": "/girls/gifts/cookie-collectibles" },
+            { "label": "Pens, Pencils & Stationery", "href": "/girls/gifts/pens-pencils-stationery" },
+            { "label": "Graduation Regalia", "href": "/girls/gifts/graduation-regalia" },
+            { "label": "Highest Award Gifts", "href": "/girls/gifts/highest-award-gifts" },
+            { "label": "Legacy and Archive Collection", "href": "/girls/gifts/legacy-and-vintage-collectibles" },
+            { "label": "Holiday Gifts & Ornaments", "href": "/girls/gifts/holiday-gifts-ornaments" },
+            { "label": "Gift Cards", "href": "/girls/gifts/gift-cards" }
+          ]
+        },
+        {
+          "label": "Toys, Kits & Games",
+          "href": "/girls/toys-kits-games",
+          "children": [
+            { "label": "Arts & Crafts Kits", "href": "/girls/toys-kits-games/arts-and-crafts-kits" },
+            { "label": "Science Kits", "href": "/girls/toys-kits-games/science-kits" },
+            { "label": "Engineering", "href": "/girls/toys-kits-games/engineering" },
+            { "label": "Games & Puzzles", "href": "/girls/toys-kits-games/games-and-puzzles" },
+            { "label": "Technology", "href": "/girls/toys-kits-games/technology" },
+            { "label": "Outdoor Recreation", "href": "/girls/toys-kits-games/outdoor-recreation" },
+            { "label": "Plush Toys", "href": "/girls/toys-kits-games/plush" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Adults & Leaders",
+      "href": "/adults",
+      "description": "Gear for troop leaders, volunteers & more",
+      "children": [
+        { "label": "New & Featured Items", "href": "/adults/new" },
+        {
+          "label": "Official Apparel",
+          "href": "/adults/uniforms",
+          "children": [
+            { "label": "Women", "href": "/adults/uniforms/women" },
+            { "label": "Men", "href": "/adults/uniforms/men" },
+            { "label": "Uniforms", "href": "/adults/uniforms/uniforms" },
+            { "label": "Official Pins", "href": "/adults/uniforms/official-pins" },
+            { "label": "Highest Awards", "href": "/adults/uniforms/highest-award" },
+            { "label": "Adult Achievement Patches", "href": "/adults/uniforms/adult-achievement-patches" }
+          ]
+        },
+        {
+          "label": "Resources",
+          "href": "/adults/resources",
+          "children": [
+            { "label": "Flags & Banners", "href": "/adults/resources/flags-banners" },
+            { "label": "Guides & Resources", "href": "/adults/resources/guides-and-resources" },
+            { "label": "Certificates", "href": "/adults/resources/certificates" },
+            { "label": "Spanish Language Materials", "href": "/adults/resources/spanish-language-materials" }
+          ]
+        },
+        {
+          "label": "Clothing",
+          "href": "/adults/clothing",
+          "children": [
+            { "label": "Women", "href": "/adults/clothing/women" },
+            { "label": "Men", "href": "/adults/clothing/men" }
+          ]
+        },
+        {
+          "label": "Accessories",
+          "href": "/adults/accessories",
+          "children": [
+            { "label": "Jewelry", "href": "/adults/accessories/jewelry" },
+            { "label": "Scarves & Ties", "href": "/adults/accessories/scarves-ties" },
+            { "label": "Bags & Totes", "href": "/adults/accessories/bags-totes" }
+          ]
+        },
+        {
+          "label": "Gifts",
+          "href": "/adults/gifts",
+          "children": [
+            { "label": "Lifetime Members & Alums", "href": "/adults/gifts/lifetime-member-alum" },
+            { "label": "Volunteers and Leaders", "href": "/adults/gifts/volunteer-leaders" },
+            { "label": "Cookie Collectibles", "href": "/adults/gifts/cookie-collectibles" },
+            { "label": "Legacy and Archive Collection", "href": "/adults/gifts/legacy-and-vintage-collectibles" },
+            { "label": "Holiday Gifts & Ornaments", "href": "/adults/gifts/holiday-gifts-ornaments" },
+            { "label": "Gift Cards", "href": "/adults/gifts/gift-cards" }
+          ]
+        },
+        { "label": "Trefoil Fun Finds", "href": "/adults/trefoil-fun-finds" },
+        {
+          "label": "Music & Songs",
+          "href": "/adults/music-and-songs",
+          "children": [
+            { "label": "Music by Melinda Carroll", "href": "/adults/music-and-songs/music-by-melinda-caroll" },
+            { "label": "Girl Scout Anthem", "href": "/adults/music-and-songs/girl-scout-anthem" }
+          ]
+        },
+        {
+          "label": "Troop Year Plans",
+          "href": "/adults/troop-year-plans",
+          "children": [
+            { "label": "Daisy - Year 1", "href": "/adults/troop-year-plans/daisy-year-1" },
+            { "label": "Daisy - Year 2", "href": "/adults/troop-year-plans/daisy-year-2" },
+            { "label": "Brownie - Year 1", "href": "/adults/troop-year-plans/brownie-year-1" },
+            { "label": "Brownie - Year 2", "href": "/adults/troop-year-plans/brownie-year-2" },
+            { "label": "Junior - Year 1", "href": "/adults/troop-year-plans/junior-year-1" },
+            { "label": "Junior - Year 2", "href": "/adults/troop-year-plans/junior-year-2" },
+            { "label": "Cadette - Year 1", "href": "/adults/troop-year-plans/cadette-year-1" },
+            { "label": "Cadette - Year 2", "href": "/adults/troop-year-plans/cadette-year-2" },
+            { "label": "Cadette - Year 3", "href": "/adults/troop-year-plans/cadette-year-3" },
+            { "label": "Senior - Year 1", "href": "/adults/troop-year-plans/senior-year-1" },
+            { "label": "Senior - Year 2", "href": "/adults/troop-year-plans/senior-year-2" },
+            { "label": "Ambassador - Year 1", "href": "/adults/troop-year-plans/ambassador-year-1" },
+            { "label": "Ambassador - Year 2", "href": "/adults/troop-year-plans/ambassador-year-2" },
+            { "label": "Multi-Level Troop Year Plans", "href": "/adults/troop-year-plans/multi-level-troop-year-plans" }
+          ]
+        },
+        {
+          "label": "Girl Scout Experience Box",
+          "href": "/adults/girl-scout-experience-box",
+          "children": [
+            { "label": "Daisy", "href": "/adults/girl-scout-experience-box/daisy" },
+            { "label": "Brownie", "href": "/adults/girl-scout-experience-box/brownie" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Badges & Program",
+      "href": "/badges-program",
+      "description": "Prepare for a lifetime of leadership & success",
+      "children": [
+        { "label": "New & Featured Items", "href": "/badges-program/new-featured-items" },
+        {
+          "label": "Daisy",
+          "href": "/badges-program/daisy",
+          "children": [
+            { "label": "Badges & Journey Awards", "href": "/badges-program/daisy/badges-journey-awards" },
+            { "label": "Program Materials", "href": "/badges-program/daisy/program-materials" },
+            { "label": "Pins & Additional Awards", "href": "/badges-program/daisy/pins-awards" },
+            { "label": "Daisy Badge Kits", "href": "/badges-program/daisy/daisy-badge-kits" }
+          ]
+        },
+        {
+          "label": "Brownie",
+          "href": "/badges-program/brownie",
+          "children": [
+            { "label": "Badges & Journey Awards", "href": "/badges-program/brownie/badges-journey-awards" },
+            { "label": "Program Materials", "href": "/badges-program/brownie/program-materials" },
+            { "label": "Pins & Additional Awards", "href": "/badges-program/brownie/pins-awards" }
+          ]
+        },
+        {
+          "label": "Junior",
+          "href": "/badges-program/junior",
+          "children": [
+            { "label": "Badges & Journey Awards", "href": "/badges-program/junior/badges-journey-awards" },
+            { "label": "Program Materials", "href": "/badges-program/junior/program-materials" },
+            { "label": "Pins & Additional Awards", "href": "/badges-program/junior/pins-awards" }
+          ]
+        },
+        {
+          "label": "Cadette",
+          "href": "/badges-program/cadette",
+          "children": [
+            { "label": "Badges & Journey Awards", "href": "/badges-program/cadette/badges-journey-awards" },
+            { "label": "Program Materials", "href": "/badges-program/cadette/program-materials" },
+            { "label": "Pins & Additional Awards", "href": "/badges-program/cadette/pins-awards" }
+          ]
+        },
+        {
+          "label": "Senior",
+          "href": "/badges-program/senior",
+          "children": [
+            { "label": "Badges & Journey Awards", "href": "/badges-program/senior/badges-journey-awards" },
+            { "label": "Program Materials", "href": "/badges-program/senior/program-materials" },
+            { "label": "Pins & Additional Awards", "href": "/badges-program/senior/pins-awards" }
+          ]
+        },
+        {
+          "label": "Ambassador",
+          "href": "/badges-program/ambassador",
+          "children": [
+            { "label": "Badges & Journey Awards", "href": "/badges-program/ambassador/badges-journey-awards" },
+            { "label": "Program Materials", "href": "/badges-program/ambassador/program-materials" },
+            { "label": "Pins & Additional Awards", "href": "/badges-program/ambassador/pins-awards" }
+          ]
+        },
+        { "label": "Cookie Badges & Pins", "href": "/badges-program/cookie-badges-pins" },
+        { "label": "Troop Crests", "href": "/badges-program/troop-crests" },
+        { "label": "Badge Magic Kits", "href": "/badges-program/badge-magic-kits" },
+        { "label": "Gold, Silver & Bronze Awards", "href": "/badges-program/gold-silver-bronze-awards" },
+        {
+          "label": "All Badges & Pins",
+          "href": "/badges-program/all-badges-pins",
+          "children": [
+            { "label": "STEM", "href": "/badges-program/all-badges-pins/stem" },
+            { "label": "Outdoors", "href": "/badges-program/all-badges-pins/outdoors" },
+            { "label": "Life Skills", "href": "/badges-program/all-badges-pins/life-skills" },
+            { "label": "Entrepreneurship", "href": "/badges-program/all-badges-pins/entrepreneurship" }
+          ]
+        },
+        {
+          "label": "All Program Materials",
+          "href": "/badges-program/all-program-materials",
+          "children": [
+            { "label": "Guides and Handbooks", "href": "/badges-program/all-program-materials/guides-handbooks" },
+            { "label": "Badge Requirements", "href": "/badges-program/all-program-materials/badge-requirements" },
+            { "label": "Badge Activity Sets", "href": "/badges-program/all-program-materials/badge-activity-sets" },
+            { "label": "Journey Books", "href": "/badges-program/all-program-materials/journey-books" },
+            { "label": "Spanish Language Materials", "href": "/badges-program/all-program-materials/spanish-language-materials" }
+          ]
+        },
+        {
+          "label": "Volunteers & Leaders",
+          "href": "/badges-program/volunteers-leaders",
+          "children": [
+            { "label": "Official Pins & Insignia", "href": "/badges-program/volunteers-leaders/official-pins" },
+            { "label": "Adult Achievement Patches", "href": "/badges-program/volunteers-leaders/adult-achievement-patches" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Toys & Outdoors",
+      "href": "/outdoors",
+      "description": "Be prepared for your next outdoor adventure",
+      "children": [
+        { "label": "New & Featured Items", "href": "/outdoors/new" },
+        {
+          "label": "Bags & Backpacks",
+          "href": "/outdoors/bags-backpacks",
+          "children": [
+            { "label": "Hiking Backpacks", "href": "/outdoors/bags-backpacks/hiking-backpacks" },
+            { "label": "Gear Packs and Duffels", "href": "/outdoors/bags-backpacks/gear-packs-duffels" }
+          ]
+        },
+        {
+          "label": "Camp Kitchen Supplies",
+          "href": "/outdoors/camp-kitchen-supplies",
+          "children": [
+            { "label": "Stoves & Cookware", "href": "/outdoors/camp-kitchen-supplies/stoves-and-cookware" }
+          ]
+        },
+        {
+          "label": "Campsite Equipment",
+          "href": "/outdoors/camp-equipment",
+          "children": [
+            { "label": "Sleeping Bags and Mats", "href": "/outdoors/camp-equipment/sleeping-bags-and-mats" },
+            { "label": "Tents & Hammocks", "href": "/outdoors/camp-equipment/tents-and-hammocks" },
+            { "label": "Camp Kitchen Tools", "href": "/outdoors/camp-equipment/camp-utensils" },
+            { "label": "Camp Furniture", "href": "/outdoors/camp-equipment/camp-furniture" },
+            { "label": "Knives & Tools", "href": "/outdoors/camp-equipment/knives-and-tools" },
+            { "label": "Lanyards", "href": "/outdoors/camp-equipment/lanyards" },
+            { "label": "Water Bottles & Filtration", "href": "/outdoors/camp-equipment/water-bottles-and-filtration" }
+          ]
+        },
+        {
+          "label": "Safety & First Aid",
+          "href": "/outdoors/safety-first-aid",
+          "children": [
+            { "label": "First Aid Kits", "href": "/outdoors/safety-first-aid/first-aid-kits" },
+            { "label": "Flashlights & Lanterns", "href": "/outdoors/safety-first-aid/flashlights-and-lanterns" }
+          ]
+        },
+        { "label": "Flags and Flag Accessories", "href": "/outdoors/flags-and-flag-accessories" },
+        { "label": "Sports & Games", "href": "/outdoors/sports-games" },
+        { "label": "Activities", "href": "/outdoors/activities" },
+        {
+          "label": "Toys, Kits & Games",
+          "href": "/outdoors/toys-kits-games",
+          "children": [
+            { "label": "Arts & Crafts Kits", "href": "/outdoors/toys-kits-games/arts-and-crafts-kits" },
+            { "label": "Science Kits", "href": "/outdoors/toys-kits-games/science-kits" },
+            { "label": "Engineering", "href": "/outdoors/toys-kits-games/engineering" },
+            { "label": "Games & Puzzles", "href": "/outdoors/toys-kits-games/games-and-puzzles" },
+            { "label": "Technology", "href": "/outdoors/toys-kits-games/technology" },
+            { "label": "Outdoor Recreation", "href": "/outdoors/toys-kits-games/outdoor-recreation" },
+            { "label": "Plush Toys", "href": "/outdoors/toys-kits-games/plush" }
+          ]
+        },
+        { "label": "Sale & Clearance", "href": "/outdoors/outdoor-sale" }
+      ]
+    },
+    {
+      "label": "Council",
+      "href": "/council",
+      "children": []
+    },
+    {
+      "label": "Sale",
+      "href": "/sale",
+      "description": "Find deals on great Girl Scout gear",
+      "children": [
+        { "label": "Official Apparel & Accessories", "href": "/sale/official-apparel-accessories" },
+        { "label": "Girls", "href": "/sale/girls-sale" },
+        { "label": "Adults", "href": "/sale/adults-sale" },
+        { "label": "Clothing", "href": "/sale/clothing" },
+        { "label": "Fun Patches", "href": "/sale/fun-patches" },
+        { "label": "Accessories", "href": "/sale/accessories" },
+        { "label": "Gifts", "href": "/sale/gifts" },
+        { "label": "Outdoor Gear", "href": "/sale/outdoor-sale" },
+        { "label": "Toys, Kits & Games", "href": "/sale/toys-kits-games" }
+      ]
+    }
+  ]
+}

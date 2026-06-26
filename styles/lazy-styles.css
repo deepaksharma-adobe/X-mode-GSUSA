@@ -1,0 +1,503 @@
+/* add global styles that can be loaded post LCP here */
+
+/* ===== Accordion utility — shared by header (mobile) and footer ===== */
+.accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  transition: grid-template-rows var(--nav-accordion-panel-transition);
+}
+
+.accordion-item:has(.accordion-trigger[aria-expanded='true']) .accordion-panel,
+.accordion-item.active .accordion-panel {
+  grid-template-rows: 1fr;
+}
+
+.accordion-content {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: var(--nav-accordion-content-transition);
+}
+
+.accordion-item:has(.accordion-trigger[aria-expanded='true']) .accordion-content,
+.accordion-item.active .accordion-content {
+  opacity: 1;
+}
+
+/* ===== Skeleton / loading utility ===== */
+@keyframes skeleton-shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: calc(400px + 100%) 0; }
+}
+
+.skeleton {
+  background:
+    linear-gradient(
+      90deg,
+      var(--skeleton-bg) 25%,
+      var(--skeleton-highlight) 50%,
+      var(--skeleton-bg) 75%
+    );
+  background-size: 400px 100%;
+  animation: var(--skeleton-animation);
+  border-radius: var(--skeleton-radius);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    background: var(--skeleton-bg);
+  }
+}
+
+/* ===== Typography extras (post-LCP) ===== */
+hr {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  border: 0;
+  border-bottom: var(--shape-border-width-1) solid var(--color-neutral-300);
+}
+
+main pre {
+  background-color: var(--color-neutral-300);
+  padding: 1em;
+  border-radius: 0.25em;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+main blockquote {
+  font-style: italic;
+  margin: 3rem;
+  text-indent: -1rem;
+  hanging-punctuation: first;
+}
+
+main blockquote p::before {
+  content: '\201C';
+  line-height: 0;
+}
+
+main blockquote p::after {
+  content: '\201D';
+  line-height: 0;
+}
+
+/* ===== Native form elements (Girl Scouts Form-Elements foundation) =====
+   Scoped with :not(.dropin-design ...) so Commerce dropin inputs keep their
+   own injected styling; dropins instead inherit GS colour via the shared
+   --color-* tokens (e.g. --color-alert-500). Choice controls (checkbox /
+   radio) and the button-like inputs are excluded from the text-field rules. */
+main
+  :is(input, textarea, select):not(
+    [type="checkbox"],
+    [type="radio"],
+    [type="submit"],
+    [type="button"],
+    [type="reset"],
+    .dropin-design *
+  ) {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--form-field-height);
+  margin: 0;
+  padding: var(--form-field-padding-y) var(--form-field-padding-x);
+  border: var(--form-field-border-width) solid var(--form-border-default);
+  border-radius: var(--form-field-radius);
+  background-color: var(--form-field-bg);
+  color: var(--form-field-text);
+  font-family: var(--form-field-font-family);
+  font-size: var(--form-field-font-size);
+  line-height: var(--form-field-line-height);
+
+  &::placeholder {
+    color: var(--form-field-placeholder);
+    opacity: 1;
+  }
+
+  &:hover {
+    border-color: var(--form-border-hover);
+  }
+
+  &:focus,
+  &:focus-visible {
+    border-color: var(--form-border-focus);
+    outline: none;
+  }
+
+  &:not(:placeholder-shown) {
+    border-color: var(--form-border-filled);
+  }
+
+  &:user-invalid,
+  &[aria-invalid="true"] {
+    border-color: var(--form-border-error);
+  }
+
+  &:disabled {
+    border-color: var(--form-border-disabled);
+    background-color: var(--form-field-bg-disabled);
+    color: var(--form-field-text-disabled);
+    cursor: var(--form-field-cursor-disabled);
+  }
+}
+
+main textarea:not(.dropin-design *) {
+  min-height: calc(var(--form-field-height) * 1.5);
+  resize: vertical;
+}
+
+main label:not(.dropin-design *) {
+  display: inline-block;
+  margin-bottom: var(--spacing-xxsmall);
+  color: var(--form-label-text);
+  font-family: var(--form-field-font-family);
+  font-size: var(--form-label-font-size);
+  line-height: var(--form-label-line-height);
+
+  & .required {
+    color: var(--form-required-text);
+  }
+
+  &[data-required]::after {
+    content: " *";
+    color: var(--form-required-text);
+  }
+}
+
+/* ===== Floating label utility — opt-in per block =========================
+ * Wrap <input> + <label> in <div class="field--floating"> to get the
+ * Figma floating label pattern (label inside, floats up on focus/fill).
+ *
+ * Markup pattern:
+ *   <div class="field--floating">
+ *     <input type="text" id="name" placeholder=" " />
+ *     <label for="name">Full name <span class="required">*</span></label>
+ *   </div>
+ *
+ * IMPORTANT: placeholder=" " (single space) is required — the
+ * :not(:placeholder-shown) selector uses it to detect a filled state.
+ *
+ * Why opt-in: EDS native forms use label-above pattern (simpler,
+ * more accessible for authored content). Floating labels are for
+ * dropin-style forms and complex block forms only. */
+
+main .field--floating {
+  position: relative;
+  height: var(--form-field-height);   /* 48px fixed */
+}
+
+/* Input — .field--floating is never used inside .dropin-design so
+   no :not(.dropin-design *) guard needed; simpler selectors win. */
+main .field--floating input,
+main .field--floating textarea {
+  height: 100%;
+  min-height: unset;
+
+  /* top pad = room for floated 12px label (6px top + 12px height + 4px gap) */
+  padding: 24px var(--form-field-padding-x) 4px;
+  margin: 0;
+}
+
+main .field--floating textarea {
+  height: auto;
+  min-height: calc(var(--form-field-height) * 2);
+  padding-top: 24px;
+  resize: vertical;
+}
+
+/* Label — absolutely positioned inside 48px wrapper.
+ * Specificity note: global "main label:not(.dropin-design *)" has specificity
+ * (0,1,3) which would beat "main .field--floating label" (0,1,2).
+ * Prefixing with :root gives (0,2,2) — enough to win cleanly. */
+:root main .field--floating label {
+  position: absolute;
+  left: var(--form-field-padding-x);
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+  font-size: var(--form-field-font-size);   /* 1.4rem = 14px */
+  line-height: 1;
+  color: var(--form-field-placeholder);     /* #626262 */
+  pointer-events: none;
+  white-space: nowrap;
+  transition:
+    top var(--transition-base),
+    font-size var(--transition-base),
+    transform var(--transition-base),
+    color var(--transition-base);
+}
+
+/* Floated: input focused OR has a value */
+:root main .field--floating input:focus ~ label,
+:root main .field--floating input:not(:placeholder-shown) ~ label,
+:root main .field--floating textarea:focus ~ label,
+:root main .field--floating textarea:not(:placeholder-shown) ~ label {
+  top: 6px;
+  transform: none;
+  font-size: var(--form-label-font-size-floating);      /* 1.2rem = 12px */
+  line-height: var(--form-label-line-height-floating);  /* 1.68rem */
+  color: var(--form-label-text);                        /* #626262 */
+}
+
+/* Focus — label turns GS Green */
+:root main .field--floating input:focus ~ label,
+:root main .field--floating textarea:focus ~ label {
+  color: var(--form-border-focus);   /* #00b451 */
+}
+
+/* Error — label turns GS Poppy */
+:root main .field--floating input[aria-invalid="true"] ~ label {
+  color: var(--form-border-error);   /* #ee3124 */
+}
+
+/* Disabled — label muted */
+:root main .field--floating input:disabled ~ label {
+  color: var(--form-field-text-disabled);
+}
+
+/* ===== Choice controls (radio / checkbox / toggle) — GS Form-Elements =====
+   Custom-styled native inputs via appearance:none. Scoped away from dropin
+   controls. Toggle = checkbox with role="switch". */
+
+/* Radio — 24px outer, 2px border, checked = Forest ring + inner dot */
+main input[type="radio"]:not(.dropin-design *) {
+  appearance: none;
+  box-sizing: border-box;
+  width: var(--form-choice-outer-size);
+  height: var(--form-choice-outer-size);
+  margin: 0;
+  border: var(--form-choice-border-width-radio) solid var(--form-choice-border);
+  border-radius: var(--form-radio-radius);
+  background-color: var(--form-choice-bg);
+  cursor: pointer;
+}
+
+main input[type="radio"]:not(.dropin-design *):focus-visible {
+  border-color: var(--form-choice-border-focus);
+  outline: none;
+}
+
+main input[type="radio"]:not(.dropin-design *):checked {
+  border-color: var(--form-choice-checked-bg);
+  box-shadow: inset 0 0 0 4px var(--form-choice-checked-bg); /* inner dot inset from border */
+}
+
+main input[type="radio"]:not(.dropin-design *):disabled {
+  cursor: var(--form-field-cursor-disabled);
+  opacity: 0.5;
+}
+
+/* Checkbox — 20px, 1.4px border, 2px radius, checked = Forest bg + white tick */
+main input[type="checkbox"]:not([role="switch"], .dropin-design *) {
+  appearance: none;
+  box-sizing: border-box;
+  width: var(--form-choice-size);
+  height: var(--form-choice-size);
+  margin: 0;
+  border: var(--form-choice-border-width) solid var(--form-choice-border);
+  border-radius: var(--form-checkbox-radius);
+  background-color: var(--form-choice-bg);
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}
+
+main input[type="checkbox"]:not([role="switch"], .dropin-design *):focus-visible {
+  border-color: var(--form-choice-border-focus);
+  outline: none;
+}
+
+main input[type="checkbox"]:not([role="switch"], .dropin-design *):checked {
+  border-color: var(--form-choice-checked-bg);
+  background-color: var(--form-choice-checked-bg);
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="%23ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5l3 3 6-6"/></svg>');
+}
+
+main input[type="checkbox"]:not([role="switch"], .dropin-design *):disabled {
+  cursor: var(--form-field-cursor-disabled);
+  opacity: 0.5;
+}
+
+/* Toggle — checkbox[role="switch"] — 32x20 track, 16px knob, slides 12px */
+main input[type="checkbox"][role="switch"]:not(.dropin-design *) {
+  appearance: none;
+  box-sizing: border-box;
+  width: var(--form-toggle-width);
+  height: var(--form-toggle-height);
+  margin: 0;
+  padding: var(--form-toggle-padding);
+  border: none;
+  border-radius: calc(var(--form-toggle-height) / 2);
+  background-color: var(--form-toggle-track-off);
+  cursor: pointer;
+}
+
+main input[type="checkbox"][role="switch"]:not(.dropin-design *)::before {
+  content: "";
+  display: block;
+  width: var(--form-toggle-knob-size);
+  height: var(--form-toggle-knob-size);
+  border-radius: 50%;
+  background-color: var(--form-toggle-knob);
+  transition: transform var(--transition-fast);
+}
+
+main input[type="checkbox"][role="switch"]:not(.dropin-design *):checked {
+  background-color: var(--form-toggle-track-on);
+}
+
+main input[type="checkbox"][role="switch"]:not(.dropin-design *):checked::before {
+  /* slide knob: track(32) - padding*2(4) - knob(16) = 12px */
+  transform: translateX(12px);
+}
+
+main input[type="checkbox"][role="switch"]:not(.dropin-design *):focus-visible {
+  outline: var(--focus-ring-width) var(--focus-ring-style) var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+main input[type="checkbox"][role="switch"]:not(.dropin-design *):disabled {
+  cursor: var(--form-field-cursor-disabled);
+  opacity: 0.5;
+}
+
+/* ===== Dropin: z-index alignment ===== */
+.dropin-input-date__icon {
+  z-index: var(--z-raised);
+}
+
+/* ===== Dropin choice control alignment (checkbox / radio) =====
+   Dropins hide the native input (.__checkbox is display:none, .__input is
+   opacity:0) and render the visual via .__box and the label ::before/::after.
+   Override those rendered elements to the GS --form-choice-* tokens. Scoped
+   under .dropin-design; cascade order beats the injected rules (no !important). */
+
+/* Checkbox box → 20px, 1.4px GS-grey border, 2px radius.
+   flex-shrink:0 stops the flex parent (.__checkbox-icon) from squashing the
+   wider box back down to its original 14px-derived track width. */
+.dropin-design .dropin-checkbox__box {
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: var(--form-choice-size);
+  height: var(--form-choice-size);
+  border: var(--form-choice-border-width) solid var(--form-choice-border);
+  border-radius: var(--form-checkbox-radius);
+}
+
+/* Checked → Forest Green fill behind the white checkmark */
+.dropin-design .dropin-checkbox__checkbox:checked
+  + .dropin-checkbox__checkbox-icon .dropin-checkbox__checkmark {
+  background: var(--form-choice-checked-bg);
+}
+
+/* Radio circle → 24px outer, 2px GS-grey border */
+.dropin-design .dropin-radio-button__label::before {
+  box-sizing: border-box;
+  width: var(--form-choice-outer-size);
+  height: var(--form-choice-outer-size);
+  border: var(--form-choice-border-width-radio) solid var(--form-choice-border);
+}
+
+/* Radio checked dot → Forest Green, re-centered within the 24px circle. */
+.dropin-design .dropin-radio-button__label::after {
+  width: 10px;
+  height: 10px;
+  margin-left: 0;
+  inset-inline-start: calc(var(--form-choice-outer-size) / 2 - 5px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--form-choice-checked-bg);
+  accent-color: var(--form-choice-checked-bg);
+}
+
+/* Match the dropin's checked compound specificity so the dot size/position
+   overrides win over …__input:checked + …__label::after. */
+.dropin-design .dropin-radio-button__input:checked + .dropin-radio-button__label::after {
+  width: 10px;
+  height: 10px;
+  margin-left: 0;
+  inset-inline-start: calc(var(--form-choice-outer-size) / 2 - 5px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--form-choice-checked-bg);
+}
+
+/* ===== Dropin input field alignment =========================================
+ * Aligns Commerce dropin text inputs / selects / textareas with the GS Figma
+ * form-element spec (node 3498:141557).
+ *
+ * Two differences found by inspecting /customer/forgotpassword:
+ *   1. Border radius:  dropin = 3px (--shape-border-radius-1)  → should be 6px
+ *   2. Idle border:    dropin = #8f8f8f (neutral-600)           → should be #d9d9d9
+ *
+ * No !important needed — dropin CSS is injected BEFORE styles.css in the
+ * cascade (i.before(t) in dropin injection logic), so these rules win.
+ *
+ * Dropin input class map:
+ *   .dropin-input                    — the <input> element itself
+ *   .dropin-input-container          — outer wrapper
+ *   .dropin-input-label-container    — position:relative wrapper (contains input + label)
+ *   .dropin-input__label--floating   — the floating label
+ */
+
+/* Border radius — match --form-field-radius (6px) */
+.dropin-design .dropin-input {
+  border-radius: var(--form-field-radius);
+}
+
+/* Idle border color — match --form-border-default (#d9d9d9 Cloud) */
+.dropin-design .dropin-input--primary {
+  border-color: var(--form-border-default);
+}
+
+/* Hover border */
+.dropin-design .dropin-input--primary:hover {
+  border-color: var(--form-border-hover);
+}
+
+/* Focus border */
+.dropin-design .dropin-input--primary:focus,
+.dropin-design .dropin-input--primary:focus-within {
+  border-color: var(--form-border-focus);
+}
+
+/* Error border */
+.dropin-design .dropin-input--error {
+  border-color: var(--form-border-error);
+}
+
+/* Disabled */
+.dropin-design .dropin-input--disabled,
+.dropin-design .dropin-input:disabled {
+  background-color: var(--form-field-bg-disabled);
+  border-color: var(--form-border-disabled);
+}
+
+/* Floating label font sizes to match Figma */
+.dropin-design .dropin-input__label--floating {
+  font-size: var(--form-field-font-size);        /* 14px — placeholder size */
+  color: var(--form-field-placeholder);          /* #626262 */
+  transition:
+    top var(--transition-base),
+    font-size var(--transition-base),
+    color var(--transition-base);
+}
+
+/* Floated state — label shrinks to 12px */
+.dropin-design .dropin-input__label--floating.dropin-input__label--floating--active,
+.dropin-design .dropin-input__label--floating.dropin-input__label--floating--filled {
+  font-size: var(--form-label-font-size-floating);  /* 1.2rem — 12px */
+}
+
+/* Also align the picker/select dropin */
+.dropin-design .dropin-picker__select {
+  border-radius: var(--form-field-radius);
+  border-color: var(--form-border-default);
+}
+
+/* ===== Commerce: product item card ===== */
+.dropin-product-item-card {
+  border: unset;
+}

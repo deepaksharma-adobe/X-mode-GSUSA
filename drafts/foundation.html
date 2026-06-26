@@ -1,0 +1,2953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Foundation Style Guide — Girl Scouts EDS</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="/styles/fonts.css" />
+  <link rel="stylesheet" href="/styles/styles.css" />
+  <link rel="stylesheet" href="/styles/lazy-styles.css" />
+  <style>
+    /* ── Style-guide shell (drafts/foundation.html only) ── */
+    .sg-page {
+      display: block;
+      background: var(--color-neutral-100);
+      color: var(--color-neutral-800);
+    }
+
+    /* Neutralise EDS page chrome — this draft is body > main only */
+    .sg-page main {
+      display: block;
+      min-height: 100vh;
+    }
+
+    .sg-page main :is(p, dl, ol, ul, pre, blockquote) {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .sg-page main .sg-content {
+      margin: 0;
+    }
+
+    .sg-shell {
+      display: grid;
+      grid-template-columns: 1fr;
+      min-height: 100vh;
+    }
+
+    @media (min-width: 1280px) {
+      .sg-shell {
+        grid-template-columns: 260px 1fr;
+      }
+    }
+
+    /* Sidebar nav */
+    .sg-nav {
+      position: sticky;
+      top: 0;
+      z-index: var(--z-sticky);
+      background: var(--color-gs-forest);
+      color: var(--color-neutral-50);
+      padding: var(--spacing-medium);
+      box-shadow: var(--shadow-md);
+    }
+
+    @media (min-width: 1280px) {
+      .sg-nav {
+        height: 100vh;
+        overflow-y: auto;
+        box-shadow: none;
+        border-right: 1px solid rgb(255 255 255 / 12%);
+      }
+    }
+
+    .sg-nav__logo {
+      display: block;
+      margin: 0 0 var(--spacing-xsmall);
+      line-height: 0;
+    }
+
+    .sg-nav__logo img {
+      display: block;
+      height: var(--spacing-xbig);
+      width: auto;
+      max-width: 100%;
+    }
+
+    .sg-page main .sg-nav .sg-nav__logo:any-link {
+      text-decoration: none;
+    }
+
+    .sg-nav__brand {
+      margin: 0 0 var(--spacing-xsmall);
+      font: var(--type-headline-2-strong-font);
+      letter-spacing: var(--type-headline-2-strong-letter-spacing);
+      color: var(--color-neutral-50);
+    }
+
+    .sg-nav__tag {
+      display: inline-block;
+      margin: 0 0 var(--spacing-medium);
+      padding: var(--spacing-xxsmall) var(--spacing-xsmall);
+      border-radius: var(--radius-full);
+      background: var(--color-opacity-16);
+      font: var(--type-details-caption-1-font);
+      letter-spacing: var(--type-details-caption-1-letter-spacing);
+      color: var(--color-gs-star);
+    }
+
+    .sg-nav__list {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: var(--spacing-xsmall);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    @media (min-width: 1280px) {
+      .sg-nav__list {
+        flex-direction: column;
+        flex-wrap: wrap;
+        overflow: visible;
+      }
+    }
+
+    .sg-nav__link {
+      display: block;
+      padding: var(--spacing-xsmall) var(--spacing-small);
+      border-radius: var(--radius-sm);
+      color: rgb(255 255 255 / 85%);
+      font: var(--type-body-2-default-font);
+      letter-spacing: var(--type-body-2-default-letter-spacing);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background var(--transition-fast), color var(--transition-fast);
+    }
+
+    /* Beat global main link styles (nav lives inside main for EDS button scope) */
+    .sg-page main .sg-nav .sg-nav__link:any-link {
+      color: rgb(255 255 255 / 85%);
+      text-decoration: none;
+    }
+
+    .sg-page main .sg-nav .sg-nav__link:any-link:hover {
+      color: var(--color-neutral-50);
+      text-decoration: none;
+    }
+
+    .sg-nav__link:hover,
+    .sg-nav__link:focus-visible,
+    .sg-nav__link.is-active {
+      background: var(--color-opacity-16);
+      color: var(--color-neutral-50);
+      outline: none;
+    }
+
+    .sg-nav__link:focus-visible {
+      box-shadow: 0 0 0 var(--focus-ring-width) var(--focus-ring-color);
+    }
+
+    /* Main column */
+    .sg-main {
+      min-width: 0;
+    }
+
+    .sg-hero {
+      padding: var(--spacing-xxbig) var(--grid-1-margins);
+      background:
+        linear-gradient(135deg, var(--color-gs-forest) 0%, var(--color-gs-dark-cyan) 55%, var(--color-gs-deep-purple) 100%);
+      color: var(--color-neutral-50);
+    }
+
+    @media (min-width: 1280px) {
+      .sg-hero {
+        padding: var(--spacing-huge) var(--grid-4-margins);
+      }
+    }
+
+    .sg-hero__eyebrow {
+      margin: 0 0 var(--spacing-xsmall);
+      font: var(--type-details-overline-font);
+      letter-spacing: var(--type-details-overline-letter-spacing);
+      color: var(--color-gs-star);
+    }
+
+    .sg-hero h1 {
+      margin: 0 0 var(--spacing-small);
+      color: var(--color-neutral-50);
+      font: var(--type-display-2-font);
+      letter-spacing: var(--type-display-2-letter-spacing);
+    }
+
+    .sg-hero__lead {
+      max-width: 56ch;
+      margin: 0 0 var(--spacing-big);
+      font: var(--type-body-1-default-font);
+      letter-spacing: var(--type-body-1-default-letter-spacing);
+      color: rgb(255 255 255 / 90%);
+    }
+
+    .sg-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-small);
+      max-width: 640px;
+    }
+
+    @media (min-width: 768px) {
+      .sg-stats {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .sg-stat {
+      padding: var(--spacing-small);
+      border-radius: var(--radius-md);
+      background: var(--color-opacity-16);
+      backdrop-filter: blur(4px);
+    }
+
+    .sg-stat__value {
+      margin: 0;
+      font: var(--type-headline-1-font);
+      letter-spacing: var(--type-headline-1-letter-spacing);
+      color: var(--color-gs-star);
+    }
+
+    .sg-stat__label {
+      margin: var(--spacing-xxsmall) 0 0;
+      font: var(--type-details-caption-1-font);
+      letter-spacing: var(--type-details-caption-1-letter-spacing);
+      color: rgb(255 255 255 / 80%);
+    }
+
+    .sg-content {
+      padding: var(--spacing-big) var(--grid-1-margins) var(--spacing-huge);
+      max-width: var(--grid-max-width);
+    }
+
+    @media (min-width: 1280px) {
+      .sg-content {
+        padding: var(--spacing-big) var(--grid-4-margins) var(--spacing-huge);
+      }
+    }
+
+    /* Section cards */
+    .sg-card {
+      margin: 0 0 var(--spacing-big);
+      padding: var(--spacing-medium);
+      border-radius: var(--radius-lg);
+      background: var(--color-neutral-50);
+      box-shadow: var(--shadow-sm);
+      scroll-margin-top: var(--spacing-big);
+    }
+
+    @media (min-width: 768px) {
+      .sg-card {
+        padding: var(--spacing-big);
+      }
+    }
+
+    .sg-card__header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: var(--spacing-xsmall) var(--spacing-small);
+      margin: 0 0 var(--spacing-medium);
+      padding-bottom: var(--spacing-small);
+      border-bottom: 1px solid var(--color-neutral-200);
+    }
+
+    .sg-card__num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.8rem;
+      height: 2.8rem;
+      border-radius: var(--radius-full);
+      background: var(--color-gs-green);
+      color: var(--color-neutral-50);
+      font: var(--type-body-2-strong-font);
+      letter-spacing: var(--type-body-2-strong-letter-spacing);
+    }
+
+    .sg-card h2 {
+      margin: 0;
+      font: var(--type-headline-1-font);
+      letter-spacing: var(--type-headline-1-letter-spacing);
+    }
+
+    .sg-card h3 {
+      margin: var(--spacing-medium) 0 var(--spacing-small);
+      font: var(--type-headline-2-strong-font);
+      letter-spacing: var(--type-headline-2-strong-letter-spacing);
+      color: var(--color-gs-forest);
+    }
+
+    .sg-card > p {
+      margin: 0 0 var(--spacing-small);
+      color: var(--color-neutral-700);
+    }
+
+    .sg-note {
+      padding: var(--spacing-small);
+      border-radius: var(--radius-md);
+      border-left: 4px solid var(--color-gs-green);
+      background: var(--color-positive-200);
+      font: var(--type-body-2-default-font);
+      color: var(--color-neutral-800);
+    }
+
+    .sg-note--warn {
+      border-left-color: var(--color-warning-500);
+      background: var(--color-warning-200);
+    }
+
+    .sg-note code,
+    .sg-card :not(pre) code {
+      padding: var(--spacing-xxsmall) var(--spacing-xsmall);
+      border-radius: var(--radius-xs);
+      background: var(--color-neutral-200);
+      font-family: var(--type-fixed-font-family);
+      font-size: 0.9em;
+    }
+
+    /* Swatches */
+    .sg-swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+      gap: var(--spacing-small);
+    }
+
+    .swatch {
+      padding: var(--spacing-xsmall);
+      border: 1px solid var(--color-neutral-200);
+      border-radius: var(--radius-md);
+      background: var(--color-neutral-50);
+      cursor: pointer;
+      font: inherit;
+      text-align: left;
+      width: 100%;
+      transition: transform var(--transition-base), box-shadow var(--transition-base);
+    }
+
+    .swatch:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .swatch:focus-visible {
+      outline: var(--focus-ring-width) var(--focus-ring-style) var(--focus-ring-color);
+      outline-offset: var(--focus-ring-offset);
+    }
+
+    .swatch__color {
+      display: block;
+      aspect-ratio: 1;
+      width: 100%;
+      border-radius: var(--radius-sm);
+      background-color: var(--swatch-color);
+      border: 1px solid rgb(0 0 0 / 8%);
+    }
+
+    .swatch__name {
+      display: block;
+      margin: var(--spacing-xsmall) 0 var(--spacing-xxsmall);
+      font: var(--type-details-caption-1-font);
+      word-break: break-all;
+      color: var(--color-neutral-800);
+    }
+
+    .swatch__value,
+    .swatch__usage {
+      display: block;
+      margin: 0;
+      font: var(--type-details-caption-2-font);
+      color: var(--color-neutral-600);
+    }
+
+    .swatch__usage { font-style: italic; }
+
+    .swatch.is-copied .swatch__name::after {
+      content: ' ✓ copied';
+      color: var(--color-gs-green);
+      font-weight: 700;
+    }
+
+    /* Icon gallery */
+    .sg-icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+      gap: var(--spacing-small);
+    }
+
+    .icon-tile {
+      padding: var(--spacing-xsmall);
+      border: 1px solid var(--color-neutral-200);
+      border-radius: var(--radius-md);
+      background: var(--color-neutral-50);
+      cursor: pointer;
+      font: inherit;
+      text-align: center;
+      width: 100%;
+      transition: transform var(--transition-base), box-shadow var(--transition-base);
+    }
+
+    .icon-tile:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .icon-tile:focus-visible {
+      outline: var(--focus-ring-width) var(--focus-ring-style) var(--focus-ring-color);
+      outline-offset: var(--focus-ring-offset);
+    }
+
+    .icon-tile.is-copied {
+      box-shadow: 0 0 0 2px var(--color-gs-green);
+    }
+
+    .icon-tile__preview {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: var(--spacing-xxbig);
+      margin-bottom: var(--spacing-xsmall);
+      border-radius: var(--radius-sm);
+      background: var(--color-neutral-100);
+    }
+
+    .icon-tile__name {
+      display: block;
+      font: var(--type-details-caption-1-font);
+      letter-spacing: var(--type-details-caption-1-letter-spacing);
+      color: var(--color-neutral-700);
+      word-break: break-all;
+    }
+
+    .asset-tile {
+      padding: var(--spacing-small);
+      border: 1px solid var(--color-neutral-200);
+      border-radius: var(--radius-md);
+      background: var(--color-neutral-50);
+      cursor: pointer;
+      font: inherit;
+      text-align: left;
+      width: 100%;
+      transition: transform var(--transition-base), box-shadow var(--transition-base);
+    }
+
+    .asset-tile:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .asset-tile:focus-visible {
+      outline: var(--focus-ring-width) var(--focus-ring-style) var(--focus-ring-color);
+      outline-offset: var(--focus-ring-offset);
+    }
+
+    .asset-tile.is-copied {
+      box-shadow: 0 0 0 2px var(--color-gs-green);
+    }
+
+    .asset-tile__preview {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: var(--spacing-huge);
+      margin-bottom: var(--spacing-xsmall);
+      padding: var(--spacing-small);
+      border-radius: var(--radius-sm);
+      background: var(--color-neutral-100);
+    }
+
+    .asset-tile__preview img {
+      max-width: 100%;
+      max-height: var(--spacing-xxbig);
+      width: auto;
+      height: auto;
+    }
+
+    .asset-tile__preview--dark {
+      background: var(--color-gs-forest);
+    }
+
+    .asset-tile__name {
+      display: block;
+      font: var(--type-details-caption-1-font);
+      letter-spacing: var(--type-details-caption-1-letter-spacing);
+      color: var(--color-neutral-800);
+    }
+
+    .asset-tile__usage {
+      display: block;
+      margin-top: var(--spacing-xxsmall);
+      font: var(--type-details-caption-2-font);
+      letter-spacing: var(--type-details-caption-2-letter-spacing);
+      color: var(--color-neutral-600);
+    }
+
+    .sg-asset-grid {
+      display: grid;
+      gap: var(--spacing-small);
+    }
+
+    @media (min-width: 768px) {
+      .sg-asset-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .icon-demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--spacing-medium);
+    }
+
+    .icon-demo-row__item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-xsmall);
+      font: var(--type-details-caption-1-font);
+      letter-spacing: var(--type-details-caption-1-letter-spacing);
+      color: var(--color-neutral-600);
+    }
+
+    .icon-demo-mask {
+      width: var(--spacing-medium);
+      height: var(--spacing-medium);
+      background: var(--color-gs-forest);
+      -webkit-mask: url('/icons/sparkle.svg') center / contain no-repeat;
+      mask: url('/icons/sparkle.svg') center / contain no-repeat;
+    }
+
+    /* Typography samples */
+    .type-grid {
+      display: grid;
+      gap: var(--spacing-small);
+    }
+
+    @media (min-width: 768px) {
+      .type-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .type-sample {
+      padding: var(--spacing-small);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-neutral-200);
+      background: var(--color-neutral-100);
+    }
+
+    .type-label {
+      margin: 0 0 var(--spacing-xsmall);
+      font: var(--type-details-caption-1-font);
+      color: var(--color-neutral-600);
+    }
+
+    .type-sample p:last-child { margin: 0; }
+
+    .type-size {
+      display: inline-block;
+      margin-left: var(--spacing-xsmall);
+      padding: 1px var(--spacing-xxsmall);
+      border-radius: var(--radius-xs);
+      background: var(--color-gs-green);
+      color: var(--color-neutral-50);
+      font-family: ui-monospace, "Roboto Mono", monospace;
+      font-size: 1.1rem;
+      font-weight: 400;
+      vertical-align: middle;
+      letter-spacing: 0;
+    }
+
+    /* Icon colour & hover technique demos */
+    .icon-tech-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-small);
+      align-items: center;
+      padding: var(--spacing-medium);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-neutral-200);
+      background: var(--color-neutral-100);
+      margin: 0 0 var(--spacing-medium);
+    }
+
+    .icon-tech-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-xsmall);
+      padding: var(--spacing-small);
+      border-radius: var(--radius-md);
+      background: var(--color-neutral-50);
+      border: 1px solid var(--color-neutral-200);
+      font: var(--type-details-caption-2-font);
+      color: var(--color-neutral-600);
+      text-align: center;
+      min-width: 80px;
+    }
+
+    .icon-tech-item .imask {
+      display: block;
+      width: 28px;
+      height: 28px;
+      -webkit-mask: var(--im-src) center / contain no-repeat;
+      mask: var(--im-src) center / contain no-repeat;
+      background: var(--im-color, var(--color-neutral-600));
+    }
+
+    .demo-icon-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-xsmall);
+      padding: var(--spacing-xsmall) var(--spacing-small);
+      border: 1.5px solid var(--color-neutral-300);
+      border-radius: var(--radius-sm);
+      background: transparent;
+      font: var(--type-body-2-default-font);
+      color: var(--color-neutral-700);
+      cursor: pointer;
+      transition: color var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+    }
+
+    .demo-icon-btn .imask {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      -webkit-mask: var(--im-src) center / contain no-repeat;
+      mask: var(--im-src) center / contain no-repeat;
+      background: currentColor;
+      transition: background var(--transition-fast);
+    }
+
+    .demo-icon-btn:hover {
+      color: var(--color-gs-forest);
+      border-color: var(--color-gs-green);
+      background: var(--color-positive-200);
+    }
+
+    .demo-wishlist-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-xsmall);
+      padding: var(--spacing-xsmall) var(--spacing-small);
+      border: 1.5px solid var(--color-neutral-300);
+      border-radius: var(--radius-full);
+      background: transparent;
+      font: var(--type-body-2-default-font);
+      color: var(--color-neutral-600);
+      cursor: pointer;
+      transition: color var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .demo-wishlist-btn .imask {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      -webkit-mask: url('/icons/heart.svg') center / contain no-repeat;
+      mask: url('/icons/heart.svg') center / contain no-repeat;
+      background: currentColor;
+      transition: background var(--transition-fast);
+    }
+
+    .demo-wishlist-btn.is-active {
+      color: var(--color-gs-poppy);
+      border-color: var(--color-gs-poppy);
+    }
+
+    .demo-icon-note {
+      font: var(--type-details-caption-1-font);
+      color: var(--color-neutral-600);
+      font-style: italic;
+      margin: 0;
+    }
+
+    .status-pill {
+      display: inline-block;
+      padding: var(--spacing-xxsmall) var(--spacing-xsmall);
+      border-radius: var(--radius-full);
+      font: var(--type-details-caption-1-font);
+      font-weight: 700;
+    }
+
+    .status-pill--active {
+      background: var(--color-positive-200);
+      color: var(--color-positive-800);
+    }
+
+    .status-pill--pending {
+      background: var(--color-warning-200);
+      color: var(--color-warning-800);
+    }
+
+    /* Spacing scale */
+    .spacing-scale {
+      display: grid;
+      gap: var(--spacing-xsmall);
+    }
+
+    .spacing-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-xsmall);
+      align-items: center;
+      padding: var(--spacing-xsmall);
+      border-radius: var(--radius-sm);
+      background: var(--color-neutral-100);
+    }
+
+    @media (min-width: 768px) {
+      .spacing-row {
+        grid-template-columns: 140px 1fr 1fr;
+      }
+    }
+
+    .spacing-row__bar-wrap {
+      height: var(--spacing-xsmall);
+      border-radius: var(--radius-full);
+      background: var(--color-neutral-200);
+      overflow: hidden;
+    }
+
+    .spacing-row__bar {
+      height: 100%;
+      border-radius: var(--radius-full);
+      background: linear-gradient(90deg, var(--color-gs-green), var(--color-gs-teal));
+    }
+
+    .spacing-row__token {
+      font: var(--type-details-caption-1-font);
+      color: var(--color-gs-forest);
+      font-weight: 700;
+    }
+
+    .spacing-row__meta {
+      font: var(--type-details-caption-2-font);
+      color: var(--color-neutral-600);
+    }
+
+    /* Tables */
+    .sg-table-wrap {
+      overflow-x: auto;
+      margin: 0 0 var(--spacing-medium);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-neutral-200);
+    }
+
+    .sg-table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 480px;
+    }
+
+    .sg-table th,
+    .sg-table td {
+      padding: var(--spacing-xsmall) var(--spacing-small);
+      text-align: left;
+      font: var(--type-body-2-default-font);
+      border-bottom: 1px solid var(--color-neutral-200);
+    }
+
+    .sg-table tr:last-child td { border-bottom: none; }
+
+    .sg-table th {
+      background: var(--color-neutral-100);
+      font: var(--type-body-2-strong-font);
+      color: var(--color-gs-forest);
+    }
+
+    .sg-table tbody tr:hover td {
+      background: var(--color-neutral-100);
+    }
+
+    /* Component demos */
+    .component-label {
+      margin: var(--spacing-medium) 0 var(--spacing-xsmall);
+      font: var(--type-details-overline-font);
+      letter-spacing: var(--type-details-overline-letter-spacing);
+      color: var(--color-neutral-600);
+    }
+
+    .demo-panel {
+      padding: var(--spacing-medium);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-neutral-200);
+      background: var(--color-neutral-100);
+      margin: 0 0 var(--spacing-medium);
+    }
+
+    .demo-panel--dark {
+      background: var(--color-gs-forest);
+      border-color: transparent;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--spacing-small);
+    }
+
+    .form-grid {
+      display: grid;
+      gap: var(--spacing-medium);
+    }
+
+    @media (min-width: 768px) {
+      .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .form-example label {
+      display: block;
+      margin-bottom: var(--spacing-xxsmall);
+    }
+
+    .sg-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-medium);
+      align-items: flex-start;
+    }
+
+    .shadow-card {
+      width: 180px;
+      padding: var(--spacing-medium);
+      border-radius: var(--radius-md);
+      background: var(--color-neutral-50);
+      border: 1px solid var(--color-neutral-200);
+      font: var(--type-details-caption-1-font);
+      text-align: center;
+    }
+
+    .radius-card {
+      text-align: center;
+      font: var(--type-details-caption-1-font);
+    }
+
+    .radius-card__shape {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto var(--spacing-xsmall);
+      background: linear-gradient(135deg, var(--color-gs-green), var(--color-gs-teal));
+    }
+
+    .grid-demo {
+      display: grid;
+      grid-template-columns: repeat(var(--grid-columns), 1fr);
+      gap: var(--grid-gutter);
+      padding: var(--spacing-medium);
+      border-radius: var(--radius-md);
+      border: 1px dashed var(--color-gs-green);
+      background: var(--color-positive-200);
+    }
+
+    .grid-demo__cell {
+      padding: var(--spacing-xsmall);
+      border-radius: var(--radius-xs);
+      background: var(--color-neutral-50);
+      border: 1px solid var(--color-gs-green);
+      text-align: center;
+      font: var(--type-details-caption-1-font);
+      color: var(--color-gs-forest);
+    }
+
+    .motion-example {
+      padding: var(--spacing-small) var(--spacing-medium);
+      border-radius: var(--radius-sm);
+      background: var(--color-gs-green);
+      color: var(--color-neutral-50);
+      font: var(--type-body-2-strong-font);
+      cursor: pointer;
+      transition: transform var(--transition-base);
+    }
+
+    .motion-example:hover { transform: translateY(-4px) scale(1.02); }
+
+    .focus-demos {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--spacing-small);
+    }
+
+    /* EDS link — show brand colour + underline; ring from global :focus-visible */
+    .sg-page main .focus-demos a.focus-demo__link:any-link {
+      color: var(--color-brand-500);
+      font: var(--type-body-2-strong-font);
+      letter-spacing: var(--type-body-2-strong-letter-spacing);
+      text-decoration: underline;
+    }
+
+    .sg-page main .focus-demos a.focus-demo__link:any-link:hover {
+      color: var(--color-brand-600);
+    }
+
+    .focus-demo__btn {
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--spacing-xsmall) var(--spacing-small);
+      border: 1px solid var(--color-neutral-400);
+      border-radius: var(--radius-sm);
+      background: var(--color-neutral-50);
+      font: var(--type-body-2-default-font);
+      letter-spacing: var(--type-body-2-default-letter-spacing);
+      color: var(--color-neutral-800);
+      cursor: pointer;
+    }
+
+    /* Override global main input { width: 100% } for inline demo layout */
+    .sg-page main .focus-demos .focus-demo__input {
+      width: auto;
+      min-width: 20ch;
+      max-width: 100%;
+      flex: 1 1 16rem;
+    }
+
+    .heading-demo h1,
+    .heading-demo h2,
+    .heading-demo h3,
+    .heading-demo h4,
+    .heading-demo h5,
+    .heading-demo h6 {
+      margin: var(--spacing-small) 0;
+    }
+
+    .semantic-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-small);
+    }
+
+    .semantic-chip {
+      padding: var(--spacing-xsmall) var(--spacing-small);
+      border-radius: var(--radius-full);
+      font: var(--type-body-2-strong-font);
+    }
+
+    .semantic-chip--positive { background: var(--color-positive-200); color: var(--color-positive-800); }
+    .semantic-chip--info { background: var(--color-informational-200); color: var(--color-informational-800); }
+    .semantic-chip--warning { background: var(--color-warning-200); color: var(--color-warning-800); }
+    .semantic-chip--alert { background: var(--color-alert-200); color: var(--color-alert-800); }
+
+    .opacity-demo {
+      display: flex;
+      gap: var(--spacing-small);
+      padding: var(--spacing-medium);
+      border-radius: var(--radius-md);
+      background: var(--color-gs-forest);
+    }
+
+    .opacity-demo__box {
+      flex: 1;
+      padding: var(--spacing-small);
+      border-radius: var(--radius-sm);
+      background: var(--opacity-bg);
+      color: var(--color-neutral-50);
+      font: var(--type-details-caption-1-font);
+      text-align: center;
+    }
+
+    pre.sg-code {
+      margin: 0;
+      padding: var(--spacing-medium);
+      border-radius: var(--radius-md);
+      background: var(--color-neutral-800);
+      color: var(--color-neutral-50);
+      overflow-x: auto;
+      white-space: pre;
+      tab-size: 2;
+      font-family: ui-monospace, "Roboto Mono", menlo, consolas, "Courier New", monospace;
+      font-size: 1.3rem;
+      font-weight: 400;
+      font-style: normal;
+      line-height: 1.55;
+      letter-spacing: 0;
+      -webkit-font-smoothing: auto;
+    }
+
+    /* Beat global main pre + code,pre rules from styles.css */
+    .sg-page main pre.sg-code {
+      background-color: var(--color-neutral-800);
+      border-radius: 0;
+      white-space: pre;
+    }
+
+    /* Copyable code snippets */
+    .sg-snippet {
+      margin: var(--spacing-medium) 0 0;
+      border: 1px solid var(--color-neutral-200);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .sg-snippet__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-small);
+      padding: var(--spacing-xsmall) var(--spacing-small);
+      background: var(--color-neutral-100);
+      border-bottom: 1px solid var(--color-neutral-200);
+    }
+
+    .sg-snippet__title {
+      font: var(--type-details-caption-1-font);
+      letter-spacing: var(--type-details-overline-letter-spacing);
+      text-transform: uppercase;
+      color: var(--color-neutral-700);
+    }
+
+    .sg-snippet__copy {
+      flex-shrink: 0;
+      padding: var(--spacing-xxsmall) var(--spacing-xsmall);
+      border: 1px solid var(--color-neutral-300);
+      border-radius: var(--radius-sm);
+      background: var(--color-neutral-50);
+      color: var(--color-gs-forest);
+      font: var(--type-details-caption-1-font);
+      font-weight: 700;
+      cursor: pointer;
+      transition: background var(--transition-fast), color var(--transition-fast);
+    }
+
+    .sg-snippet__copy:hover {
+      background: var(--color-neutral-200);
+    }
+
+    .sg-snippet__copy.is-copied {
+      color: var(--color-gs-green);
+    }
+
+    .sg-snippet .sg-code {
+      border-radius: 0;
+    }
+
+    .sg-how-to {
+      margin: 0 0 var(--spacing-medium);
+      padding-left: var(--spacing-medium);
+      color: var(--color-neutral-700);
+      font: var(--type-body-2-default-font);
+      letter-spacing: var(--type-body-2-default-letter-spacing);
+    }
+
+    .sg-how-to li + li {
+      margin-top: var(--spacing-xsmall);
+    }
+
+    .sg-rules {
+      display: grid;
+      gap: var(--spacing-small);
+      margin: 0 0 var(--spacing-medium);
+    }
+
+    @media (min-width: 768px) {
+      .sg-rules {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .sg-rule {
+      padding: var(--spacing-small);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-neutral-200);
+      background: var(--color-neutral-100);
+      font: var(--type-body-2-default-font);
+    }
+
+    .sg-rule strong {
+      display: block;
+      margin-bottom: var(--spacing-xxsmall);
+      color: var(--color-gs-forest);
+      font: var(--type-body-2-strong-font);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: var(--spacing-medium);
+      right: var(--spacing-medium);
+      z-index: var(--z-toast);
+      padding: var(--spacing-xsmall) var(--spacing-small);
+      border-radius: var(--radius-md);
+      background: var(--color-gs-forest);
+      color: var(--color-neutral-50);
+      font: var(--type-body-2-strong-font);
+      box-shadow: var(--shadow-lg);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity var(--transition-base), transform var(--transition-base);
+      pointer-events: none;
+    }
+
+    .toast.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .sg-grid-diagram {
+      margin: var(--spacing-medium) 0;
+      padding: var(--spacing-medium);
+      background: var(--color-neutral-100);
+      border: 1px solid var(--color-neutral-200);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .sg-grid-diagram figcaption {
+      margin-top: var(--spacing-xsmall);
+      font-size: 1.2rem;
+      color: var(--color-neutral-500);
+      text-align: center;
+      letter-spacing: 0.04em;
+    }
+  </style>
+</head>
+<body class="appear sg-page">
+  <main>
+    <div class="sg-shell">
+    <nav class="sg-nav" aria-label="Foundation sections">
+      <a class="sg-nav__logo" href="#overview">
+        <img src="/icons/gs-logo.svg" alt="Girl Scouts" width="145" height="48" />
+      </a>
+      <p class="sg-nav__brand">Foundation</p>
+
+      <ul class="sg-nav__list">
+        <li><a class="sg-nav__link is-active" href="#overview">Overview</a></li>
+        <li><a class="sg-nav__link" href="#usage">How to Use</a></li>
+        <li><a class="sg-nav__link" href="#colors">Colors</a></li>
+        <li><a class="sg-nav__link" href="#typography">Typography</a></li>
+        <li><a class="sg-nav__link" href="#spacing">Spacing</a></li>
+        <li><a class="sg-nav__link" href="#grid">Grid</a></li>
+        <li><a class="sg-nav__link" href="#buttons">Buttons</a></li>
+        <li><a class="sg-nav__link" href="#forms">Forms</a></li>
+        <li><a class="sg-nav__link" href="#focus">Focus</a></li>
+        <li><a class="sg-nav__link" href="#elevation">Elevation</a></li>
+        <li><a class="sg-nav__link" href="#icons">Icons</a></li>
+        <li><a class="sg-nav__link" href="#motion">Motion</a></li>
+        <li><a class="sg-nav__link" href="#skeleton">Skeleton</a></li>
+        <li><a class="sg-nav__link" href="#reference">Reference</a></li>
+      </ul>
+    </nav>
+
+    <div class="sg-main">
+      <div class="sg-hero" id="overview">
+        <p class="sg-hero__eyebrow">Girl Scouts · Edge Delivery Services</p>
+        <h1>Foundation Style Guide</h1>
+        <p class="sg-hero__lead">Live reference for design tokens and UI patterns in <code>styles/styles.css</code>. Click swatches to copy token names; use <strong>Copy</strong> on code snippets for ready-to-paste CSS and HTML.</p>
+        <div class="sg-stats">
+          <div class="sg-stat"><p class="sg-stat__value">12</p><p class="sg-stat__label">Sections</p></div>
+          <div class="sg-stat"><p class="sg-stat__value">332</p><p class="sg-stat__label">Tokens</p></div>
+          <div class="sg-stat"><p class="sg-stat__value">768</p><p class="sg-stat__label">Tablet bp</p></div>
+          <div class="sg-stat"><p class="sg-stat__value">1280</p><p class="sg-stat__label">Desktop bp</p></div>
+        </div>
+      </div>
+
+      <div class="sg-content">
+
+        <!-- HOW TO USE -->
+        <section class="sg-card" id="usage">
+          <div class="sg-card__header">
+            <h2>How to Use This Guide</h2>
+          </div>
+          <div class="sg-rules">
+            <div class="sg-rule"><strong>Colour swatches</strong>Click a swatch to copy <code>var(--token-name)</code> to your clipboard.</div>
+            <div class="sg-rule"><strong>Code snippets</strong>Each section includes copyable CSS or HTML — click <strong>Copy</strong> on the snippet header.</div>
+            <div class="sg-rule"><strong>Block CSS</strong>Always scope selectors to the block: <code>.hero .title</code> not <code>.title</code>.</div>
+            <div class="sg-rule"><strong>Tokens only</strong>Never hardcode hex, px, or ms — use <code>var(--…)</code> from <code>styles.css</code>.</div>
+          </div>
+          <ul class="sg-how-to">
+            <li>Tokens live in <code>styles/styles.css</code> inside <code>:root, .dropin-design { }</code></li>
+            <li>Breakpoints: mobile default, <code>768px</code> tablet, <code>1280px</code> desktop — use <code>min-width</code> only</li>
+            <li>Section spacing is authored via section metadata (<code>data-margin</code>, <code>data-padding</code>) — not in block CSS</li>
+            <li>Button and form demos render inside <code>&lt;main&gt;</code> so global EDS styles apply on real pages</li>
+            <li>Commerce dropins use <code>.dropin-design</code> — theme via <code>--btn-*</code> / <code>--form-*</code> tokens and scoped overrides, never by editing <code>scripts/__dropins__/</code></li>
+            <li>Icon tiles in the <strong>Icons</strong> section copy <code>/icons/{name}.svg</code> paths to the clipboard</li>
+          </ul>
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">Minimal block starter — copy this template</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">/* blocks/my-block/my-block.css — scope every selector */
+.my-block {
+  padding: var(--spacing-medium) var(--grid-1-margins);
+  color: var(--color-neutral-800);
+  background: var(--color-neutral-50);
+}
+
+@media (min-width: 1280px) {
+  .my-block {
+    padding: var(--spacing-medium) var(--grid-4-margins);
+  }
+}
+
+.my-block .my-block__title {
+  font: var(--type-headline-1-font);
+  letter-spacing: var(--type-headline-1-letter-spacing);
+  color: var(--color-gs-forest);
+}</pre>
+          </div>
+        </section>
+
+        <!-- COLORS -->
+        <section class="sg-card" id="colors">
+          <div class="sg-card__header">
+            <span class="sg-card__num">1</span>
+            <h2>Colors</h2>
+          </div>
+          <p>Click a swatch to copy <code>var(--token)</code>. Use semantic tokens for status UI; GS palette for brand accents.</p>
+
+          <h3>Brand</h3>
+          <div class="sg-swatch-grid">
+            <button type="button" class="swatch" data-token="--color-brand-300" style="--swatch-color: var(--color-brand-300)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-brand-300</span><span class="swatch__value">#d5f267</span><span class="swatch__usage">Star Green</span></button>
+            <button type="button" class="swatch" data-token="--color-brand-500" style="--swatch-color: var(--color-brand-500)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-brand-500</span><span class="swatch__value">#00b451</span><span class="swatch__usage">Brand green · links</span></button>
+            <button type="button" class="swatch" data-token="--color-brand-600" style="--swatch-color: var(--color-brand-600)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-brand-600</span><span class="swatch__value">#005640</span><span class="swatch__usage">CTA hover</span></button>
+            <button type="button" class="swatch" data-token="--color-brand-700" style="--swatch-color: var(--color-brand-700)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-brand-700</span><span class="swatch__value">#044248</span><span class="swatch__usage">Active</span></button>
+          </div>
+
+          <h3>Neutrals</h3>
+          <div class="sg-swatch-grid">
+            <button type="button" class="swatch" data-token="--color-neutral-50" style="--swatch-color: var(--color-neutral-50)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-neutral-50</span><span class="swatch__value">#fff</span></button>
+            <button type="button" class="swatch" data-token="--color-neutral-100" style="--swatch-color: var(--color-neutral-100)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-neutral-100</span><span class="swatch__value">#fafafa</span></button>
+            <button type="button" class="swatch" data-token="--color-neutral-200" style="--swatch-color: var(--color-neutral-200)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-neutral-200</span><span class="swatch__value">#f5f5f5</span></button>
+            <button type="button" class="swatch" data-token="--color-neutral-300" style="--swatch-color: var(--color-neutral-300)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-neutral-300</span><span class="swatch__value">#e8e8e8</span></button>
+            <button type="button" class="swatch" data-token="--color-neutral-400" style="--swatch-color: var(--color-neutral-400)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-neutral-400</span><span class="swatch__value">#d9d9d9</span><span class="swatch__usage">Cloud</span></button>
+            <button type="button" class="swatch" data-token="--color-neutral-500" style="--swatch-color: var(--color-neutral-500)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-neutral-500</span><span class="swatch__value">#a8a8a8</span><span class="swatch__usage">Stone</span></button>
+            <button type="button" class="swatch" data-token="--color-neutral-600" style="--swatch-color: var(--color-neutral-600)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-neutral-600</span><span class="swatch__value">#8f8f8f</span></button>
+            <button type="button" class="swatch" data-token="--color-neutral-700" style="--swatch-color: var(--color-neutral-700)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-neutral-700</span><span class="swatch__value">#666</span></button>
+            <button type="button" class="swatch" data-token="--color-neutral-800" style="--swatch-color: var(--color-neutral-800)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-neutral-800</span><span class="swatch__value">#2d2e33</span><span class="swatch__usage">Body text</span></button>
+            <button type="button" class="swatch" data-token="--color-neutral-900" style="--swatch-color: var(--color-neutral-900)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-neutral-900</span><span class="swatch__value">#000</span></button>
+          </div>
+
+          <h3>GS Palette</h3>
+          <div class="sg-swatch-grid">
+            <button type="button" class="swatch" data-token="--color-gs-green" style="--swatch-color: var(--color-gs-green)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-green</span><span class="swatch__value">#00b451</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-forest" style="--swatch-color: var(--color-gs-forest)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-forest</span><span class="swatch__value">#005640</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-star" style="--swatch-color: var(--color-gs-star)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-star</span><span class="swatch__value">#d5f267</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-green-alt" style="--swatch-color: var(--color-gs-green-alt)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-green-alt</span><span class="swatch__value">#008138</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-dark-cyan" style="--swatch-color: var(--color-gs-dark-cyan)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-dark-cyan</span><span class="swatch__value">#044248</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-deep-cyan" style="--swatch-color: var(--color-gs-deep-cyan)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-deep-cyan</span><span class="swatch__value">#006973</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-ocean" style="--swatch-color: var(--color-gs-ocean)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-ocean</span><span class="swatch__value">#004987</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-deep-purple" style="--swatch-color: var(--color-gs-deep-purple)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-deep-purple</span><span class="swatch__value">#5c1f8b</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-plum" style="--swatch-color: var(--color-gs-plum)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-plum</span><span class="swatch__value">#af0061</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-cherry" style="--swatch-color: var(--color-gs-cherry)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-cherry</span><span class="swatch__value">#9c0000</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-brown" style="--swatch-color: var(--color-gs-brown)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-brown</span><span class="swatch__value">#763a16</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-desert" style="--swatch-color: var(--color-gs-desert)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-desert</span><span class="swatch__value">#a86b1d</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-teal" style="--swatch-color: var(--color-gs-teal)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-teal</span><span class="swatch__value">#00b2be</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-river" style="--swatch-color: var(--color-gs-river)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-river</span><span class="swatch__value">#1496d4</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-violet" style="--swatch-color: var(--color-gs-violet)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-violet</span><span class="swatch__value">#9e5fd6</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-fuchsia" style="--swatch-color: var(--color-gs-fuchsia)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-fuchsia</span><span class="swatch__value">#fd329e</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-poppy" style="--swatch-color: var(--color-gs-poppy)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-poppy</span><span class="swatch__value">#ee3124</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-flame" style="--swatch-color: var(--color-gs-flame)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-flame</span><span class="swatch__value">#ff830c</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-gold" style="--swatch-color: var(--color-gs-gold)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-gold</span><span class="swatch__value">#f7be00</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-sea-foam" style="--swatch-color: var(--color-gs-sea-foam)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-sea-foam</span><span class="swatch__value">#a3edd6</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-sky" style="--swatch-color: var(--color-gs-sky)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-sky</span><span class="swatch__value">#a0def1</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-lilac" style="--swatch-color: var(--color-gs-lilac)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-lilac</span><span class="swatch__value">#ccb3fa</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-bubblegum" style="--swatch-color: var(--color-gs-bubblegum)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-bubblegum</span><span class="swatch__value">#f7abd6</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-peach" style="--swatch-color: var(--color-gs-peach)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-peach</span><span class="swatch__value">#fcb89d</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-khaki" style="--swatch-color: var(--color-gs-khaki)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-khaki</span><span class="swatch__value">#d5ca9f</span></button>
+            <button type="button" class="swatch" data-token="--color-gs-sunshine" style="--swatch-color: var(--color-gs-sunshine)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-gs-sunshine</span><span class="swatch__value">#fff441</span></button>
+          </div>
+
+          <h3>Semantic</h3>
+          <div class="semantic-chips">
+            <span class="semantic-chip semantic-chip--positive">Positive</span>
+            <span class="semantic-chip semantic-chip--info">Informational</span>
+            <span class="semantic-chip semantic-chip--warning">Warning</span>
+            <span class="semantic-chip semantic-chip--alert">Alert / Error</span>
+          </div>
+          <div class="sg-swatch-grid" style="margin-top: var(--spacing-small)">
+            <button type="button" class="swatch" data-token="--color-positive-500" style="--swatch-color: var(--color-positive-500)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-positive-500</span></button>
+            <button type="button" class="swatch" data-token="--color-informational-500" style="--swatch-color: var(--color-informational-500)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-informational-500</span></button>
+            <button type="button" class="swatch" data-token="--color-warning-500" style="--swatch-color: var(--color-warning-500)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-warning-500</span></button>
+            <button type="button" class="swatch" data-token="--color-alert-500" style="--swatch-color: var(--color-alert-500)"><span class="swatch__color" aria-hidden="true"></span><span class="swatch__name">--color-alert-500</span></button>
+          </div>
+
+          <h3>UI &amp; interaction</h3>
+          <div class="sg-table-wrap">
+            <table class="sg-table">
+              <thead><tr><th>Token</th><th>Usage</th></tr></thead>
+              <tbody>
+                <tr><td><code>--color-button-hover</code></td><td>CTA hover → brand-600</td></tr>
+                <tr><td><code>--color-button-active</code></td><td>CTA active → brand-700</td></tr>
+                <tr><td><code>--color-button-focus</code></td><td>Focus ring colour</td></tr>
+                <tr><td><code>--color-action-button-hover</code></td><td>Icon/action button hover</td></tr>
+                <tr><td><code>--background-color</code></td><td>Page background (neutral-50)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="component-label">Opacity overlays (on dark surfaces)</p>
+          <div class="opacity-demo">
+            <div class="opacity-demo__box" style="--opacity-bg: var(--color-opacity-16)">--color-opacity-16</div>
+            <div class="opacity-demo__box" style="--opacity-bg: var(--color-opacity-24)">--color-opacity-24</div>
+          </div>
+
+          <h3>Usage examples</h3>
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">Block CSS — colours &amp; semantic states</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">/* blocks/cards/cards.css */
+.cards .cards__title {
+  color: var(--color-gs-forest);
+}
+
+.cards .cards__link:any-link {
+  color: var(--color-brand-500);
+}
+
+.cards .cards__link:any-link:hover {
+  color: var(--color-brand-600);
+}
+
+.cards .cards__message--success {
+  color: var(--color-positive-800);
+  background: var(--color-positive-200);
+}
+
+.cards .cards__message--error {
+  color: var(--color-alert-800);
+  background: var(--color-alert-200);
+}</pre>
+          </div>
+        </section>
+
+        <!-- TYPOGRAPHY -->
+        <section class="sg-card" id="typography">
+          <div class="sg-card__header">
+            <span class="sg-card__num">2</span>
+            <h2>Typography</h2>
+          </div>
+
+          <h3>Font families</h3>
+          <div class="sg-table-wrap">
+            <table class="sg-table">
+              <thead><tr><th>Family</th><th>Token</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Girl Scout</td><td><code>--type-display-font-family</code></td><td><span class="status-pill status-pill--active">Active</span></td></tr>
+                <tr><td>Trefoil Sans</td><td><code>--type-base-font-family</code></td><td><span class="status-pill status-pill--active">Active</span></td></tr>
+                <tr><td>Monospace</td><td><code>--type-fixed-font-family</code></td><td><span class="status-pill status-pill--active">Active</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="sg-note">Girl Scout and Trefoil Sans .woff2 files load from <code>fonts/</code> via <code>fonts.css</code>. Display and headline tokens use Girl Scout; body/UI tokens use Trefoil Sans.</p>
+
+          <h3>Type scale</h3>
+          <p class="sg-note">Font size and weight are computed live from CSS tokens — badges update automatically if tokens change.</p>
+          <div class="type-grid">
+            <div class="type-sample"><p class="type-label">--type-display-0-font <span class="type-size"></span></p><p class="type-preview" style="font: var(--type-display-0-font); letter-spacing: var(--type-display-0-letter-spacing)">Display 0</p></div>
+            <div class="type-sample"><p class="type-label">--type-display-1-font <span class="type-size"></span></p><p class="type-preview" style="font: var(--type-display-1-font); letter-spacing: var(--type-display-1-letter-spacing)">Display 1</p></div>
+            <div class="type-sample"><p class="type-label">--type-display-2-font <span class="type-size"></span></p><p class="type-preview" style="font: var(--type-display-2-font); letter-spacing: var(--type-display-2-letter-spacing)">Display 2</p></div>
+            <div class="type-sample"><p class="type-label">--type-display-3-font <span class="type-size"></span></p><p class="type-preview" style="font: var(--type-display-3-font); letter-spacing: var(--type-display-3-letter-spacing)">Display 3</p></div>
+            <div class="type-sample"><p class="type-label">--type-headline-1-font <span class="type-size"></span></p><p class="type-preview" style="font: var(--type-headline-1-font); letter-spacing: var(--type-headline-1-letter-spacing)">Headline 1</p></div>
+            <div class="type-sample"><p class="type-label">--type-headline-2-default-font <span class="type-size"></span></p><p class="type-preview" style="font: var(--type-headline-2-default-font); letter-spacing: var(--type-headline-2-default-letter-spacing)">Headline 2</p></div>
+            <div class="type-sample"><p class="type-label">--type-headline-2-strong-font <span class="type-size"></span></p><p class="type-preview" style="font: var(--type-headline-2-strong-font); letter-spacing: var(--type-headline-2-strong-letter-spacing)">Headline 2 Strong</p></div>
+            <div class="type-sample"><p class="type-label">--type-body-1-default-font <span class="type-size"></span></p><p class="type-preview" style="font: var(--type-body-1-default-font); letter-spacing: var(--type-body-1-default-letter-spacing)">Body 1 — The quick brown fox jumps over the lazy dog.</p></div>
+            <div class="type-sample"><p class="type-label">--type-body-1-strong-font <span class="type-size"></span></p><p class="type-preview" style="font: var(--type-body-1-strong-font); letter-spacing: var(--type-body-1-strong-letter-spacing)">Body 1 Strong</p></div>
+            <div class="type-sample"><p class="type-label">--type-body-1-emphasized-font <span class="type-size"></span></p><p class="type-preview" style="font: var(--type-body-1-emphasized-font); letter-spacing: var(--type-body-1-emphasized-letter-spacing)">Body 1 Emphasized</p></div>
+            <div class="type-sample"><p class="type-label">--type-body-2-default-font <span class="type-size"></span></p><p class="type-preview" style="font: var(--type-body-2-default-font); letter-spacing: var(--type-body-2-default-letter-spacing)">Body 2 — The quick brown fox.</p></div>
+            <div class="type-sample"><p class="type-label">--type-body-2-strong-font <span class="type-size"></span></p><p class="type-preview" style="font: var(--type-body-2-strong-font); letter-spacing: var(--type-body-2-strong-letter-spacing)">Body 2 Strong</p></div>
+            <div class="type-sample"><p class="type-label">--type-body-2-emphasized-font <span class="type-size"></span></p><p class="type-preview" style="font: var(--type-body-2-emphasized-font); letter-spacing: var(--type-body-2-emphasized-letter-spacing)">Body 2 Emphasized</p></div>
+            <div class="type-sample"><p class="type-label">--type-details-caption-1-font <span class="type-size"></span></p><p class="type-preview" style="font: var(--type-details-caption-1-font); letter-spacing: var(--type-details-caption-1-letter-spacing)">Caption 1</p></div>
+            <div class="type-sample"><p class="type-label">--type-details-caption-2-font <span class="type-size"></span></p><p class="type-preview" style="font: var(--type-details-caption-2-font); letter-spacing: var(--type-details-caption-2-letter-spacing)">Caption 2</p></div>
+            <div class="type-sample"><p class="type-label">--type-details-overline-font <span class="type-size"></span></p><p class="type-preview" style="font: var(--type-details-overline-font); letter-spacing: var(--type-details-overline-letter-spacing)">OVERLINE TEXT</p></div>
+            <div class="type-sample"><p class="type-label">--type-button-1-font <span class="type-size"></span></p><p class="type-preview" style="font: var(--type-button-1-font); letter-spacing: var(--type-button-1-letter-spacing)">BUTTON 1</p></div>
+            <div class="type-sample"><p class="type-label">--type-button-2-font <span class="type-size"></span></p><p class="type-preview" style="font: var(--type-button-2-font); letter-spacing: var(--type-button-2-letter-spacing)">BUTTON 2</p></div>
+            <div class="type-sample"><p class="type-label">--type-fixed-font-family <span class="type-size"></span></p><p class="type-preview" style="font-family: var(--type-fixed-font-family)">0123456789 ABCDEF</p></div>
+          </div>
+
+          <h3>Heading mapping (global styles)</h3>
+          <div class="demo-panel heading-demo">
+            <h1>Heading 1 → display-0</h1>
+            <h2>Heading 2 → display-2</h2>
+            <h3>Heading 3 → display-3</h3>
+            <h4>Heading 4 → headline-1</h4>
+            <h5>Heading 5 → headline-2-strong</h5>
+            <h6>Heading 6 → headline-2-default</h6>
+          </div>
+
+          <h3>Usage examples</h3>
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">Block CSS — type tokens (always pair font + letter-spacing)</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">/* blocks/hero/hero.css */
+.hero .hero__eyebrow {
+  font: var(--type-details-overline-font);
+  letter-spacing: var(--type-details-overline-letter-spacing);
+  color: var(--color-gs-star);
+}
+
+.hero .hero__body {
+  font: var(--type-body-1-default-font);
+  letter-spacing: var(--type-body-1-default-letter-spacing);
+}
+
+.hero .hero__caption {
+  font: var(--type-details-caption-1-font);
+  letter-spacing: var(--type-details-caption-1-letter-spacing);
+}</pre>
+          </div>
+        </section>
+
+        <!-- SPACING -->
+        <section class="sg-card" id="spacing">
+          <div class="sg-card__header">
+            <span class="sg-card__num">3</span>
+            <h2>Spacing</h2>
+          </div>
+          <div class="spacing-scale">
+            <div class="spacing-row"><span class="spacing-row__token">--spacing-none</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width: var(--spacing-none)"></div></div><span class="spacing-row__meta">0px · GS None</span></div>
+            <div class="spacing-row"><span class="spacing-row__token">--spacing-2xs</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width: var(--spacing-2xs)"></div></div><span class="spacing-row__meta">2px · GS Extra Small</span></div>
+            <div class="spacing-row"><span class="spacing-row__token">--spacing-xxxsmall</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width: var(--spacing-xxxsmall)"></div></div><span class="spacing-row__meta">2px · legacy alias of 2xs</span></div>
+            <div class="spacing-row"><span class="spacing-row__token">--spacing-xxsmall</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width: var(--spacing-xxsmall)"></div></div><span class="spacing-row__meta">4px · GS Small</span></div>
+            <div class="spacing-row"><span class="spacing-row__token">--spacing-xsmall</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width: var(--spacing-xsmall)"></div></div><span class="spacing-row__meta">8px · GS Medium</span></div>
+            <div class="spacing-row"><span class="spacing-row__token">--spacing-xsmall-plus</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width: var(--spacing-xsmall-plus)"></div></div><span class="spacing-row__meta">12px</span></div>
+            <div class="spacing-row"><span class="spacing-row__token">--spacing-small</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width: var(--spacing-small)"></div></div><span class="spacing-row__meta">16px · GS Large</span></div>
+            <div class="spacing-row"><span class="spacing-row__token">--spacing-medium</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width: var(--spacing-medium)"></div></div><span class="spacing-row__meta">24px · GS XL</span></div>
+            <div class="spacing-row"><span class="spacing-row__token">--spacing-big</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width: var(--spacing-big)"></div></div><span class="spacing-row__meta">32px · GS 2XL</span></div>
+            <div class="spacing-row"><span class="spacing-row__token">--spacing-xbig</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width: var(--spacing-xbig)"></div></div><span class="spacing-row__meta">40px</span></div>
+            <div class="spacing-row"><span class="spacing-row__token">--spacing-xxbig</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width: var(--spacing-xxbig)"></div></div><span class="spacing-row__meta">48px · GS 3XL</span></div>
+            <div class="spacing-row"><span class="spacing-row__token">--spacing-large</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width: var(--spacing-large)"></div></div><span class="spacing-row__meta">64px · GS 4XL</span></div>
+            <div class="spacing-row"><span class="spacing-row__token">--spacing-xlarge</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width: var(--spacing-xlarge)"></div></div><span class="spacing-row__meta">72px</span></div>
+            <div class="spacing-row"><span class="spacing-row__token">--spacing-xxlarge</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width: var(--spacing-xxlarge)"></div></div><span class="spacing-row__meta">96px · GS 5XL</span></div>
+            <div class="spacing-row"><span class="spacing-row__token">--spacing-huge</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width: var(--spacing-huge)"></div></div><span class="spacing-row__meta">120px · GS 6XL</span></div>
+            <div class="spacing-row"><span class="spacing-row__token">--spacing-xhuge</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width: var(--spacing-xhuge)"></div></div><span class="spacing-row__meta">144px</span></div>
+            <div class="spacing-row"><span class="spacing-row__token">--spacing-xxhuge</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width: var(--spacing-xxhuge)"></div></div><span class="spacing-row__meta">192px</span></div>
+          </div>
+
+          <h3>GS semantic aliases</h3>
+          <div class="sg-table-wrap">
+            <table class="sg-table">
+              <thead><tr><th>Alias</th><th>Resolves to</th><th>Size</th></tr></thead>
+              <tbody>
+                <tr><td><code>--spacing-gs-none</code></td><td>--spacing-none</td><td>0px</td></tr>
+                <tr><td><code>--spacing-gs-2xs</code></td><td>--spacing-2xs</td><td>2px</td></tr>
+                <tr><td><code>--spacing-gs-xs</code></td><td>--spacing-xxsmall</td><td>4px</td></tr>
+                <tr><td><code>--spacing-gs-sm</code></td><td>--spacing-xsmall</td><td>8px</td></tr>
+                <tr><td><code>--spacing-gs-md</code></td><td>--spacing-small</td><td>16px</td></tr>
+                <tr><td><code>--spacing-gs-lg</code></td><td>--spacing-medium</td><td>24px</td></tr>
+                <tr><td><code>--spacing-gs-xl</code></td><td>--spacing-big</td><td>32px</td></tr>
+                <tr><td><code>--spacing-gs-2xl</code></td><td>--spacing-xxbig</td><td>48px</td></tr>
+                <tr><td><code>--spacing-gs-3xl</code></td><td>--spacing-large</td><td>64px</td></tr>
+                <tr><td><code>--spacing-gs-4xl</code></td><td>--spacing-xxlarge</td><td>96px</td></tr>
+                <tr><td><code>--spacing-gs-5xl</code></td><td>--spacing-huge</td><td>120px</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Usage examples</h3>
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">Block CSS — internal spacing + section metadata for outer spacing</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">/* blocks/feature/feature.css — padding inside the block */
+.feature {
+  padding: var(--spacing-xxbig) var(--grid-1-margins);
+  gap: var(--spacing-medium);
+}
+
+@media (min-width: 1280px) {
+  .feature {
+    padding: var(--spacing-xxbig) var(--grid-4-margins);
+  }
+}
+
+.feature .feature__item + .feature__item {
+  margin-top: var(--spacing-small);
+}
+
+/* Section outer spacing — set in AEM section metadata, NOT in block CSS:
+   data-margin="lg"  → 24px between sections
+   data-padding="3xl" → 64px vertical padding inside section */</pre>
+          </div>
+        </section>
+
+        <!-- GRID -->
+        <section class="sg-card" id="grid">
+          <div class="sg-card__header">
+            <span class="sg-card__num">4</span>
+            <h2>Grid System</h2>
+          </div>
+          <p>Resize the browser — columns switch at <code>768px</code> (4→12) and margins/gutters at <code>1280px</code>.</p>
+
+          <figure class="sg-grid-diagram">
+            <svg viewBox="0 0 760 820" xmlns="http://www.w3.org/2000/svg" width="100%" role="img" aria-labelledby="gd-title gd-desc" font-family="inherit" font-size="12">
+              <title id="gd-title">GS Page Layout — Full Grid Structure</title>
+              <desc id="gd-desc">Three viewport wireframes showing mobile (4 col, 20px margin), tablet (12 col, 20px margin), and desktop (12 col, 56px margin) layouts with header, sections, grid columns, and footer</desc>
+              <style>
+                .gd-header { fill: color-mix(in srgb, var(--color-gs-green, #00b451) 14%, white); }
+                .gd-viewport { stroke: var(--color-neutral-300, #d4d4d4); fill: none; stroke-width: 1.5; }
+                .gd-section { fill: var(--color-neutral-50, #fafafa); stroke: var(--color-neutral-200, #e5e5e5); stroke-width: 0.75; }
+                .gd-col { fill: color-mix(in srgb, var(--color-gs-green, #00b451) 10%, white); stroke: var(--color-gs-green, #00b451); stroke-width: 0.5; }
+                .gd-col-inner { fill: color-mix(in srgb, var(--color-gs-green, #00b451) 10%, white); }
+                .gd-margin-line { stroke: var(--color-gs-green, #00b451); fill: none; stroke-dasharray: 3 2; stroke-width: 0.75; }
+                .gd-footer { fill: var(--color-gs-forest, #005640); }
+                .gd-gap-box { fill: var(--color-neutral-50, #fafafa); }
+                .gd-divider { stroke: var(--color-neutral-200, #e5e5e5); fill: none; stroke-width: 0.5; }
+                .gd-tier { font-weight: 700; fill: var(--color-neutral-700, #404040); }
+                .gd-tier-sub { fill: var(--color-neutral-500, #737373); }
+                .gd-section-label { fill: var(--color-neutral-700, #404040); font-weight: 600; }
+                .gd-section-sub { fill: var(--color-neutral-500, #737373); }
+                .gd-col-label { fill: var(--color-neutral-600, #525252); }
+                .gd-gap-label { fill: var(--color-neutral-500, #737373); }
+                .gd-margin-label { fill: var(--color-gs-green, #00b451); }
+                .gd-footer-label { fill: white; font-weight: 600; }
+                .gd-footer-sub { fill: var(--color-neutral-400, #a3a3a3); }
+                .gd-dots { fill: var(--color-neutral-400, #a3a3a3); }
+                .gd-legend-text { fill: var(--color-neutral-600, #525252); }
+              </style>
+
+              <!-- Title -->
+              <text x="380" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="var(--color-neutral-800, #2b2b2b)">GS Page Layout — Full Grid Structure</text>
+
+              <!-- ══ MOBILE ══ x=20 w=170 -->
+              <g transform="translate(20,46)">
+                <text x="85" y="13" text-anchor="middle" font-size="11" class="gd-tier">MOBILE &lt; 768px</text>
+                <text x="85" y="27" text-anchor="middle" font-size="10" class="gd-tier-sub">4 col · 20px margin · 16px gutter</text>
+                <rect x="0" y="36" width="170" height="700" rx="4" class="gd-viewport"/>
+                <!-- Header -->
+                <rect x="0" y="36" width="170" height="36" rx="4" class="gd-header"/>
+                <text x="85" y="58" text-anchor="middle" font-size="11" class="gd-section-label">header</text>
+                <text x="85" y="70" text-anchor="middle" font-size="9" class="gd-section-sub">64px · full-bleed</text>
+                <!-- Hero full-bleed -->
+                <rect x="0" y="80" width="170" height="80" class="gd-header"/>
+                <line x1="13" y1="80" x2="13" y2="160" class="gd-margin-line"/>
+                <line x1="157" y1="80" x2="157" y2="160" class="gd-margin-line"/>
+                <rect x="13" y="86" width="33" height="68" rx="1" class="gd-col"/>
+                <rect x="50" y="86" width="33" height="68" rx="1" class="gd-col"/>
+                <rect x="87" y="86" width="33" height="68" rx="1" class="gd-col"/>
+                <rect x="124" y="86" width="33" height="68" rx="1" class="gd-col"/>
+                <text x="85" y="118" text-anchor="middle" font-size="10" class="gd-section-label">Hero / Section 1</text>
+                <text x="85" y="130" text-anchor="middle" font-size="9" class="gd-section-sub">full-bleed bg</text>
+                <text x="85" y="143" text-anchor="middle" font-size="9" class="gd-section-sub">content: 20px margin</text>
+                <!-- gap -->
+                <line x1="0" y1="160" x2="170" y2="160" class="gd-divider"/>
+                <rect x="40" y="160" width="90" height="20" rx="2" class="gd-gap-box"/>
+                <text x="85" y="174" text-anchor="middle" font-size="9" class="gd-gap-label">section gap: 48px</text>
+                <!-- Section 2 -->
+                <rect x="13" y="188" width="144" height="52" rx="2" class="gd-section"/>
+                <text x="85" y="213" text-anchor="middle" font-size="10" class="gd-section-label">Section 2</text>
+                <text x="85" y="228" text-anchor="middle" font-size="9" class="gd-section-sub">max-w: 1280px · centered</text>
+                <!-- gap -->
+                <rect x="40" y="244" width="90" height="20" rx="2" class="gd-gap-box"/>
+                <text x="85" y="258" text-anchor="middle" font-size="9" class="gd-gap-label">section gap: 48px</text>
+                <!-- Section 3 -->
+                <rect x="13" y="272" width="144" height="52" rx="2" class="gd-section"/>
+                <text x="85" y="297" text-anchor="middle" font-size="10" class="gd-section-label">Section 3</text>
+                <text x="85" y="312" text-anchor="middle" font-size="9" class="gd-section-sub">block inside section</text>
+                <!-- dots -->
+                <text x="85" y="352" text-anchor="middle" font-size="16" class="gd-dots">···</text>
+                <!-- Footer -->
+                <rect x="0" y="368" width="170" height="368" class="gd-footer"/>
+                <text x="85" y="560" text-anchor="middle" font-size="11" class="gd-footer-label">footer</text>
+                <text x="85" y="576" text-anchor="middle" font-size="9" class="gd-footer-sub">full-bleed dark bg</text>
+                <text x="85" y="590" text-anchor="middle" font-size="9" class="gd-footer-sub">content: 20px margin</text>
+                <!-- margin annotation -->
+                <line x1="0" y1="750" x2="13" y2="750" stroke="var(--color-gs-green,#00b451)" stroke-width="1"/>
+                <line x1="157" y1="750" x2="170" y2="750" stroke="var(--color-gs-green,#00b451)" stroke-width="1"/>
+                <text x="7" y="764" text-anchor="middle" font-size="9" class="gd-margin-label">20</text>
+                <text x="163" y="764" text-anchor="middle" font-size="9" class="gd-margin-label">20</text>
+              </g>
+
+              <!-- ══ TABLET ══ x=210 w=330 -->
+              <g transform="translate(210,46)">
+                <text x="165" y="13" text-anchor="middle" font-size="11" class="gd-tier">TABLET 768px–1279px</text>
+                <text x="165" y="27" text-anchor="middle" font-size="10" class="gd-tier-sub">12 col · 20px margin · 16px gutter</text>
+                <rect x="0" y="36" width="330" height="700" rx="4" class="gd-viewport"/>
+                <!-- Header -->
+                <rect x="0" y="36" width="330" height="36" rx="4" class="gd-header"/>
+                <text x="165" y="60" text-anchor="middle" font-size="11" class="gd-section-label">header</text>
+                <!-- Hero -->
+                <rect x="0" y="80" width="330" height="80" class="gd-header"/>
+                <line x1="13" y1="80" x2="13" y2="160" class="gd-margin-line"/>
+                <line x1="317" y1="80" x2="317" y2="160" class="gd-margin-line"/>
+                <rect x="13" y="90" width="96" height="58" rx="1" class="gd-col"/>
+                <rect x="113" y="90" width="96" height="58" rx="1" class="gd-col"/>
+                <rect x="213" y="90" width="104" height="58" rx="1" class="gd-col"/>
+                <text x="165" y="118" text-anchor="middle" font-size="10" class="gd-section-label">Hero / Section 1</text>
+                <text x="165" y="133" text-anchor="middle" font-size="9" class="gd-section-sub">full-bleed bg · content: 20px margin</text>
+                <!-- gap -->
+                <line x1="0" y1="160" x2="330" y2="160" class="gd-divider"/>
+                <rect x="120" y="160" width="90" height="20" rx="2" class="gd-gap-box"/>
+                <text x="165" y="174" text-anchor="middle" font-size="9" class="gd-gap-label">section gap: 64px</text>
+                <!-- Section 2 — 2 col -->
+                <rect x="13" y="188" width="303" height="52" rx="2" class="gd-section"/>
+                <rect x="17" y="192" width="143" height="44" rx="2" class="gd-col-inner"/>
+                <rect x="165" y="192" width="147" height="44" rx="2" class="gd-col-inner"/>
+                <text x="90" y="219" text-anchor="middle" font-size="9" class="gd-col-label">col-span-6</text>
+                <text x="240" y="219" text-anchor="middle" font-size="9" class="gd-col-label">col-span-6</text>
+                <!-- gap -->
+                <rect x="120" y="244" width="90" height="20" rx="2" class="gd-gap-box"/>
+                <text x="165" y="258" text-anchor="middle" font-size="9" class="gd-gap-label">section gap: 64px</text>
+                <!-- Section 3 — 3 col -->
+                <rect x="13" y="272" width="303" height="52" rx="2" class="gd-section"/>
+                <rect x="17" y="276" width="92" height="44" rx="2" class="gd-col-inner"/>
+                <rect x="113" y="276" width="92" height="44" rx="2" class="gd-col-inner"/>
+                <rect x="209" y="276" width="103" height="44" rx="2" class="gd-col-inner"/>
+                <text x="63" y="303" text-anchor="middle" font-size="9" class="gd-col-label">col-4</text>
+                <text x="159" y="303" text-anchor="middle" font-size="9" class="gd-col-label">col-4</text>
+                <text x="260" y="303" text-anchor="middle" font-size="9" class="gd-col-label">col-4</text>
+                <!-- dots -->
+                <text x="165" y="352" text-anchor="middle" font-size="16" class="gd-dots">···</text>
+                <!-- Footer -->
+                <rect x="0" y="368" width="330" height="368" class="gd-footer"/>
+                <text x="165" y="560" text-anchor="middle" font-size="11" class="gd-footer-label">footer</text>
+                <text x="165" y="576" text-anchor="middle" font-size="9" class="gd-footer-sub">full-bleed · content: 20px margin · stacked columns</text>
+                <!-- margin annotation -->
+                <line x1="0" y1="750" x2="13" y2="750" stroke="var(--color-gs-green,#00b451)" stroke-width="1"/>
+                <line x1="317" y1="750" x2="330" y2="750" stroke="var(--color-gs-green,#00b451)" stroke-width="1"/>
+                <text x="7" y="764" text-anchor="middle" font-size="9" class="gd-margin-label">20</text>
+                <text x="323" y="764" text-anchor="middle" font-size="9" class="gd-margin-label">20</text>
+              </g>
+
+              <!-- ══ DESKTOP ══ x=560 w=180 -->
+              <g transform="translate(560,46)">
+                <text x="90" y="13" text-anchor="middle" font-size="11" class="gd-tier">DESKTOP ≥ 1280px</text>
+                <text x="90" y="27" text-anchor="middle" font-size="10" class="gd-tier-sub">12 col · 56px margin · 24px gutter</text>
+                <rect x="0" y="36" width="180" height="700" rx="4" class="gd-viewport"/>
+                <!-- Header -->
+                <rect x="0" y="36" width="180" height="36" rx="4" class="gd-header"/>
+                <text x="90" y="60" text-anchor="middle" font-size="11" class="gd-section-label">header</text>
+                <!-- Hero -->
+                <rect x="0" y="80" width="180" height="80" class="gd-header"/>
+                <line x1="13" y1="80" x2="13" y2="160" class="gd-margin-line"/>
+                <line x1="167" y1="80" x2="167" y2="160" class="gd-margin-line"/>
+                <text x="90" y="112" text-anchor="middle" font-size="10" class="gd-section-label">Hero / Section 1</text>
+                <text x="90" y="126" text-anchor="middle" font-size="9" class="gd-section-sub">full-bleed bg</text>
+                <text x="90" y="140" text-anchor="middle" font-size="9" class="gd-section-sub">content: 56px margin</text>
+                <!-- gap -->
+                <line x1="0" y1="160" x2="180" y2="160" class="gd-divider"/>
+                <rect x="45" y="160" width="90" height="20" rx="2" class="gd-gap-box"/>
+                <text x="90" y="174" text-anchor="middle" font-size="9" class="gd-gap-label">section gap: 96px</text>
+                <!-- Section 2 — 2 col -->
+                <rect x="13" y="188" width="154" height="52" rx="2" class="gd-section"/>
+                <rect x="17" y="192" width="72" height="44" rx="2" class="gd-col-inner"/>
+                <rect x="93" y="192" width="70" height="44" rx="2" class="gd-col-inner"/>
+                <text x="54" y="219" text-anchor="middle" font-size="9" class="gd-col-label">col-6</text>
+                <text x="128" y="219" text-anchor="middle" font-size="9" class="gd-col-label">col-6</text>
+                <!-- gap -->
+                <rect x="45" y="244" width="90" height="20" rx="2" class="gd-gap-box"/>
+                <text x="90" y="258" text-anchor="middle" font-size="9" class="gd-gap-label">section gap: 96px</text>
+                <!-- Section 3 — 3 col -->
+                <rect x="13" y="272" width="154" height="52" rx="2" class="gd-section"/>
+                <rect x="17" y="276" width="44" height="44" rx="2" class="gd-col-inner"/>
+                <rect x="65" y="276" width="44" height="44" rx="2" class="gd-col-inner"/>
+                <rect x="113" y="276" width="50" height="44" rx="2" class="gd-col-inner"/>
+                <text x="39" y="303" text-anchor="middle" font-size="8" class="gd-col-label">col-4</text>
+                <text x="87" y="303" text-anchor="middle" font-size="8" class="gd-col-label">col-4</text>
+                <text x="138" y="303" text-anchor="middle" font-size="8" class="gd-col-label">col-4</text>
+                <!-- dots -->
+                <text x="90" y="352" text-anchor="middle" font-size="16" class="gd-dots">···</text>
+                <!-- Footer -->
+                <rect x="0" y="368" width="180" height="368" class="gd-footer"/>
+                <text x="90" y="548" text-anchor="middle" font-size="10" class="gd-footer-label">footer</text>
+                <text x="90" y="564" text-anchor="middle" font-size="9" class="gd-footer-sub">full-bleed dark</text>
+                <text x="90" y="580" text-anchor="middle" font-size="9" class="gd-footer-sub">2-col grid layout</text>
+                <text x="90" y="594" text-anchor="middle" font-size="9" class="gd-footer-sub">nav | aside</text>
+                <!-- margin annotation -->
+                <line x1="0" y1="750" x2="13" y2="750" stroke="var(--color-gs-green,#00b451)" stroke-width="1"/>
+                <line x1="167" y1="750" x2="180" y2="750" stroke="var(--color-gs-green,#00b451)" stroke-width="1"/>
+                <text x="7" y="764" text-anchor="middle" font-size="9" class="gd-margin-label">56</text>
+                <text x="173" y="764" text-anchor="middle" font-size="9" class="gd-margin-label">56</text>
+              </g>
+
+              <!-- Legend -->
+              <g transform="translate(20,792)">
+                <rect x="0" y="0" width="12" height="10" rx="2" class="gd-header"/>
+                <text x="16" y="9" font-size="10" class="gd-legend-text">full-bleed (bg spans 100vw)</text>
+                <rect x="210" y="0" width="12" height="10" rx="2" class="gd-section"/>
+                <text x="226" y="9" font-size="10" class="gd-legend-text">contained (max-w 1280px · auto-centered)</text>
+                <line x1="480" y1="5" x2="492" y2="5" stroke="var(--color-gs-green,#00b451)" stroke-width="1" stroke-dasharray="3 2"/>
+                <text x="496" y="9" font-size="10" class="gd-legend-text">grid margin (horizontal padding)</text>
+              </g>
+            </svg>
+            <figcaption>Three-tier responsive grid — resize the browser to see columns switch at 768px and margins widen at 1280px</figcaption>
+          </figure>
+
+          <div class="sg-table-wrap">
+            <table class="sg-table">
+              <thead><tr><th>Breakpoint</th><th>Tier</th><th>Cols</th><th>Margin</th><th>Gutter</th></tr></thead>
+              <tbody>
+                <tr><td>Mobile &lt; 768px</td><td><code>--grid-1-*</code></td><td>4</td><td>20px</td><td>16px</td></tr>
+                <tr><td>Tablet 768–1279px</td><td><code>--grid-2-*</code></td><td>12</td><td>20px</td><td>16px</td></tr>
+                <tr><td>Desktop ≥ 1280px</td><td><code>--grid-3-*</code></td><td>12</td><td>56px</td><td>24px</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="component-label">Live grid — <code>--grid-columns</code> · <code>--grid-gutter</code> · <code>--grid-margin</code></p>
+          <div class="grid-demo">
+            <div class="grid-demo__cell">1</div><div class="grid-demo__cell">2</div><div class="grid-demo__cell">3</div><div class="grid-demo__cell">4</div>
+            <div class="grid-demo__cell">5</div><div class="grid-demo__cell">6</div><div class="grid-demo__cell">7</div><div class="grid-demo__cell">8</div>
+            <div class="grid-demo__cell">9</div><div class="grid-demo__cell">10</div><div class="grid-demo__cell">11</div><div class="grid-demo__cell">12</div>
+          </div>
+
+          <div class="sg-table-wrap">
+            <table class="sg-table">
+              <thead><tr><th>Token</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td><code>--bp-tablet</code> / <code>--bp-desktop</code></td><td>768px / 1280px (reference only — hardcode in @media)</td></tr>
+                <tr><td><code>--grid-max-width</code></td><td>1280px</td></tr>
+                <tr><td><code>--nav-height</code></td><td>6.4rem (64px)</td></tr>
+                <tr><td><code>--grid-4-*</code> / <code>--grid-5-*</code></td><td>12 col / 56px margin / 24px gutter (extended tiers)</td></tr>
+                <tr><td>Section vertical gap</td><td>Mobile: 48px (<code>--spacing-xxbig</code>) · Tablet: 64px (<code>--spacing-large</code>) · Desktop: 96px (<code>--spacing-xxlarge</code>)</td></tr>
+                <tr><td>Content width @ desktop</td><td>1168px = 1280 − (56 × 2) — handled automatically by <code>padding: 0 var(--grid-margin)</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Usage examples</h3>
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">Block CSS — responsive grid layout</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">/* blocks/gallery/gallery.css */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  gap: var(--grid-gutter);
+  padding: 0 var(--grid-margin);
+  max-width: var(--grid-max-width);
+}
+
+.gallery .gallery__item {
+  grid-column: span 4; /* mobile: full width in 4-col grid */
+}
+
+@media (min-width: 768px) {
+  .gallery .gallery__item {
+    grid-column: span 4; /* tablet/desktop: 4 of 12 cols */
+  }
+}</pre>
+          </div>
+
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">Tablet-only styles — CSS Level 4 range syntax</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">/* Use range syntax when a rule applies ONLY at tablet — avoids a second query to reset it.
+   Browser support: Chrome 104+, Firefox 63+, Safari 16.4+ */
+
+/* ❌ Old way — two queries just to cancel each other */
+@media (min-width: 768px) {
+  .hero .hero__aside { display: none; }
+}
+@media (min-width: 1280px) {
+  .hero .hero__aside { display: block; }
+}
+
+/* ✅ Range syntax — clear intent, single query */
+@media (768px &lt;= width &lt; 1280px) {
+  .hero .hero__aside { display: none; }
+}
+
+/* ✅ Standard min-width still correct for tablet + desktop cascade */
+@media (min-width: 768px) {
+  .hero .hero__title { font-size: var(--type-heading-1-size); }
+}
+@media (min-width: 1280px) {
+  .hero .hero__title { font-size: var(--type-display-size); }
+}</pre>
+          </div>
+
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">Page structure &amp; containment — how sections constrain content</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">/*
+ * EDS generates this HTML for every authored section:
+ *
+ *   &lt;main&gt;
+ *     &lt;div class="section"&gt;              ← full viewport width (can have bg color)
+ *       &lt;div class="default-content-wrapper"&gt;  ← constrained — max-w + padding auto-applied
+ *         &lt;!-- blocks and default content live here --&gt;
+ *       &lt;/div&gt;
+ *     &lt;/div&gt;
+ *   &lt;/main&gt;
+ *
+ * styles.css applies to every inner wrapper automatically:
+ */
+main > .section > div {
+  max-width: var(--grid-max-width); /* 1280px */
+  margin: auto;
+  padding: 0 var(--grid-margin);   /* 20px mobile → 56px desktop (alias auto-switches) */
+}
+
+/* Section vertical spacing (applied to the outer .section, not the wrapper) */
+main > .section            { margin: var(--spacing-xxbig) 0; }  /* 48px mobile  */
+@media (min-width: 768px)  { main > .section { margin: var(--spacing-large) 0; } }   /* 64px tablet  */
+@media (min-width: 1280px) { main > .section { margin: var(--spacing-xxlarge) 0; } } /* 96px desktop */
+
+/* First and last sections never carry a top/bottom gap */
+main > .section:first-of-type { margin-top: 0; }
+main > .section:last-of-type  { margin-bottom: 0; }</pre>
+          </div>
+
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">Full-bleed vs contained — two block layout modes</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">/*
+ * CONTAINED — block respects the section wrapper's max-width + padding (default).
+ * You don't need to write max-width or padding on the block itself.
+ * The section wrapper already handles it.
+ */
+.cards { display: grid; gap: var(--grid-gutter); }
+
+
+/*
+ * FULL-BLEED — block's background (or image) spans 100vw.
+ * Override the section wrapper padding to zero on the block itself,
+ * then re-apply horizontal padding on an inner content div.
+ */
+.hero {
+  padding: 0;          /* remove inherited section padding so bg reaches edges */
+}
+
+.hero .hero__content {
+  max-width: var(--grid-max-width);  /* re-apply containment on inner div */
+  margin: auto;
+  padding: var(--spacing-xxbig) var(--grid-1-margins); /* mobile: 20px sides */
+}
+
+@media (min-width: 1280px) {
+  .hero .hero__content {
+    padding: var(--spacing-xxbig) var(--grid-4-margins); /* desktop: 56px sides */
+  }
+}
+
+/*
+ * ✅ Horizontal padding ALWAYS uses grid margin tokens — never fixed px.
+ *    var(--grid-1-margins) = 20px   (mobile / tablet)
+ *    var(--grid-4-margins) = 56px   (desktop)
+ */</pre>
+          </div>
+        </section>
+
+        <!-- BUTTONS -->
+        <section class="sg-card" id="buttons">
+          <div class="sg-card__header">
+            <span class="sg-card__num">5</span>
+            <h2>Buttons</h2>
+          </div>
+
+          <div class="sg-table-wrap">
+            <table class="sg-table">
+              <thead><tr><th>Figma type</th><th>Colour</th><th>EDS class</th></tr></thead>
+              <tbody>
+                <tr><td>Primary</td><td>Green</td><td><code>.button</code> or <code>.button.primary</code></td></tr>
+                <tr><td>Primary</td><td>Violet</td><td><code>.button.accent</code></td></tr>
+                <tr><td>Primary</td><td>White-on-Dark</td><td><code>.button.white-on-dark</code></td></tr>
+                <tr><td>Primary</td><td>Black / Light</td><td><code>.button.black</code> / <code>.button.light</code></td></tr>
+                <tr><td>Secondary</td><td>Green</td><td><code>.button.secondary</code></td></tr>
+                <tr><td>Secondary</td><td>Light (on dark)</td><td><code>.button.secondary.light</code></td></tr>
+                <tr><td>Text</td><td>Green / White</td><td><code>.button.text</code> / <code>.button.text.white</code></td></tr>
+                <tr><td>Text Secondary</td><td>Green / White</td><td><code>.button.text-secondary</code> / <code>.button.text-secondary.white</code></td></tr>
+                <tr><td>Disabled</td><td>—</td><td><code>[aria-disabled="true"]</code></td></tr>
+                <tr><td>Size sm / md / lg</td><td>—</td><td><code>.btn-sm</code> (36px) / <code>.btn-md</code> (46px) / default (52px)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="demo-panel">
+            <p class="component-label">Primary &amp; secondary</p>
+            <div class="btn-row">
+              <a class="button primary" href="#0">Shop Now</a>
+              <a class="button secondary" href="#0">Learn More</a>
+              <a class="button accent" href="#0">Donate</a>
+              <a class="button black" href="#0">Black</a>
+              <a class="button light" href="#0">Light</a>
+              <a class="button text" href="#0">Read more</a>
+            </div>
+            <p class="sg-note" style="margin-top: var(--spacing-small)">Primary buttons use <code>--btn-primary-bg</code> (Forest #005640), not <code>--color-brand-500</code> (GS Green).</p>
+            <p class="component-label">Sizes — wrap in <code>.btn-sm</code> / <code>.btn-md</code> container</p>
+            <div class="btn-row">
+              <span class="btn-sm"><a class="button primary" href="#0">Small</a></span>
+              <span class="btn-md"><a class="button primary" href="#0">Medium</a></span>
+              <span><a class="button primary" href="#0">Large</a></span>
+            </div>
+            <p class="component-label">Disabled</p>
+            <div class="btn-row">
+              <a class="button primary" href="#0" aria-disabled="true">Primary</a>
+              <a class="button secondary" href="#0" aria-disabled="true">Secondary</a>
+            </div>
+          </div>
+
+          <div class="demo-panel demo-panel--dark">
+            <p class="component-label">On dark surfaces</p>
+            <div class="btn-row">
+              <a class="button white-on-dark" href="#0">White on Dark</a>
+              <a class="button secondary light" href="#0">Secondary Light</a>
+              <a class="button text white" href="#0">Text White</a>
+              <a class="button text-secondary white" href="#0">Text Sec White</a>
+            </div>
+          </div>
+
+          <h3>EDS authored buttons</h3>
+          <p>Global <code>.button</code> classes in <code>styles/styles.css</code> apply to links and <code>&lt;button&gt;</code> inside <code>&lt;main&gt;</code>. They read directly from <code>--btn-*</code> tokens (sizing, typography, colour, states). Size utilities (<code>.btn-sm</code> / <code>.btn-md</code>) go on a wrapper around the button.</p>
+
+          <h3>Commerce dropin buttons</h3>
+          <p>Adobe Commerce dropins inject <code>.dropin-button</code> at runtime with their own CSS. Do <strong>not</strong> edit files in <code>scripts/__dropins__/</code>. Instead:</p>
+          <ul class="sg-how-to">
+            <li>Shared tokens live in <code>:root, .dropin-design { }</code> so dropins inherit GS brand colours</li>
+            <li>Dropin <strong>primary</strong> buttons map to <code>--btn-primary-*</code> (Forest #005640) — same as EDS <code>.button.primary</code>, not bright <code>--color-brand-500</code></li>
+            <li>Dropin <strong>secondary</strong> buttons map to <code>--btn-secondary-*</code> (forest outline + text)</li>
+            <li>Shape + typography (height, padding, radius, uppercase, weight) are aligned via scoped <code>.dropin-design .dropin-button</code> overrides that reference <code>--btn-*</code></li>
+            <li>Legacy dropin colour hooks <code>--color-button-hover</code>, <code>--color-button-active</code>, <code>--color-button-focus</code> remain for injected rules that still read them</li>
+          </ul>
+
+          <div class="sg-table-wrap">
+            <table class="sg-table">
+              <thead><tr><th>Dropin class</th><th>EDS equivalent</th><th>Token source</th></tr></thead>
+              <tbody>
+                <tr><td><code>.dropin-button--primary</code></td><td><code>.button.primary</code></td><td><code>--btn-primary-bg</code>, <code>--btn-primary-bg-hover</code>, <code>--btn-primary-bg-active</code></td></tr>
+                <tr><td><code>.dropin-button--secondary</code></td><td><code>.button.secondary</code></td><td><code>--btn-secondary-border</code>, <code>--btn-secondary-text</code>, hover tokens</td></tr>
+                <tr><td><code>.dropin-button--medium</code></td><td><code>.btn-md</code> wrapper</td><td><code>--btn-height-md</code> (46px), <code>--btn-padding-x-md</code>, <code>--btn-font-size-md</code></td></tr>
+                <tr><td><code>.dropin-button</code> (default)</td><td>Large button</td><td><code>--btn-height-lg</code> (52px), <code>--btn-padding-x-lg</code>, <code>--btn-radius-lg</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Button tokens (<code>--btn-*</code>)</h3>
+          <div class="sg-table-wrap">
+            <table class="sg-table">
+              <thead><tr><th>Group</th><th>Tokens</th><th>Notes</th></tr></thead>
+              <tbody>
+                <tr><td>Sizing</td><td><code>--btn-height-sm/md/lg</code>, <code>--btn-padding-x-sm/md/lg</code>, <code>--btn-radius-sm/md/lg</code></td><td>36 / 46 / 52px heights</td></tr>
+                <tr><td>Typography</td><td><code>--btn-font-family</code>, <code>--btn-font-weight</code>, <code>--btn-font-size-sm/md/lg</code>, <code>--btn-line-height</code>, <code>--btn-text-transform</code>, <code>--btn-letter-spacing</code></td><td>Uppercase, SemiBold 600</td></tr>
+                <tr><td>Primary</td><td><code>--btn-primary-bg</code>, <code>--btn-primary-bg-hover</code>, <code>--btn-primary-bg-active</code>, <code>--btn-primary-text</code></td><td>Forest green CTA</td></tr>
+                <tr><td>Secondary</td><td><code>--btn-secondary-bg</code>, <code>--btn-secondary-border</code>, <code>--btn-secondary-text</code>, hover/active variants</td><td>Outlined forest; hover can fill solid</td></tr>
+                <tr><td>Variants</td><td><code>--btn-violet-*</code>, <code>--btn-black-*</code>, <code>--btn-light-*</code>, <code>--btn-white-on-dark-*</code>, <code>--btn-secondary-light-*</code></td><td>EDS classes only (not all mapped to dropins)</td></tr>
+                <tr><td>Text buttons</td><td><code>--btn-text-primary-*</code>, <code>--btn-text-secondary-*</code>, <code>--btn-text-white-*</code></td><td>Link-style; underline on hover</td></tr>
+                <tr><td>Disabled</td><td><code>--btn-disabled-bg</code>, <code>--btn-disabled-text</code>, <code>--btn-disabled-border</code>, <code>--btn-disabled-cursor</code></td><td><code>[aria-disabled="true"]</code> or <code>:disabled</code></td></tr>
+                <tr><td>Dropin colour hooks</td><td><code>--color-button-hover</code>, <code>--color-button-active</code>, <code>--color-button-focus</code></td><td>→ brand-600 / brand-700 / GS Green</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Usage examples</h3>
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">AEM authored HTML — buttons in default content</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">&lt;!-- Primary (default large) --&gt;
+&lt;p class="button-wrapper"&gt;
+  &lt;a class="button primary" href="/shop"&gt;Shop Now&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;!-- Secondary + size utility on wrapper --&gt;
+&lt;p class="button-wrapper btn-md"&gt;
+  &lt;a class="button secondary" href="/learn"&gt;Learn More&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;!-- On dark hero/section backgrounds --&gt;
+&lt;a class="button white-on-dark" href="/join"&gt;Join Us&lt;/a&gt;
+&lt;a class="button text white" href="/about"&gt;About&lt;/a&gt;
+
+&lt;!-- Disabled — keep in tab order, block navigation --&gt;
+&lt;a class="button primary" href="/checkout" aria-disabled="true"&gt;Unavailable&lt;/a&gt;</pre>
+          </div>
+
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">Dropin buttons — token-only theming (do not edit __dropins__ JS)</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">/* styles/styles.css — tokens dropins inherit automatically */
+:root, .dropin-design {
+  --btn-primary-bg: var(--color-gs-forest);
+  --btn-primary-bg-hover: #023729;
+  --color-button-hover: var(--color-brand-600);
+  --color-button-focus: var(--color-gs-green);
+}
+
+/* Shape/colour overrides for injected .dropin-button — scoped under .dropin-design */
+.dropin-design .dropin-button.dropin-button--primary {
+  background-color: var(--btn-primary-bg);
+}
+
+.dropin-design .dropin-button--secondary {
+  border-color: var(--btn-secondary-border);
+  color: var(--btn-secondary-text);
+}</pre>
+          </div>
+        </section>
+
+        <!-- FORMS -->
+        <section class="sg-card" id="forms">
+          <div class="sg-card__header">
+            <span class="sg-card__num">6</span>
+            <h2>Forms</h2>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-example">
+              <label for="ex-default">Default</label>
+              <input id="ex-default" type="text" placeholder="Placeholder" />
+            </div>
+            <div class="form-example">
+              <label for="ex-focus">Focus (tab here)</label>
+              <input id="ex-focus" type="email" placeholder="you@example.com" />
+            </div>
+            <div class="form-example">
+              <label for="ex-filled">Filled</label>
+              <input id="ex-filled" type="text" value="Savannah" />
+            </div>
+            <div class="form-example">
+              <label for="ex-valid">Validated (token only)</label>
+              <input id="ex-valid" type="text" value="GS-12345" />
+              <p style="color: var(--color-positive-800); font-size: var(--form-help-font-size); margin-top: var(--form-field-gap)">Valid council ID — border uses <code>--form-border-validated</code> when wired by block JS</p>
+            </div>
+            <div class="form-example">
+              <label for="ex-error">Error</label>
+              <input id="ex-error" type="email" value="bad" aria-invalid="true" aria-describedby="ex-error-msg" />
+              <p id="ex-error-msg" style="color: var(--color-alert-500); font-size: var(--form-help-font-size); margin-top: var(--form-field-gap)">Enter a valid email</p>
+            </div>
+            <div class="form-example">
+              <label for="ex-disabled">Disabled</label>
+              <input id="ex-disabled" type="text" value="GS-000-000" disabled />
+            </div>
+            <div class="form-example">
+              <label for="ex-textarea">Textarea</label>
+              <textarea id="ex-textarea" placeholder="Message"></textarea>
+            </div>
+            <div class="form-example">
+              <label for="ex-select">Select</label>
+              <select id="ex-select"><option>Choose council</option><option>Greater Atlanta</option></select>
+            </div>
+          </div>
+
+          <div class="demo-panel">
+            <p class="component-label">Checkbox — Default · Checked · Disabled</p>
+            <div style="display:flex;flex-wrap:wrap;gap:var(--spacing-medium);align-items:center;margin-bottom:var(--spacing-small)">
+              <label style="display:inline-flex;align-items:center;gap:var(--spacing-xsmall);font-size:1.6rem;color:var(--color-neutral-800);cursor:pointer">
+                <input type="checkbox" /> Default
+              </label>
+              <label style="display:inline-flex;align-items:center;gap:var(--spacing-xsmall);font-size:1.6rem;color:var(--color-neutral-800);cursor:pointer">
+                <input type="checkbox" checked /> Checked
+              </label>
+              <label style="display:inline-flex;align-items:center;gap:var(--spacing-xsmall);font-size:1.6rem;color:var(--color-neutral-600);cursor:not-allowed">
+                <input type="checkbox" disabled /> Disabled
+              </label>
+            </div>
+
+            <p class="component-label">Radio — Unchecked · Checked · Disabled</p>
+            <div style="display:flex;flex-wrap:wrap;gap:var(--spacing-medium);align-items:center;margin-bottom:var(--spacing-small)">
+              <label style="display:inline-flex;align-items:center;gap:var(--spacing-xsmall);font-size:1.6rem;color:var(--color-neutral-800);cursor:pointer">
+                <input type="radio" name="sg-radio" /> Option A
+              </label>
+              <label style="display:inline-flex;align-items:center;gap:var(--spacing-xsmall);font-size:1.6rem;color:var(--color-neutral-800);cursor:pointer">
+                <input type="radio" name="sg-radio" checked /> Option B
+              </label>
+              <label style="display:inline-flex;align-items:center;gap:var(--spacing-xsmall);font-size:1.6rem;color:var(--color-neutral-600);cursor:not-allowed">
+                <input type="radio" name="sg-radio-dis" disabled /> Disabled
+              </label>
+            </div>
+
+            <p class="component-label">Toggle — Off · On · Disabled</p>
+            <div style="display:flex;flex-wrap:wrap;gap:var(--spacing-medium);align-items:center">
+              <label style="display:inline-flex;align-items:center;gap:var(--spacing-xsmall);font-size:1.6rem;color:var(--color-neutral-800);cursor:pointer">
+                <input type="checkbox" role="switch" /> Off
+              </label>
+              <label style="display:inline-flex;align-items:center;gap:var(--spacing-xsmall);font-size:1.6rem;color:var(--color-neutral-800);cursor:pointer">
+                <input type="checkbox" role="switch" checked /> On
+              </label>
+              <label style="display:inline-flex;align-items:center;gap:var(--spacing-xsmall);font-size:1.6rem;color:var(--color-neutral-600);cursor:not-allowed">
+                <input type="checkbox" role="switch" disabled /> Disabled
+              </label>
+            </div>
+            <p class="sg-note" style="margin-top:var(--spacing-small)">
+              Figma specs: 20px checkbox (2px radius) · 24px radio (50%) · 32×20px toggle — Forest Green checked, Stone border unchecked.
+            </p>
+          </div>
+
+          <div class="sg-rule" style="margin-bottom:var(--spacing-medium)">
+            <strong>Floating labels</strong>
+            Figma uses a floating label pattern (label sits inside the field and floats to 12px above on focus/fill).
+            EDS native forms use <code>&lt;label&gt;</code> above the field — simpler and more accessible for authored content blocks.
+            Commerce dropins implement floating labels via their own SDK.
+            Use <code>--form-label-font-size-floating: 1.2rem</code> and <code>--form-label-line-height-floating: 1.68rem</code>
+            when styling dropin floating label inputs.
+          </div>
+
+          <!-- Floating label live demo — uses real .field--floating from styles.css -->
+          <p class="component-label">Floating label — click/tab into the field to see it animate</p>
+          <style>
+            /* Demo layout only — not in styles.css */
+            .fl-demo-grid {
+              display: grid;
+              grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+              gap: var(--spacing-medium);
+              margin-bottom: var(--spacing-big);
+            }
+            .fl-demo-field { display: flex; flex-direction: column; }
+            .fl-demo-help {
+              margin: var(--spacing-xxsmall) 0 0;
+              font-size: var(--form-help-font-size);
+              color: var(--form-help-text);
+              line-height: 1.4;
+            }
+            .fl-demo-help--error { color: var(--color-alert-500); }
+            .fl-required { color: var(--form-required-text); }
+          </style>
+
+          <div class="fl-demo-grid">
+
+            <!-- Default / empty -->
+            <div class="fl-demo-field">
+              <div class="field--floating">
+                <input type="text" id="fl-default" placeholder=" " autocomplete="off" />
+                <label for="fl-default">Email address <span class="fl-required">*</span></label>
+              </div>
+              <p class="fl-demo-help">Click into the field to see the label animate.</p>
+            </div>
+
+            <!-- Filled -->
+            <div class="fl-demo-field">
+              <div class="field--floating">
+                <input type="text" id="fl-filled" placeholder=" " value="scout@girlscouts.org" autocomplete="off" />
+                <label for="fl-filled">Email address <span class="fl-required">*</span></label>
+              </div>
+              <p class="fl-demo-help">Filled — label floats to 12px above.</p>
+            </div>
+
+            <!-- Error -->
+            <div class="fl-demo-field">
+              <div class="field--floating">
+                <input type="email" id="fl-error" placeholder=" " value="not-an-email" aria-invalid="true" autocomplete="off" />
+                <label for="fl-error">Email address <span class="fl-required">*</span></label>
+              </div>
+              <p class="fl-demo-help fl-demo-help--error">Please enter a valid email address.</p>
+            </div>
+
+            <!-- Disabled -->
+            <div class="fl-demo-field">
+              <div class="field--floating">
+                <input type="text" id="fl-disabled" placeholder=" " value="GS-000-000" disabled autocomplete="off" />
+                <label for="fl-disabled">Membership ID</label>
+              </div>
+              <p class="fl-demo-help">Read-only field.</p>
+            </div>
+
+          </div>
+
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">Floating label — use .field--floating utility (styles.css)</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">&lt;!-- HTML — wrap input + label in .field--floating --&gt;
+&lt;!-- IMPORTANT: placeholder=" " (single space) is required --&gt;
+
+&lt;div class="field--floating"&gt;
+  &lt;input type="email" id="email" placeholder=" " autocomplete="email" /&gt;
+  &lt;label for="email"&gt;
+    Email address&lt;span style="color:var(--form-required-text)"&gt; *&lt;/span&gt;
+  &lt;/label&gt;
+&lt;/div&gt;
+&lt;p style="font-size:var(--form-help-font-size);color:var(--form-help-text);margin-top:var(--spacing-xxsmall)"&gt;
+  Help text here
+&lt;/p&gt;
+
+&lt;!-- Error state — add aria-invalid="true" to input --&gt;
+&lt;div class="field--floating"&gt;
+  &lt;input type="email" id="email-err" placeholder=" " aria-invalid="true" /&gt;
+  &lt;label for="email-err"&gt;Email address&lt;/label&gt;
+&lt;/div&gt;
+&lt;p style="font-size:var(--form-help-font-size);color:var(--color-alert-500);margin-top:var(--spacing-xxsmall)"&gt;
+  Please enter a valid email address.
+&lt;/p&gt;
+
+&lt;!-- Disabled state --&gt;
+&lt;div class="field--floating"&gt;
+  &lt;input type="text" id="member-id" placeholder=" " value="GS-000-000" disabled /&gt;
+  &lt;label for="member-id"&gt;Membership ID&lt;/label&gt;
+&lt;/div&gt;
+
+&lt;!-- No extra CSS needed in your block —
+     .field--floating is a global utility in styles/styles.css --&gt;</pre>
+          </div>
+
+          <h3>EDS native forms vs Commerce dropins</h3>
+          <p>Two parallel systems share the same <code>--form-*</code> token definitions in <code>:root, .dropin-design { }</code>:</p>
+          <ul class="sg-how-to">
+            <li><strong>EDS / authored content</strong> — <code>main</code> styles target native <code>input</code>, <code>textarea</code>, <code>select</code>, and choice controls with <code>:not(.dropin-design *)</code> so block forms get full GS styling automatically</li>
+            <li><strong>Commerce dropins</strong> — inject their own markup/CSS (e.g. <code>.dropin-input-*</code>, <code>.dropin-checkbox__*</code>, <code>.dropin-radio-button__*</code>). Native field rules are excluded; dropins pick up GS <strong>colours</strong> via shared <code>--color-*</code> tokens (e.g. <code>--color-alert-500</code> for errors) and <strong>choice control geometry</strong> via scoped CSS overrides that map dropin classes to <code>--form-choice-*</code> tokens</li>
+            <li>Never edit <code>scripts/__dropins__/</code> — influence dropin forms only through token overrides and the <code>.dropin-design</code> selector blocks in <code>styles/styles.css</code></li>
+          </ul>
+
+          <h3>Form tokens (<code>--form-*</code>)</h3>
+          <div class="sg-table-wrap">
+            <table class="sg-table">
+              <thead><tr><th>Group</th><th>Token</th><th>Value / role</th></tr></thead>
+              <tbody>
+                <tr><td rowspan="5">Field sizing</td><td><code>--form-field-height</code></td><td>48px</td></tr>
+                <tr><td><code>--form-field-padding-x/y</code></td><td>12px</td></tr>
+                <tr><td><code>--form-field-radius</code></td><td>6px</td></tr>
+                <tr><td><code>--form-field-border-width</code></td><td>1px</td></tr>
+                <tr><td><code>--form-field-gap</code></td><td>8px — field to help text</td></tr>
+                <tr><td rowspan="4">Typography</td><td><code>--form-field-font-family</code></td><td>→ <code>--type-base-font-family</code></td></tr>
+                <tr><td><code>--form-field-font-size</code></td><td>1.4rem (14px)</td></tr>
+                <tr><td><code>--form-label-font-size</code></td><td>1.4rem (14px — standard label above field)</td></tr>
+                <tr><td><code>--form-label-font-size-floating</code></td><td>1.2rem (12px — floated inside field)</td></tr>
+                <tr><td><code>--form-help-font-size</code></td><td>1.2rem (12px)</td></tr>
+                <tr><td rowspan="5">Colours</td><td><code>--form-field-bg</code> / <code>--form-field-text</code></td><td>White / GS Dark Grey</td></tr>
+                <tr><td><code>--form-field-placeholder</code></td><td>#626262</td></tr>
+                <tr><td><code>--form-label-text</code> / <code>--form-help-text</code></td><td>#626262</td></tr>
+                <tr><td><code>--form-required-text</code></td><td>#c9281d</td></tr>
+                <tr><td><code>--color-alert-500</code></td><td>GS Poppy — dropin error states</td></tr>
+                <tr><td rowspan="6">Border states</td><td><code>--form-border-default</code></td><td>GS Cloud #d9d9d9</td></tr>
+                <tr><td><code>--form-border-hover</code></td><td>#8f8f8f</td></tr>
+                <tr><td><code>--form-border-focus</code></td><td>GS Green #00b451 (WCAG focus)</td></tr>
+                <tr><td><code>--form-border-filled</code></td><td>GS Khaki #d5ca9f</td></tr>
+                <tr><td><code>--form-border-error</code></td><td>GS Poppy #ee3124</td></tr>
+                <tr><td><code>--form-border-validated</code></td><td>GS Forest #005640</td></tr>
+                <tr><td rowspan="4">Disabled</td><td><code>--form-field-bg-disabled</code></td><td>#f7f7f7</td></tr>
+                <tr><td><code>--form-field-text-disabled</code></td><td>#626262</td></tr>
+                <tr><td><code>--form-border-disabled</code></td><td>GS Cloud</td></tr>
+                <tr><td><code>--form-field-cursor-disabled</code></td><td>not-allowed</td></tr>
+                <tr><td rowspan="8">Choice controls</td><td><code>--form-choice-size</code></td><td>20px checkbox</td></tr>
+                <tr><td><code>--form-choice-outer-size</code></td><td>24px radio outer</td></tr>
+                <tr><td><code>--form-choice-border</code> / widths</td><td>GS Stone; 1.4px checkbox, 2px radio</td></tr>
+                <tr><td><code>--form-choice-border-focus</code></td><td>#4e4e4e</td></tr>
+                <tr><td><code>--form-choice-checked-bg</code> / mark</td><td>GS Forest / white</td></tr>
+                <tr><td><code>--form-checkbox-radius</code> / <code>--form-radio-radius</code></td><td>2px / 50%</td></tr>
+                <tr><td><code>--form-toggle-width/height</code></td><td>32px × 20px track</td></tr>
+                <tr><td><code>--form-toggle-track-on/off</code>, <code>--form-toggle-knob</code></td><td>Forest on / Stone off / white knob</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Dropin form alignment</h3>
+          <div class="sg-table-wrap">
+            <table class="sg-table">
+              <thead><tr><th>Dropin selector</th><th>Maps to token</th><th>What it styles</th></tr></thead>
+              <tbody>
+                <tr><td><code>.dropin-checkbox__box</code></td><td><code>--form-choice-size</code>, <code>--form-choice-border-width</code>, <code>--form-checkbox-radius</code></td><td>Checkbox box (20px, forest when checked)</td></tr>
+                <tr><td><code>.dropin-checkbox__checkmark</code> (checked)</td><td><code>--form-choice-checked-bg</code></td><td>Forest fill behind white tick</td></tr>
+                <tr><td><code>.dropin-radio-button__label::before</code></td><td><code>--form-choice-outer-size</code>, <code>--form-choice-border-width-radio</code></td><td>Radio outer ring (24px)</td></tr>
+                <tr><td><code>.dropin-radio-button__label::after</code> (checked)</td><td><code>--form-choice-checked-bg</code></td><td>Forest inner dot</td></tr>
+                <tr><td>Dropin text fields (injected)</td><td><code>--color-brand-*</code>, <code>--color-neutral-*</code>, <code>--color-alert-500</code></td><td>Colours via shared palette; layout from dropin CSS</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Usage examples</h3>
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">AEM authored HTML — accessible form field</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">&lt;label for="council-id"&gt;Council ID&lt;/label&gt;
+&lt;input
+  id="council-id"
+  type="text"
+  name="council-id"
+  placeholder="GS-12345"
+  autocomplete="off"
+/&gt;
+
+&lt;!-- Error state — global styles pick up aria-invalid --&gt;
+&lt;label for="email"&gt;Email&lt;/label&gt;
+&lt;input
+  id="email"
+  type="email"
+  aria-invalid="true"
+  aria-describedby="email-error"
+/&gt;
+&lt;p id="email-error"&gt;Enter a valid email address.&lt;/p&gt;</pre>
+          </div>
+
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">Dropin forms — token + selector overrides (do not edit __dropins__ JS)</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">/* styles/styles.css — shared tokens in :root, .dropin-design */
+:root, .dropin-design {
+  --form-border-focus: var(--color-gs-green);
+  --form-choice-checked-bg: var(--color-gs-forest);
+  --color-alert-500: var(--color-gs-poppy); /* dropin error colour hook */
+}
+
+/* Checkbox / radio geometry — scoped under .dropin-design */
+.dropin-design .dropin-checkbox__box {
+  width: var(--form-choice-size);
+  height: var(--form-choice-size);
+  border: var(--form-choice-border-width) solid var(--form-choice-border);
+  border-radius: var(--form-checkbox-radius);
+}
+
+.dropin-design .dropin-radio-button__label::before {
+  width: var(--form-choice-outer-size);
+  height: var(--form-choice-outer-size);
+  border: var(--form-choice-border-width-radio) solid var(--form-choice-border);
+}</pre>
+          </div>
+        </section>
+
+        <!-- FOCUS -->
+        <section class="sg-card" id="focus">
+          <div class="sg-card__header">
+            <span class="sg-card__num">7</span>
+            <h2>Focus Ring</h2>
+          </div>
+          <p>Tab to the controls below to inspect focus styles. Links and buttons use the <code>--focus-ring-*</code> outline; native inputs use <code>--form-border-focus</code> on the field border (outline suppressed).</p>
+          <div class="demo-panel">
+            <div class="focus-demos">
+              <a class="focus-demo__link" href="#0">Focusable link</a>
+              <button class="focus-demo__btn" type="button">Focusable button</button>
+              <input class="focus-demo__input" type="text" placeholder="Focusable input" aria-label="Focusable input" />
+            </div>
+          </div>
+          <div class="sg-table-wrap">
+            <table class="sg-table">
+              <thead><tr><th>Token</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td><code>--focus-ring-color</code></td><td>#00b451</td></tr>
+                <tr><td><code>--focus-ring-width</code></td><td>2px</td></tr>
+                <tr><td><code>--focus-ring-offset</code></td><td>2px</td></tr>
+                <tr><td><code>--focus-ring-style</code></td><td>solid</td></tr>
+                <tr><td><code>--form-border-focus</code></td><td>GS Green — native text fields (border, not outline)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Usage examples</h3>
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">Block CSS — custom focusable control (prefer :focus-visible)</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">/* blocks/tabs/tabs.css */
+.tabs .tabs__trigger:focus-visible {
+  outline: var(--focus-ring-width) var(--focus-ring-style) var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.tabs .tabs__trigger:focus:not(:focus-visible) {
+  outline: none;
+}</pre>
+          </div>
+        </section>
+
+        <!-- ELEVATION -->
+        <section class="sg-card" id="elevation">
+          <div class="sg-card__header">
+            <span class="sg-card__num">8</span>
+            <h2>Elevation &amp; Shape</h2>
+          </div>
+
+          <h3>GS shadows — use <code>--shadow-*</code></h3>
+          <div class="sg-stack">
+            <div class="shadow-card" style="box-shadow: var(--shadow-none)">none</div>
+            <div class="shadow-card" style="box-shadow: var(--shadow-xs)">xs</div>
+            <div class="shadow-card" style="box-shadow: var(--shadow-sm)">sm</div>
+            <div class="shadow-card" style="box-shadow: var(--shadow-md)">md</div>
+            <div class="shadow-card" style="box-shadow: var(--shadow-lg)">lg</div>
+            <div class="shadow-card" style="box-shadow: var(--shadow-xl)">xl</div>
+          </div>
+
+          <h3>GS radius — use <code>--radius-*</code></h3>
+          <div class="sg-stack">
+            <div class="radius-card"><div class="radius-card__shape" style="border-radius: var(--radius-none)"></div>none · 0px</div>
+            <div class="radius-card"><div class="radius-card__shape" style="border-radius: var(--radius-xs)"></div>xs · 4px</div>
+            <div class="radius-card"><div class="radius-card__shape" style="border-radius: var(--radius-sm)"></div>sm · 6px</div>
+            <div class="radius-card"><div class="radius-card__shape" style="border-radius: var(--radius-md)"></div>md · 8px</div>
+            <div class="radius-card"><div class="radius-card__shape" style="border-radius: var(--radius-lg)"></div>lg · 12px</div>
+            <div class="radius-card"><div class="radius-card__shape" style="border-radius: var(--radius-xl)"></div>xl · 16px</div>
+            <div class="radius-card"><div class="radius-card__shape" style="border-radius: var(--radius-full)"></div>full</div>
+          </div>
+
+          <h3>Dropin shape tokens (read-only)</h3>
+          <p class="sg-note sg-note--warn">Never redefine <code>--shape-border-radius-*</code> or <code>--shape-shadow-*</code> — consumed 100+ times by Commerce dropins. Use <code>--radius-*</code> and <code>--shadow-*</code> in GS code instead.</p>
+          <div class="sg-table-wrap">
+            <table class="sg-table">
+              <thead><tr><th>Dropin token</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td><code>--shape-border-radius-1/2/3</code></td><td>3px / 8px / 24px</td></tr>
+                <tr><td><code>--shape-border-width-1–4</code></td><td>1px / 1.5px / 2px / 4px</td></tr>
+                <tr><td><code>--shape-shadow-1/2/3</code></td><td>Dropin card shadows</td></tr>
+                <tr><td><code>--shape-icon-stroke-1–4</code></td><td>1px / 1.5px / 2px / 4px</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Usage examples</h3>
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">Block CSS — card elevation &amp; shape</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">/* blocks/cards/cards.css — use --radius-* and --shadow-* only */
+.cards .cards__card {
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-base);
+}
+
+.cards .cards__card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.cards .cards__pill {
+  border-radius: var(--radius-full);
+}</pre>
+          </div>
+        </section>
+
+        <!-- ICONS -->
+        <section class="sg-card" id="icons">
+          <div class="sg-card__header">
+            <span class="sg-card__num">9</span>
+            <h2>Icons &amp; Assets</h2>
+          </div>
+          <p>All committed assets live in <code>/icons/</code>. Click any tile to copy its path. SVG UI icons are 24×24 in Figma; the global <code>.icon</code> class renders them at <code>2.4rem</code> (24px).</p>
+          <p class="sg-note">Source: Figma node <code>2697:347150</code> — <a href="https://www.figma.com/design/9LoLlN38Ej35qSVRcokDUu/Girlscouts_visualdesign_Master_File?node-id=2697-347150" target="_blank" rel="noopener">open in Figma</a>. All SVGs exported with <code>fill="currentColor"</code> so colour is always CSS-controlled. Colour variants (Dark Grey / Dark Green / White) from Figma are not separate files — use CSS instead.</p>
+
+          <h3>UI icons (SVG)</h3>
+          <p class="sg-note">55 SVGs — click to copy <code>/icons/{name}.svg</code></p>
+          <div class="sg-icon-grid">
+            <button type="button" class="icon-tile" data-path="/icons/account.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/account.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">account</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/arrow-down.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/arrow-down.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">arrow-down</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/badge.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/badge.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">badge</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/calendar.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/calendar.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">calendar</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/cart.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/cart.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">cart</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/check.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/check.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">check</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/chevron-down.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/chevron-down.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">chevron-down</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/chevron-left.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/chevron-left.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">chevron-left</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/chevron-right.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/chevron-right.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">chevron-right</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/chevron-up.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/chevron-up.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">chevron-up</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/close.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/close.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">close</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/coupon.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/coupon.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">coupon</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/download.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/download.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">download</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/edit.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/edit.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">edit</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/email.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/email.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">email</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/exchange.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/exchange.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">exchange</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/eye.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/eye.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">eye</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/facebook.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/facebook.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">facebook</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/filter.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/filter.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">filter</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/gift-card.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/gift-card.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">gift-card</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/heart.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/heart.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">heart</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/info.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/info.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">info</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/instagram.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/instagram.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">instagram</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/linkedin.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/linkedin.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">linkedin</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/location.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/location.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">location</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/mail.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/mail.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">mail</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/menu.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/menu.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">menu</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/minus.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/minus.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">minus</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/more-horizontal.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/more-horizontal.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">more-horizontal</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/more-vertical.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/more-vertical.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">more-vertical</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/move.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/move.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">move</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/phone.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/phone.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">phone</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/plus.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/plus.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">plus</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/print.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/print.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">print</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/reorder.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/reorder.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">reorder</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/return.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/return.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">return</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/search.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/search.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">search</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/share.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/share.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">share</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/shipping.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/shipping.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">shipping</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/sign-in.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/sign-in.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">sign-in</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/sign-out.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/sign-out.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">sign-out</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/sparkle.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/sparkle.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">sparkle</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/star.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/star.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">star</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/table-sort.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/table-sort.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">table-sort</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/tag.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/tag.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">tag</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/thumb-down.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/thumb-down.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">thumb-down</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/thumb-up.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/thumb-up.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">thumb-up</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/time.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/time.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">time</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/trash.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/trash.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">trash</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/upload.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/upload.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">upload</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/web.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/web.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">web</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/whatsapp.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/whatsapp.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">whatsapp</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/x.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/x.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">x</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/youtube.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/youtube.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">youtube</span></button>
+            <button type="button" class="icon-tile" data-path="/icons/zoom-in.svg"><span class="icon-tile__preview"><span class="icon"><img src="/icons/zoom-in.svg" alt="" width="24" height="24" /></span></span><span class="icon-tile__name">zoom-in</span></button>
+          </div>
+
+          <p class="sg-note"><strong>Not shown above (internal utilities):</strong> <code>caret-down-fill</code>, <code>caret-left-fill</code>, <code>caret-right-fill</code>, <code>caret-up-fill</code>, <code>rounded-triangle</code>, <code>x-lg</code> — pre-existing boilerplate icons, not part of the GS Figma icon set.</p>
+
+          <h3>Brand &amp; raster assets</h3>
+          <p class="sg-note">Use SVGs in all new work — they scale perfectly at any size. Use <code>gs-logo.svg</code> on light backgrounds (header), <code>gs-logo-white.svg</code> on dark backgrounds (footer). Fall back to PNGs only for email clients.</p>
+          <div class="sg-asset-grid">
+            <button type="button" class="asset-tile" data-path="/icons/gs-logo.svg">
+              <span class="asset-tile__preview"><img src="/icons/gs-logo.svg" alt="Girl Scouts" width="145" height="48" /></span>
+              <span class="asset-tile__name">gs-logo.svg</span>
+              <span class="asset-tile__usage">Header · light background · vector</span>
+            </button>
+            <button type="button" class="asset-tile" data-path="/icons/gs-logo-white.svg">
+              <span class="asset-tile__preview asset-tile__preview--dark"><img src="/icons/gs-logo-white.svg" alt="Girl Scouts" width="145" height="48" /></span>
+              <span class="asset-tile__name">gs-logo-white.svg</span>
+              <span class="asset-tile__usage">Footer · dark background · vector</span>
+            </button>
+            <button type="button" class="asset-tile" data-path="/icons/gs-logo-header.png">
+              <span class="asset-tile__preview asset-tile__preview--dark"><img src="/icons/gs-logo-header.png" alt="" width="154" height="51" /></span>
+              <span class="asset-tile__name">gs-logo-header.png</span>
+              <span class="asset-tile__usage">Dark background · PNG fallback</span>
+            </button>
+            <button type="button" class="asset-tile" data-path="/icons/gs-logo.png">
+              <span class="asset-tile__preview"><img src="/icons/gs-logo.png" alt="" width="120" height="40" /></span>
+              <span class="asset-tile__name">gs-logo.png</span>
+              <span class="asset-tile__usage">Light background · PNG fallback</span>
+            </button>
+          </div>
+
+          <h3>Usage patterns</h3>
+          <div class="demo-panel">
+            <div class="icon-demo-row">
+              <div class="icon-demo-row__item">
+                <span class="icon icon-search"><img src="/icons/search.svg" alt="" width="24" height="24" /></span>
+                <span><code>.icon</code> + img</span>
+              </div>
+              <div class="icon-demo-row__item">
+                <span class="icon-demo-mask" aria-hidden="true"></span>
+                <span>CSS mask</span>
+              </div>
+              <div class="icon-demo-row__item">
+                <img src="/icons/gs-logo-header.png" alt="Girl Scouts" width="120" height="40" />
+                <span><code>&lt;img src&gt;</code> logo</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sg-table-wrap">
+            <table class="sg-table">
+              <thead><tr><th>Pattern</th><th>When to use</th><th>Example</th></tr></thead>
+              <tbody>
+                <tr><td><code>&lt;span class="icon icon-{name}"&gt;</code></td><td>Authored content — <code>decorateIcons()</code> injects <code>&lt;img&gt;</code> at runtime</td><td><code>icon-search</code>, <code>icon-cart</code></td></tr>
+                <tr><td>CSS <code>mask</code> / <code>background-image</code></td><td>Block CSS — tintable icons, chevrons in nav/footer</td><td><code>url('../../icons/chevron-right.svg')</code></td></tr>
+                <tr><td><code>&lt;img src="/icons/…"&gt;</code></td><td>Logos</td><td><code>gs-logo-header.png</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Usage examples</h3>
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">AEM authored HTML — icon span (decorated by scripts.js)</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">&lt;!-- Author in Word/Docs — decorateIcons() adds the img on load --&gt;
+&lt;p&gt;&lt;span class="icon icon-search"&gt;&lt;/span&gt; Search&lt;/p&gt;
+&lt;p&gt;&lt;a href="/cart"&gt;&lt;span class="icon icon-cart"&gt;&lt;/span&gt; Cart&lt;/a&gt;</pre>
+          </div>
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">Block CSS — mask icon (tint via background-color)</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">/* blocks/promo-tile/promo-tile.css */
+.promo-tile .promo-tile__arrow {
+  width: var(--spacing-small);
+  height: var(--spacing-small);
+  background-color: var(--color-gs-forest);
+  -webkit-mask: url('../../icons/chevron-right.svg') center / 16px no-repeat;
+  mask: url('../../icons/chevron-right.svg') center / 16px no-repeat;
+}</pre>
+          </div>
+
+          <h3>SVG colour &amp; hover techniques</h3>
+          <p>All GS SVGs use <code>fill="currentColor"</code>. This means colour is always set via CSS — never in the SVG file. Three patterns cover every use case.</p>
+
+          <p class="component-label">Technique 1 — CSS <code>color</code> property &nbsp;·&nbsp; inline SVG or <code>decorateIcons()</code></p>
+          <div class="icon-tech-row">
+            <div class="icon-tech-item">
+              <span class="imask" style="--im-src: url('/icons/search.svg'); --im-color: var(--color-neutral-400);"></span>
+              Neutral grey
+            </div>
+            <div class="icon-tech-item">
+              <span class="imask" style="--im-src: url('/icons/search.svg'); --im-color: var(--color-gs-green);"></span>
+              GS Green
+            </div>
+            <div class="icon-tech-item">
+              <span class="imask" style="--im-src: url('/icons/search.svg'); --im-color: var(--color-gs-forest);"></span>
+              GS Forest
+            </div>
+            <div class="icon-tech-item">
+              <span class="imask" style="--im-src: url('/icons/search.svg'); --im-color: var(--color-gs-poppy);"></span>
+              GS Poppy
+            </div>
+            <div class="icon-tech-item">
+              <span class="imask" style="--im-src: url('/icons/search.svg'); --im-color: var(--color-neutral-50); background: var(--color-gs-forest); border-radius: var(--radius-sm); padding: var(--spacing-xsmall);"></span>
+              White on dark
+            </div>
+          </div>
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">CSS — set icon colour via color property</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">/* The SVG uses fill="currentColor" — CSS color drives it */
+.my-block .my-block__search-icon {
+  color: var(--color-neutral-600);       /* default grey */
+}
+
+.my-block .my-block__search-icon:hover,
+.my-block .my-block__search-icon:focus-visible {
+  color: var(--color-gs-green);          /* hover green */
+}
+
+/* On dark background — flip to white */
+.my-block--dark .my-block__search-icon {
+  color: var(--color-neutral-50);
+}</pre>
+          </div>
+
+          <p class="component-label">Technique 2 — CSS <code>mask-image</code> &nbsp;·&nbsp; block CSS pseudo-elements (no extra HTML)</p>
+          <div class="icon-tech-row">
+            <button type="button" class="demo-icon-btn" style="--im-src: url('/icons/search.svg')">
+              <span class="imask"></span> Search
+            </button>
+            <button type="button" class="demo-icon-btn" style="--im-src: url('/icons/cart.svg')">
+              <span class="imask"></span> Cart
+            </button>
+            <button type="button" class="demo-icon-btn" style="--im-src: url('/icons/location.svg')">
+              <span class="imask"></span> Store finder
+            </button>
+            <p class="demo-icon-note">↑ Hover any button — icon colour transitions with the text via <code>currentColor</code></p>
+          </div>
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">CSS — mask icon in block CSS (no extra HTML needed)</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">/* blocks/nav/nav.css — icon appears via ::before, no HTML changes */
+.nav .nav__search-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xsmall);
+  color: var(--color-neutral-700);
+  transition: color var(--transition-fast);
+}
+
+.nav .nav__search-btn::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: currentColor;            /* inherits color from parent */
+  -webkit-mask: url('../../icons/search.svg') center / contain no-repeat;
+  mask: url('../../icons/search.svg') center / contain no-repeat;
+}
+
+/* Hover: just change color — icon follows automatically */
+.nav .nav__search-btn:hover {
+  color: var(--color-gs-green);
+}</pre>
+          </div>
+
+          <p class="component-label">Technique 3 — State toggle &nbsp;·&nbsp; wishlist / like (outline ↔ filled via JS class)</p>
+          <div class="icon-tech-row">
+            <button type="button" class="demo-wishlist-btn" id="sg-wishlist-demo" aria-pressed="false">
+              <span class="imask"></span>
+              <span class="demo-wishlist-label">Save</span>
+            </button>
+            <p class="demo-icon-note">↑ Click to toggle — border and icon colour change; no SVG swap needed</p>
+          </div>
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">CSS + JS — wishlist toggle (single SVG, two states)</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">/* blocks/product-card/product-card.css */
+.product-card .product-card__wishlist {
+  color: var(--color-neutral-600);          /* outline state */
+  border-color: var(--color-neutral-300);
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+/* Active (saved) — just swap color; SVG stays the same */
+.product-card .product-card__wishlist.is-active {
+  color: var(--color-gs-poppy);             /* filled red */
+  border-color: var(--color-gs-poppy);
+}
+
+/* The icon element uses mask so it inherits color */
+.product-card .product-card__wishlist .product-card__wishlist-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: currentColor;
+  -webkit-mask: url('../../icons/heart.svg') center / contain no-repeat;
+  mask: url('../../icons/heart.svg') center / contain no-repeat;
+}</pre>
+          </div>
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">JS — toggle the is-active class on click</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">// blocks/product-card/product-card.js
+export default async function decorate(block) {
+  const wishlistBtn = block.querySelector('.product-card__wishlist');
+  if (!wishlistBtn) return;
+
+  wishlistBtn.addEventListener('click', () => {
+    const isActive = wishlistBtn.classList.toggle('is-active');
+    wishlistBtn.setAttribute('aria-pressed', String(isActive));
+    wishlistBtn.querySelector('.product-card__wishlist-label').textContent =
+      isActive ? 'Saved' : 'Save';
+  });
+}</pre>
+          </div>
+
+          <p class="component-label">Why <code>currentColor</code> — quick reference</p>
+          <div class="sg-table-wrap">
+            <table class="sg-table">
+              <thead><tr><th>What you set in CSS</th><th>What the SVG does</th><th>Works with</th></tr></thead>
+              <tbody>
+                <tr><td><code>color: var(--color-gs-green)</code></td><td><code>fill</code> becomes green</td><td>Inline SVG, CSS mask</td></tr>
+                <tr><td><code>background: currentColor</code> on mask element</td><td>Mask colour = parent <code>color</code></td><td>CSS mask / pseudo-element</td></tr>
+                <tr><td><code>color</code> on <code>&lt;img src=".svg"&gt;</code></td><td>No effect — <code>&lt;img&gt;</code> is sandboxed</td><td>—  use mask instead</td></tr>
+                <tr><td><code>filter: …</code> on <code>&lt;img&gt;</code></td><td>Approximate colour via filter chain</td><td>Last resort only, avoid</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- MOTION & Z-INDEX -->
+        <section class="sg-card" id="motion">
+          <div class="sg-card__header">
+            <span class="sg-card__num">10</span>
+            <h2>Motion &amp; Z-Index</h2>
+          </div>
+
+          <h3>Motion — hover to feel</h3>
+          <div class="sg-stack">
+            <div class="motion-example" tabindex="0" style="transition: transform var(--transition-fast)">Fast 150ms</div>
+            <div class="motion-example" tabindex="0" style="transition: transform var(--transition-base)">Base 250ms</div>
+            <div class="motion-example" tabindex="0" style="transition: transform var(--transition-slow)">Slow 400ms</div>
+            <div class="motion-example" tabindex="0" style="transition: transform var(--transition-bounce)">Bounce</div>
+          </div>
+
+          <h3>Z-index scale</h3>
+          <div class="sg-table-wrap">
+            <table class="sg-table">
+              <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+              <tbody>
+                <tr><td><code>--z-below</code></td><td>-1</td><td>Background</td></tr>
+                <tr><td><code>--z-base</code></td><td>0</td><td>Default flow</td></tr>
+                <tr><td><code>--z-raised</code></td><td>10</td><td>Cards, tooltips</td></tr>
+                <tr><td><code>--z-dropdown</code></td><td>100</td><td>Nav menus</td></tr>
+                <tr><td><code>--z-sticky</code></td><td>200</td><td>Sticky header</td></tr>
+                <tr><td><code>--z-overlay</code></td><td>300</td><td>Backdrop</td></tr>
+                <tr><td><code>--z-modal</code></td><td>400</td><td>Modals</td></tr>
+                <tr><td><code>--z-toast</code></td><td>500</td><td>Toasts</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Usage examples</h3>
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">Block CSS — motion &amp; stacking</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">/* blocks/modal/modal.css */
+.modal .modal__backdrop {
+  z-index: var(--z-overlay);
+  transition: opacity var(--transition-base);
+}
+
+.modal .modal__panel {
+  z-index: var(--z-modal);
+  transition: transform var(--transition-slow);
+}
+
+.drawer .drawer__handle {
+  transition: transform var(--transition-bounce);
+}</pre>
+          </div>
+        </section>
+
+        <!-- SKELETON -->
+        <section class="sg-card" id="skeleton">
+          <div class="sg-card__header">
+            <span class="sg-card__num">11</span>
+            <h2>Skeleton Loading</h2>
+          </div>
+          <p>Shimmer animation and <code>.skeleton</code> utility live in <code>styles/styles.css</code>. Respects <code>prefers-reduced-motion</code>.</p>
+          <div class="skeleton" style="height: 160px; width: 100%; border-radius: var(--radius-md)"></div>
+          <div class="skeleton" style="height: 16px; width: 70%; margin-top: var(--spacing-small)"></div>
+          <div class="skeleton" style="height: 16px; width: 45%; margin-top: var(--spacing-xsmall)"></div>
+
+          <h3>Usage examples</h3>
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">HTML — skeleton placeholders while content loads</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">&lt;!-- Add .skeleton in block JS until data is ready --&gt;
+&lt;div class="product-card skeleton" style="height: 280px"&gt;&lt;/div&gt;
+&lt;div class="product-card skeleton" style="height: 16px; width: 80%"&gt;&lt;/div&gt;
+&lt;div class="product-card skeleton" style="height: 16px; width: 55%"&gt;&lt;/div&gt;</pre>
+          </div>
+        </section>
+
+        <!-- REFERENCE -->
+        <section class="sg-card" id="reference">
+          <div class="sg-card__header">
+            <span class="sg-card__num">12</span>
+            <h2>Quick Reference</h2>
+          </div>
+          <div class="sg-snippet">
+            <div class="sg-snippet__header">
+              <span class="sg-snippet__title">Cheat sheet — most-used tokens</span>
+              <button type="button" class="sg-snippet__copy">Copy</button>
+            </div>
+            <pre class="sg-code">/* Most-used tokens */
+--color-gs-green:     #00b451   /* Brand green · links */
+--color-gs-forest:    #005640   /* Primary button bg · hover */
+--color-gs-poppy:     #ee3124   /* Error / sale */
+
+--spacing-small:      16px      /* GS Large */
+--spacing-medium:     24px      /* GS XL */
+--grid-margin:        20px → 56px (responsive)
+--grid-gutter:        16px → 24px (responsive)
+
+--btn-height-sm/md/lg: 36px / 46px / 52px
+--radius-md:          8px
+--shadow-sm:          card default
+--transition-base:    250ms ease
+
+/* Block example */
+.my-block {
+  color: var(--color-gs-green);
+  padding: var(--spacing-medium);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}</pre>
+          </div>
+        </section>
+
+      </div>
+    </div>
+    </div>
+  </main>
+  <p class="toast" id="sg-toast" role="status" aria-live="polite"></p>
+
+  <script type="module">
+    const toast = document.getElementById('sg-toast');
+    let toastTimer;
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('is-visible');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('is-visible'), 2000);
+    }
+
+    async function copyText(text, onSuccess) {
+      try {
+        await navigator.clipboard.writeText(text);
+        onSuccess();
+        showToast('Copied to clipboard');
+      } catch {
+        showToast('Copy failed — select text manually');
+      }
+    }
+
+    document.querySelectorAll('.swatch[data-token]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        copyText(`var(${btn.dataset.token})`, () => {
+          btn.classList.add('is-copied');
+          showToast(`Copied var(${btn.dataset.token})`);
+          setTimeout(() => btn.classList.remove('is-copied'), 1500);
+        });
+      });
+    });
+
+    document.querySelectorAll('.icon-tile[data-path], .asset-tile[data-path]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        copyText(btn.dataset.path, () => {
+          btn.classList.add('is-copied');
+          showToast(`Copied ${btn.dataset.path}`);
+          setTimeout(() => btn.classList.remove('is-copied'), 1500);
+        });
+      });
+    });
+
+    document.querySelectorAll('.sg-snippet').forEach((snippet) => {
+      const copyBtn = snippet.querySelector('.sg-snippet__copy');
+      const codeEl = snippet.querySelector('pre.sg-code code') || snippet.querySelector('pre.sg-code');
+      if (!copyBtn || !codeEl) return;
+
+      copyBtn.addEventListener('click', () => {
+        copyText(codeEl.textContent.trim(), () => {
+          copyBtn.classList.add('is-copied');
+          copyBtn.textContent = 'Copied';
+          setTimeout(() => {
+            copyBtn.classList.remove('is-copied');
+            copyBtn.textContent = 'Copy';
+          }, 1500);
+        });
+      });
+    });
+
+    const sections = document.querySelectorAll('.sg-card[id], .sg-hero[id]');
+    const navLinks = document.querySelectorAll('.sg-nav__link');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const id = entry.target.id;
+          navLinks.forEach((link) => {
+            link.classList.toggle('is-active', link.getAttribute('href') === `#${id}`);
+          });
+        });
+      },
+      { rootMargin: '-20% 0px -70% 0px' },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    // Type size badges — read computed fontSize + fontWeight from each preview paragraph
+    document.querySelectorAll('.type-sample').forEach((sample) => {
+      const preview = sample.querySelector('.type-preview');
+      const badge = sample.querySelector('.type-size');
+      if (!preview || !badge) return;
+      const cs = getComputedStyle(preview);
+      const size = Math.round(parseFloat(cs.fontSize));
+      const weight = cs.fontWeight;
+      badge.textContent = `${size}px / ${weight}`;
+    });
+
+    // Wishlist demo toggle
+    const wishlistBtn = document.getElementById('sg-wishlist-demo');
+    if (wishlistBtn) {
+      const label = wishlistBtn.querySelector('.demo-wishlist-label');
+      wishlistBtn.addEventListener('click', () => {
+        const isActive = wishlistBtn.classList.toggle('is-active');
+        wishlistBtn.setAttribute('aria-pressed', String(isActive));
+        if (label) label.textContent = isActive ? 'Saved' : 'Save';
+      });
+    }
+  </script>
+</body>
+</html>

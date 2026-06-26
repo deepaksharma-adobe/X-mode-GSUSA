@@ -1,0 +1,142 @@
+{
+  "definitions": [
+    {
+      "title": "Hero Banner",
+      "id": "hero-banner",
+      "model": "hero-banner",
+      "filter": "hero-banner",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 2
+        }
+      }
+    },
+    {
+      "title": "Hero Banner (Council)",
+      "id": "hero-banner-council",
+      "model": "hero-banner",
+      "filter": "hero-banner",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 2,
+          "classes": ["council"]
+        }
+      }
+    },
+    {
+      "title": "Hero Banner (Card)",
+      "id": "hero-banner-card",
+      "model": "hero-banner",
+      "filter": "hero-banner",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 2,
+          "classes": ["card"]
+        }
+      }
+    },
+    {
+      "title": "Hero Banner (Secondary)",
+      "id": "hero-banner-secondary",
+      "model": "hero-banner",
+      "filter": "hero-banner",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 2,
+          "classes": ["secondary"]
+        }
+      }
+    },
+    {
+      "title": "Hero Banner (Boxed)",
+      "id": "hero-banner-boxed",
+      "model": "hero-banner",
+      "filter": "hero-banner",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 2,
+          "classes": ["boxed"]
+        }
+      }
+    },
+    {
+      "title": "Hero Banner (No Autoplay)",
+      "id": "hero-banner-no-autoplay",
+      "model": "hero-banner",
+      "filter": "hero-banner",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 2,
+          "classes": ["no-autoplay"]
+        }
+      }
+    },
+    {
+      "title": "Hero Banner (No Dots)",
+      "id": "hero-banner-no-dots",
+      "model": "hero-banner",
+      "filter": "hero-banner",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 2,
+          "classes": ["no-dots"]
+        }
+      }
+    },
+    {
+      "title": "Hero Banner Slide",
+      "id": "hero-banner-item",
+      "model": "hero-banner-item",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 2,
+          "fields": [
+            { "name": "image", "selector": "div:nth-child(1)>picture>img[src]" },
+            { "name": "imageAlt", "selector": "div:nth-child(1)>picture>img[alt]" },
+            { "name": "content", "selector": "div:nth-child(2)" }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "hero-banner-item",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Background Image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "imageAlt",
+          "label": "Background Image Alt"
+        },
+        {
+          "component": "richtext",
+          "name": "content",
+          "label": "Content",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "hero-banner",
+      "components": ["hero-banner-item"]
+    }
+  ]
+}

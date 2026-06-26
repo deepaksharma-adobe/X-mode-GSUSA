@@ -1,0 +1,84 @@
+/* ===== Need Help bar (Figma 5168:208609 / mobile 5650:138172) =====
+   Full-bleed khaki strip; content constrained to the centered grid frame. */
+main .section .need-help-wrapper {
+  max-width: none;
+  padding: 0;
+}
+
+.need-help {
+  background: color-mix(in srgb, var(--color-gs-khaki) 60%, transparent);
+}
+
+.need-help .need-help-inner {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--grid-max-width);
+  margin-inline: auto;
+  padding: var(--spacing-medium) var(--spacing-small);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-small);
+  text-align: center;
+}
+
+/* Heading — Girl Scout display, black; 16px/19px mobile */
+.need-help .need-help-heading {
+  margin: 0;
+  font: normal normal 400 1.6rem/1.9rem var(--type-display-font-family);
+  color: var(--color-neutral-900);
+}
+
+/* Link — Trefoil semibold, uppercase, dark-green + underline on mobile */
+.need-help a.button.need-help-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xxsmall);
+  font: normal normal 600 1.6rem/2.1rem var(--type-base-font-family);
+  text-transform: uppercase;
+  color: var(--color-gs-dark-green);
+  text-decoration: underline;
+}
+
+.need-help a.button.need-help-link::after {
+  content: '';
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  background-color: currentcolor;
+  mask: url('../../icons/chevron-right.svg') center / contain no-repeat;
+}
+
+.need-help a.button.need-help-link:hover,
+.need-help a.button.need-help-link:focus-visible {
+  color: var(--btn-text-secondary-hover);
+  text-decoration: underline;
+}
+
+/* ===== Desktop: heading left, link right; no underline (Figma 5168:208609) ===== */
+@media (min-width: 768px) {
+  .need-help .need-help-inner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-small);
+    padding: var(--spacing-medium) var(--grid-3-margins);
+    text-align: left;
+  }
+
+  .need-help .need-help-heading {
+    font: normal normal 400 1.8rem/2.2rem var(--type-display-font-family);
+  }
+
+  .need-help a.button.need-help-link {
+    flex-shrink: 0;
+    color: var(--color-gs-forest);
+    text-decoration: none;
+  }
+}
+
+@media (min-width: 1280px) {
+  .need-help .need-help-inner {
+    padding: var(--spacing-medium) var(--grid-4-margins);
+  }
+}

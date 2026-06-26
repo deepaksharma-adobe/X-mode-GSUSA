@@ -1,0 +1,133 @@
+/* ===== Values block (Figma 5168:208608 + wave header 5168:208599) =====
+   Full-bleed light-green panel; cards constrained to the centered grid frame. */
+main .section .values-wrapper {
+  max-width: none;
+  padding: 0;
+}
+
+.values {
+  position: relative;
+}
+
+/* Decorative wave + trees header — the wave SVG (green at 6%) draws the curved
+   top edge transitioning the white area above into the green panel below.
+   The wave is full-bleed; the trees are pinned to the right of the centered
+   grid frame so they align with the cards below. */
+.values .values-header {
+  position: relative;
+  height: 121px;
+  background: url('/icons/values-wave.svg') no-repeat center bottom / 100% 121px;
+}
+
+.values .values-header-inner {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  max-width: var(--grid-max-width);
+  height: 100%;
+  margin-inline: auto;
+  padding-inline: var(--grid-1-margins);
+}
+
+.values .values-header-trees {
+  position: absolute;
+  top: 8px;
+  right: var(--grid-1-margins);
+  width: 83px;
+  height: 92px;
+  background: url('/icons/values-trees.svg') no-repeat center / contain;
+}
+
+/* ===== Cards — full-width green panel; inner grid capped to centered frame ===== */
+.values .values-grid {
+  background: var(--color-gs-green-surface);
+  padding-block: var(--spacing-xxbig);
+}
+
+.values .values-cards {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--grid-max-width);
+  margin-inline: auto;
+  padding-inline: var(--spacing-small);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-medium);
+}
+
+/* Mobile/tablet: cards are centered (Figma 5650:138171) */
+.values .values-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-small);
+  text-align: center;
+}
+
+.values .values-card-icon {
+  width: 60px;
+  height: 60px;
+}
+
+.values .values-card-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.values .values-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xsmall);
+}
+
+.values .values-card-title {
+  margin: 0;
+  font: normal normal 600 1.8rem/2.5rem var(--type-base-font-family);
+  color: var(--color-neutral-900);
+}
+
+.values .values-card-subtext {
+  margin: 0;
+  font: normal normal 500 1.4rem/2rem var(--type-base-font-family);
+  color: var(--color-neutral-800);
+}
+
+/* ===== Tablet ===== */
+@media (min-width: 768px) {
+  .values .values-cards {
+    grid-template-columns: repeat(2, 1fr);
+    padding-inline: var(--grid-3-margins);
+    gap: var(--spacing-medium);
+  }
+
+  .values .values-header-inner {
+    padding-inline: var(--grid-3-margins);
+  }
+
+  .values .values-header-trees {
+    right: var(--grid-3-margins);
+  }
+}
+
+/* ===== Desktop — 4 across, left-aligned cards (Figma 5168:208608) ===== */
+@media (min-width: 1280px) {
+  .values .values-cards {
+    grid-template-columns: repeat(4, 1fr);
+    padding-inline: var(--grid-4-margins);
+    gap: var(--spacing-medium);
+  }
+
+  .values .values-card {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .values .values-header-inner {
+    padding-inline: var(--grid-4-margins);
+  }
+
+  .values .values-header-trees {
+    right: var(--grid-4-margins);
+  }
+}

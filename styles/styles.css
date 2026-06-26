@@ -1,0 +1,1395 @@
+/*
+ * Copyright 2020 Adobe. All rights reserved.
+ * This file is licensed to you under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License. You may obtain a copy
+ * of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+/* stylelint-disable no-empty-source */
+
+/* ===== Girl Scouts design tokens ===== */
+:root, .dropin-design {
+  /* Adobe Commerce Dropin design tokens — Girl Scouts brand overlay */
+  --color-brand-300: #d5f267; /* GS Star Green */
+  --color-brand-500: #00b451; /* GS Girl Scouts Green */
+  --color-brand-600: #005640; /* GS Forest Green (CTA hover) */
+  --color-brand-700: #044248; /* GS Dark Cyan (active) */
+  --color-neutral-50: #fff;
+  --color-neutral-100: #fafafa;
+  --color-neutral-200: #f5f5f5;
+  --color-neutral-300: #e8e8e8;
+  --color-neutral-400: #d9d9d9; /* GS Cloud */
+  --color-neutral-500: #a8a8a8; /* GS Stone */
+  --color-neutral-600: #8f8f8f;
+  --color-neutral-700: #666;
+  --color-neutral-800: #2d2e33; /* GS Dark Grey (body text) */
+  --color-neutral-900: #000; /* GS Black */
+
+  /* Girl Scouts brand palette */
+  --color-gs-green: #00b451;
+  --color-gs-forest: #005640;
+  --color-gs-star: #d5f267;
+  --color-gs-green-alt: #008138;
+  --color-gs-dark-cyan: #044248;
+  --color-gs-deep-cyan: #006973;
+  --color-gs-ocean: #004987;
+  --color-gs-deep-purple: #5c1f8b;
+  --color-gs-plum: #af0061;
+  --color-gs-cherry: #9c0000;
+  --color-gs-brown: #763a16;
+  --color-gs-desert: #a86b1d;
+  --color-gs-teal: #00b2be;
+  --color-gs-river: #1496d4;
+  --color-gs-violet: #9e5fd6;
+  --color-gs-fuchsia: #fd329e;
+  --color-gs-poppy: #ee3124;
+  --color-gs-flame: #ff830c;
+  --color-gs-gold: #f7be00;
+  --color-gs-sea-foam: #a3edd6;
+  --color-gs-sky: #a0def1;
+  --color-gs-lilac: #ccb3fa;
+  --color-gs-bubblegum: #f7abd6;
+  --color-gs-peach: #fcb89d;
+  --color-gs-khaki: #d5ca9f;
+  --color-divider-subtle: color-mix(in srgb, var(--color-gs-khaki) 20%, transparent);
+  --color-gs-sunshine: #fff441;
+  --color-gs-marine: #004b8c; /* GS Marine blue — stories/testimonials section bg */
+  --color-gs-dark-green: #023729; /* deepest forest — footer background */
+  --color-gs-footer-border: #4e4e4e; /* footer dividers & accordion rules */
+  --color-positive-200: #eff5ef;
+  --color-positive-500: #7fb078;
+  --color-positive-800: #53824c;
+  --color-informational-200: #eeeffb;
+  --color-informational-500: #6978d9;
+  --color-informational-800: #5d6dd6;
+  --color-warning-200: #fdf3e9;
+  --color-warning-500: #e79f5c;
+  --color-warning-800: #cc7a2e;
+  --color-alert-200: #ffebeb;
+  --color-alert-500: #ee3124; /* GS Poppy — form/error states (aligned to Figma) */
+  --color-alert-800: #c35050;
+  --color-button-active: var(--color-brand-700);
+  --color-button-focus: #00b451; /* GS Green — matches --focus-ring-color */
+  --color-button-hover: var(--color-brand-600);
+  --color-action-button-active: var(--color-neutral-50);
+  --color-action-button-hover: var(--color-neutral-300);
+  --color-opacity-16: rgb(255 255 255 / 0.16);
+  --color-opacity-24: rgb(255 255 255 / 0.24);
+  --grid-1-columns: 4; /* GS mobile */
+  --grid-1-margins: 20px;
+  --grid-1-gutters: 16px;
+  --grid-2-columns: 12;
+  --grid-2-margins: 20px;
+  --grid-2-gutters: 16px;
+  --grid-3-columns: 12; /* GS desktop */
+  --grid-3-margins: 56px;
+  --grid-3-gutters: 24px;
+  --grid-4-columns: 12;
+  --grid-4-margins: 56px;
+  --grid-4-gutters: 24px;
+  --grid-5-columns: 12;
+  --grid-5-margins: 56px;
+  --grid-5-gutters: 24px;
+  --shape-border-radius-1: 3px;
+  --shape-border-radius-2: 8px;
+  --shape-border-radius-3: 24px;
+  --shape-border-width-1: 1px;
+  --shape-border-width-2: 1.5px;
+  --shape-border-width-3: 2px;
+  --shape-border-width-4: 4px;
+  --shape-shadow-1: 0 0 16px 0 rgb(0 0 0 / 0.16);
+  --shape-shadow-2: 0 2px 16px 0 rgb(0 0 0 / 0.16);
+  --shape-shadow-3: 0 2px 3px 0 rgb(0 0 0 / 0.16);
+  --shape-icon-stroke-1: 1px;
+  --shape-icon-stroke-2: 1.5px;
+  --shape-icon-stroke-3: 2px;
+  --shape-icon-stroke-4: 4px;
+  --spacing-xxxsmall: 2px;
+  --spacing-xxsmall: 4px;
+  --spacing-xsmall: 8px;
+  --spacing-xsmall-plus: 12px;
+  --spacing-small: 16px;
+  --spacing-medium: 24px;
+  --spacing-big: 32px;
+  --spacing-xbig: 40px;
+  --spacing-xxbig: 48px;
+  --spacing-large: 64px;
+  --spacing-xlarge: 72px;
+  --spacing-xxlarge: 96px;
+  --spacing-huge: 120px;
+  --spacing-xhuge: 144px;
+  --spacing-xxhuge: 192px;
+
+  /* Girl Scouts spacing scale — missing base steps (Figma node 3:1005) */
+  --spacing-none: 0px; /* GS: None/Zero */
+  --spacing-2xs: 2px; /* GS: Extra Small */
+
+  /* GS semantic spacing aliases — map design-system names to base tokens. */
+  --spacing-gs-none: var(--spacing-none); /* 0px */
+  --spacing-gs-2xs: var(--spacing-2xs); /* 2px */
+  --spacing-gs-xs: var(--spacing-xxsmall); /* 4px */
+  --spacing-gs-sm: var(--spacing-xsmall); /* 8px */
+  --spacing-gs-md: var(--spacing-small); /* 16px */
+  --spacing-gs-lg: var(--spacing-medium); /* 24px */
+  --spacing-gs-xl: var(--spacing-big); /* 32px */
+  --spacing-gs-2xl: var(--spacing-xxbig); /* 48px */
+  --spacing-gs-3xl: var(--spacing-large); /* 64px */
+  --spacing-gs-4xl: var(--spacing-xxlarge); /* 96px */
+  --spacing-gs-5xl: var(--spacing-huge); /* 120px */
+  --type-base-font-family: "Trefoil Sans", roboto, roboto-fallback, system-ui, sans-serif;
+  --type-display-font-family: "Girl Scout", "Trefoil Sans", roboto, system-ui, sans-serif;
+  --type-display-0-font: normal normal 300 7.2rem/8.6rem var(--type-display-font-family);
+  --type-display-0-letter-spacing: 0.02em;
+  --type-display-1-font: normal normal 300 6rem/7.2rem var(--type-display-font-family);
+  --type-display-1-letter-spacing: 0.02em;
+  --type-display-2-font: normal normal 300 4.8rem/5.8rem var(--type-display-font-family);
+  --type-display-2-letter-spacing: 0.02em;
+  --type-display-3-font: normal normal 300 3.4rem/4rem var(--type-display-font-family);
+  --type-display-3-letter-spacing: 0.02em;
+  --type-headline-1-font: normal normal 700 2.4rem/3.2rem var(--type-display-font-family);
+  --type-headline-1-letter-spacing: 0.02em;
+  --type-headline-2-default-font: normal normal 300 2rem/2.4rem var(--type-base-font-family);
+  --type-headline-2-default-letter-spacing: 0.04em;
+  --type-headline-2-strong-font: normal normal 700 2rem/2.4rem var(--type-base-font-family);
+  --type-headline-2-strong-letter-spacing: 0.04em;
+  --type-body-1-default-font: normal normal 400 1.6rem/2.4rem var(--type-base-font-family);
+  --type-body-1-default-letter-spacing: 0.04em;
+  --type-body-1-strong-font: normal normal 700 1.6rem/2.4rem var(--type-base-font-family);
+  --type-body-1-strong-letter-spacing: 0.04em;
+  --type-body-1-emphasized-font: normal normal 700 1.6rem/2.4rem var(--type-base-font-family);
+  --type-body-1-emphasized-letter-spacing: 0.04em;
+  --type-body-2-default-font: normal normal 400 1.4rem/2rem var(--type-base-font-family);
+  --type-body-2-default-letter-spacing: 0.04em;
+  --type-body-2-medium-font: normal normal 500 1.4rem/2rem var(--type-base-font-family);
+  --type-body-2-medium-letter-spacing: 0.04em;
+  --type-body-2-semibold-font: normal normal 600 1.4rem/2rem var(--type-base-font-family);
+  --type-body-2-semibold-letter-spacing: 0.04em;
+  --type-body-2-strong-font: normal normal 700 1.4rem/2rem var(--type-base-font-family);
+  --type-body-2-strong-letter-spacing: 0.04em;
+  --type-body-2-emphasized-font: normal normal 700 1.4rem/2rem var(--type-base-font-family);
+  --type-body-2-emphasized-letter-spacing: 0.04em;
+  --type-button-1-font: normal normal 400 2rem/2.6rem var(--type-base-font-family);
+  --type-button-1-letter-spacing: 0.08em;
+  --type-button-2-font: normal normal 400 1.6rem/2.4rem var(--type-base-font-family);
+  --type-button-2-letter-spacing: 0.08em;
+  --type-details-caption-1-font: normal normal 400 1.2rem/1.6rem var(--type-base-font-family);
+  --type-details-caption-1-letter-spacing: 0.08em;
+  --type-details-caption-semibold-font: normal normal 600 1.2rem/1.7rem var(--type-base-font-family);
+  --type-details-caption-semibold-letter-spacing: 0.04em;
+  --type-details-caption-2-font: normal normal 300 1.2rem/1.6rem var(--type-base-font-family);
+  --type-details-caption-2-letter-spacing: 0.08em;
+  --type-details-overline-font: normal normal 400 1.2rem/2rem var(--type-base-font-family);
+  --type-details-overline-letter-spacing: 0.16em;
+  --type-fixed-font-family: adobe-clean, "Roboto Mono", menlo, consolas, "Liberation Mono", monospace, system-ui, sans-serif;
+  --background-color: var(--color-neutral-50);
+  --nav-height: 6.4rem;
+  --nav-compact-height: 6.2rem;
+
+  /* Figma 2697:345643 stack — offer py8 + row36 + nav-top py16/logo48 + strip py12/text22.4 */
+  --header-offer-bar-min-height: 52px;
+  --nav-top-band-min-height: 80px;
+  --nav-main-strip-min-height: 48px;
+  --header-mobile-experience-min-height: 96px;
+  --header-desktop-min-height: calc(
+    var(--header-offer-bar-min-height) + var(--nav-top-band-min-height) + var(--nav-main-strip-min-height)
+  );
+  --header-mobile-min-height: calc(
+    var(--header-offer-bar-min-height) + var(--nav-top-band-min-height) + var(--header-mobile-experience-min-height)
+  );
+  --header-desktop-nav-min-height: calc(
+    var(--nav-top-band-min-height) + var(--nav-main-strip-min-height)
+  );
+  --header-mobile-nav-min-height: calc(
+    var(--nav-top-band-min-height) + var(--header-mobile-experience-min-height)
+  );
+  --nav-search-label-font: normal normal 300 1.6rem/2.24rem var(--type-base-font-family);
+  --nav-search-label-letter-spacing: 0;
+  --header-nav-blur: 15px;
+  --header-nav-glass-bg: rgb(255 255 255 / 0.7);
+  --color-gs-nav-surface: rgb(226 219 193 / 0.22);
+  --nav-search-field-width: 211px;
+  --color-gs-green-hover-surface: rgb(0 174 67 / 0.1);
+  --color-gs-green-surface: color-mix(in srgb, var(--color-gs-green) 6%, transparent); /* pale green panel — values block (Figma) */
+  --nav-top-zone-leading: 387px;
+  --nav-top-zone-trailing: 407px;
+  --nav-top-logo-width: 145px;
+  --nav-top-logo-height: 48px;
+
+  /* Figma 3876:50943 mobile header logo */
+  --nav-mobile-logo-width: 102px;
+  --nav-mobile-logo-height: 34px;
+  --nav-mega-menu-shadow: 0 6px 5px rgb(0 0 0 / 0.1);
+  --nav-mega-menu-column-width: 175px;
+  --nav-mega-menu-max-width: var(--grid-max-width);
+  --nav-mega-menu-max-height: 635px;
+  --nav-mega-menu-promo-min-width: 324px;
+
+  /* Mega menu typography + rhythm — Figma 2697:357110 (Shop by Grade) */
+  --nav-mega-menu-heading-font: normal normal 600 1.6rem/2.08rem var(--type-base-font-family);
+  --nav-mega-menu-heading-letter-spacing: 0;
+  --nav-mega-menu-link-font: normal normal 400 1.6rem/2.24rem var(--type-base-font-family);
+  --nav-mega-menu-link-letter-spacing: 0;
+  --nav-mega-menu-row-padding: var(--spacing-xsmall-plus) var(--spacing-xxsmall);
+  --nav-mega-menu-panel-padding: var(--spacing-big) var(--grid-3-margins);
+  --nav-mega-menu-column-gap: var(--spacing-medium);
+  --nav-mega-menu-row-gap: var(--spacing-medium);
+  --nav-mega-menu-row-border-color: var(--btn-light-bg);
+  --nav-mega-menu-transition: var(--transition-base);
+  --nav-accordion-panel-transition: 320ms cubic-bezier(0.4, 0, 0.2, 1);
+  --nav-accordion-content-transition: opacity 240ms cubic-bezier(0.4, 0, 0.2, 1);
+  --nav-accordion-transition: var(--nav-accordion-panel-transition);
+  --nav-overlay-transition: var(--transition-base);
+
+  /* Header mobile nav typography (Figma Body Small_L / Body Large_SB / Body Extra Small_R) */
+  --nav-mobile-label-font: normal normal 400 1.4rem/1.96rem var(--type-base-font-family);
+  --nav-mobile-label-letter-spacing: 0;
+  --nav-mobile-accordion-font: normal normal 600 1.8rem/2.52rem var(--type-base-font-family);
+  --nav-mobile-accordion-letter-spacing: 0;
+  --nav-audience-tab-active-font: normal normal 400 1.2rem/1.68rem var(--type-base-font-family);
+  --nav-audience-tab-active-letter-spacing: 0;
+  --nav-audience-tab-inactive-font: normal normal 400 1.4rem/1.96rem var(--type-base-font-family);
+  --nav-audience-tab-inactive-letter-spacing: 0;
+  --nav-mobile-accordion-row-height: 48px;
+
+  /* Breakpoints — reference only; @media queries must hardcode 768px / 1280px */
+  --bp-tablet: 768px;
+  --bp-desktop: 1280px;
+
+  /* Responsive grid aliases — default to mobile tier; media queries override */
+  --grid-columns: var(--grid-1-columns); /* 4 mobile */
+  --grid-margin: var(--grid-1-margins); /* 20px mobile */
+  --grid-gutter: var(--grid-1-gutters); /* 16px mobile */
+  --grid-max-width: 1280px; /* Figma frame; 1168px content within 56px margins */
+
+  /* ===== Girl Scouts button foundation (Figma button system) ===== */
+
+  /* Button sizing */
+  --btn-height-sm: 36px;
+  --btn-height-md: 46px;
+  --btn-height-lg: 52px;
+  --btn-padding-x-sm: 16px;
+  --btn-padding-x-md: 24px;
+  --btn-padding-x-lg: 32px;
+  --btn-radius-sm: 6px;
+  --btn-radius-md: 6px;
+  --btn-radius-lg: 8px;
+
+  /* Button typography */
+  --btn-font-family: var(--type-base-font-family);
+  --btn-font-weight: 600; /* SemiBold */
+  --btn-font-size-sm: 1.4rem; /* 14px */
+  --btn-font-size-md: 1.6rem; /* 16px */
+  --btn-font-size-lg: 1.6rem; /* 16px */
+  --btn-line-height: 1.3;
+  --btn-text-transform: uppercase;
+  --btn-letter-spacing: 0;
+
+  /* Primary button — Green */
+  --btn-primary-bg: #005640; /* Forest Green (Figma Default; brand-500 #00b451 stays brand/accent identity) */
+  --btn-primary-bg-hover: #023729; /* Very dark green (Figma Hover) */
+  --btn-primary-bg-active: #023729; /* Deep active */
+  --btn-primary-text: #fff;
+  --btn-primary-border: transparent;
+
+  /* Secondary button — outlined Green */
+  --btn-secondary-bg: transparent;
+  --btn-secondary-bg-hover: #d9f3e3; /* light green tint */
+  --btn-secondary-bg-active: #d9f3e3;
+  --btn-secondary-text: #005640;
+  --btn-secondary-text-hover: #005640;
+  --btn-secondary-text-on-hover: #fff; /* white text when hover fills solid forest green (Figma) */
+  --btn-secondary-border: #005640;
+  --btn-secondary-border-hover: #005640;
+
+  /* Primary Text button — no border, no bg */
+  --btn-text-primary-bg: transparent;
+  --btn-text-primary-text: #005640;
+  --btn-text-primary-hover: #023729; /* darker green on hover (Figma) */
+  --btn-text-primary-underline: underline;
+
+  /* Secondary Text button */
+  --btn-text-secondary-bg: transparent;
+  --btn-text-secondary-text: #005640;
+  --btn-text-secondary-hover: #023729;
+  --btn-text-secondary-underline: underline;
+
+  /* Colour variants */
+  --btn-violet-bg: #d9f3e3; /* Figma "Violet-Secondary" = soft green tint (not purple) */
+  --btn-violet-bg-hover: #005640; /* fills forest green on hover (Figma) */
+  --btn-violet-text: #005640;
+  --btn-violet-text-hover: #fff;
+  --btn-violet-border: #98deb3;
+  --btn-violet-border-hover: #005640;
+  --btn-black-bg: #4e4e4e; /* GS Black button — dark grey, not pure black (Figma) */
+  --btn-black-bg-hover: #2d2e33;
+  --btn-black-text: #fff;
+  --btn-light-bg: #f6f3ec;
+  --btn-light-bg-hover: #ede8dc;
+  --btn-light-text: #000;
+  --btn-white-bg: #fff;
+  --btn-white-bg-hover: #f6f3ec;
+  --btn-white-text: #00b451;
+
+  /* Extra ramp/border steps for existing black/light variants */
+  --btn-black-bg-active: #1a1a1a;
+  --btn-light-bg-active: #e0d9c8;
+  --btn-light-border: transparent;
+
+  /* White-on-Dark button — white bg, green text, for dark backgrounds */
+  --btn-white-on-dark-bg: #fff;
+  --btn-white-on-dark-bg-hover: #00b451; /* fills bright GS Green on hover (Figma) */
+  --btn-white-on-dark-bg-active: #e8f7ee;
+  --btn-white-on-dark-text: #000; /* Figma: black text on white bg */
+  --btn-white-on-dark-text-hover: #fff; /* white text on green hover fill */
+  --btn-white-on-dark-border: transparent;
+
+  /* Secondary Light — outlined cream, for use on dark backgrounds */
+  --btn-secondary-light-bg: transparent;
+  --btn-secondary-light-bg-hover: rgb(246 243 236 / 0.15);
+  --btn-secondary-light-text: #f6f3ec;
+  --btn-secondary-light-border: #f6f3ec;
+
+  /* Secondary Text button — underline on hover only */
+  --btn-text-secondary-underline-hover: underline;
+
+  /* Text button white variant — for dark backgrounds */
+  --btn-text-white-text: #fff;
+  --btn-text-white-hover: rgb(255 255 255 / 0.8);
+  --btn-text-white-underline: underline;
+
+  /* Disabled */
+  --btn-disabled-bg: #d9d9d9;
+  --btn-disabled-text: #4e4e4e; /* Figma: dark grey, not stone grey */
+  --btn-disabled-border: transparent;
+  --btn-disabled-cursor: not-allowed;
+
+  /* ===== Girl Scouts form-element foundation (Figma Form-Elements) ===== */
+
+  /* Field sizing */
+  --form-field-height: 48px;
+  --form-field-padding-x: 12px;
+  --form-field-padding-y: 12px;
+  --form-field-radius: 6px;
+  --form-field-border-width: 1px;
+  --form-field-gap: 8px; /* gap between field and help text */
+
+  /* Field typography */
+  --form-field-font-family: var(--type-base-font-family);
+  --form-field-font-size: 1.4rem; /* 14px */
+  --form-field-line-height: 1.4;
+  --form-label-font-size: 1.4rem;            /* 14px — standard label above field */
+  --form-label-line-height: 1.4;
+  --form-label-font-size-floating: 1.2rem;   /* 12px — floated inside field */
+  --form-label-line-height-floating: 1.68rem;/* 16.8px — Figma body-extra-small LH */
+  --form-help-font-size: 1.2rem; /* 12px */
+  --form-help-line-height: 1.4;
+
+  /* Field colours */
+  --form-field-bg: #fff;
+  --form-field-text: #2d2e33; /* GS Dark Grey */
+  --form-field-placeholder: #626262;
+  --form-label-text: #626262;
+  --form-help-text: #626262;
+  --form-required-text: #c9281d;
+
+  /* Field borders by state */
+  --form-border-default: #d9d9d9; /* GS Cloud */
+  --form-border-hover: #8f8f8f;
+  --form-border-focus: #00b451; /* GS Green — WCAG-visible focus (was Khaki #d5ca9f) */
+  --form-border-filled: #d5ca9f;
+  --form-border-error: #ee3124; /* GS Poppy */
+  --form-border-validated: #005640; /* GS Forest */
+
+  /* Disabled field */
+  --form-field-bg-disabled: #f7f7f7;
+  --form-field-text-disabled: #626262;
+  --form-border-disabled: #d9d9d9;
+  --form-field-cursor-disabled: not-allowed;
+
+  /* Choice controls (checkbox / radio / toggle) */
+  --form-choice-size: 20px;
+  --form-choice-border: #a8a8a8;
+  --form-choice-bg: #fff;
+  --form-choice-checked-bg: #005640; /* GS Forest */
+  --form-choice-checked-mark: #fff;
+  --form-radio-radius: 50%;
+  --form-checkbox-radius: 2px;
+  --form-toggle-track-off: #a8a8a8;
+  --form-toggle-track-on: #005640;
+  --form-toggle-knob: #fff;
+
+  /* Choice control geometry (Figma) */
+  --form-choice-outer-size: 24px; /* radio outer diameter */
+  --form-choice-border-width: 1.4px; /* checkbox border */
+  --form-choice-border-width-radio: 2px; /* radio border */
+  --form-choice-border-focus: #4e4e4e; /* focus border */
+  --form-toggle-width: 32px;
+  --form-toggle-height: 20px;
+  --form-toggle-knob-size: 16px;
+  --form-toggle-padding: 2px;
+
+  /* ===== Focus ring (WCAG AA) ===== */
+  --focus-ring-color: #00b451; /* GS Green */
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring-style: solid;
+
+  /* ===== Motion / transition tokens ===== */
+  --transition-fast: 150ms ease; /* micro interactions */
+  --transition-base: 250ms ease; /* standard hover/focus */
+  --transition-slow: 400ms ease; /* panels, drawers */
+  --transition-bounce: 300ms cubic-bezier(0.34, 1.56, 0.64, 1); /* spring */
+
+  /* ===== GS border-radius scale (additive — does NOT redefine --shape-border-radius-*) ===== */
+  --radius-none: 0px;
+  --radius-xs: 4px; /* tags, chips, small badges */
+  --radius-sm: 6px; /* inputs, small buttons (matches --btn-radius-sm) */
+  --radius-md: 8px; /* cards, large buttons (matches --btn-radius-lg) */
+  --radius-lg: 12px; /* modals, panels, drawers */
+  --radius-xl: 16px; /* large cards, feature panels */
+  --radius-full: 9999px; /* pills, avatar circles */
+
+  /* ===== GS shadow scale (additive — does NOT redefine --shape-shadow-*) ===== */
+  --shadow-none: none;
+  --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.06); /* subtle lift */
+  --shadow-sm: 0 2px 4px rgb(0 0 0 / 0.08); /* card default */
+  --shadow-md: 0 4px 16px rgb(0 0 0 / 0.1); /* card hover */
+  --shadow-lg: 0 8px 32px rgb(0 0 0 / 0.12); /* modal/drawer */
+  --shadow-xl: 0 16px 48px rgb(0 0 0 / 0.16); /* full overlay */
+
+  /* ===== Commerce display tokens ===== */
+
+  /* Price display */
+  --price-font: var(--type-body-1-strong-font);
+  --price-color: #000;
+  --price-sale-color: #ee3124; /* GS Poppy */
+  --price-original-color: #a8a8a8; /* GS Stone — strikethrough */
+  --price-member-color: #004987; /* GS Navy — member price */
+  --price-loyalty-color: #5c1f8b; /* GS Purple — loyalty price */
+
+  /* Product badges */
+  --badge-font-size: 1.2rem;
+  --badge-font-weight: 600;
+  --badge-border-radius: var(--radius-xs);
+  --badge-padding: 2px 8px;
+  --badge-new-bg: #00b451; /* GS Green */
+  --badge-new-text: #fff;
+  --badge-sale-bg: #ee3124; /* GS Poppy */
+  --badge-sale-text: #fff;
+  --badge-soldout-bg: #d9d9d9; /* GS Cloud */
+  --badge-soldout-text: #666;
+  --badge-loyalty-bg: #5c1f8b; /* GS Purple */
+  --badge-loyalty-text: #fff;
+  --badge-member-bg: #004987; /* GS Navy */
+  --badge-member-text: #fff;
+
+  /* Star rating */
+  --rating-color: #f7be00; /* GS Gold */
+  --rating-empty-color: #d9d9d9; /* GS Cloud */
+  --rating-size: 1.6rem;
+
+  /* Loyalty tier indicators */
+  --loyalty-tier-1-color: #004987; /* Member — Navy */
+  --loyalty-tier-2-color: #5c1f8b; /* Loyalty — Purple */
+  --loyalty-tier-3-color: #a86b1d; /* VIP — Desert Gold */
+
+  /* ===== Skeleton / loading ===== */
+  --skeleton-bg: #f0f0f0;
+  --skeleton-highlight: #e0e0e0;
+  --skeleton-radius: var(--radius-xs);
+  --skeleton-animation: skeleton-shimmer 1.5s ease-in-out infinite;
+
+  /* ===== Z-index scale ===== */
+  --z-below: -1; /* background elements */
+  --z-base: 0; /* default flow */
+  --z-raised: 10; /* cards on hover, tooltips */
+  --z-dropdown: 100; /* nav dropdowns, select menus */
+  --z-sticky: 200; /* sticky header */
+  --z-overlay: 300; /* modal/drawer backdrop */
+  --z-modal: 400; /* modal content, mini-cart */
+  --z-toast: 500; /* notification toasts */
+
+  /* 501–9999998 intentionally empty — reserved for third-party widgets */
+
+  /* AccessiBe (#acsb-trigger) uses z-index: 9999999 by design — never set our own tokens above 500 */
+}
+
+@media (min-width: 768px) {
+  :root {
+    --grid-columns: var(--grid-2-columns); /* 12 tablet */
+    --grid-margin: var(--grid-2-margins); /* 20px tablet */
+    --grid-gutter: var(--grid-2-gutters); /* 16px tablet */
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --grid-columns: var(--grid-3-columns); /* 12 desktop */
+    --grid-margin: var(--grid-3-margins); /* 56px desktop */
+    --grid-gutter: var(--grid-3-gutters); /* 24px desktop */
+  }
+}
+
+/* Motion — respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0ms;
+    --transition-base: 0ms;
+    --transition-slow: 0ms;
+    --transition-bounce: 0ms;
+    --nav-accordion-panel-transition: 0ms;
+    --nav-accordion-content-transition: opacity 0ms;
+  }
+}
+
+/* fallback font */
+@font-face {
+  font-family: adobe-clean;
+  size-adjust: 100%;
+  src: local("Helvetica");
+}
+
+html, body {
+  min-height: 100%;
+}
+
+html {
+  font-size: 62.5%;
+  scrollbar-gutter: stable;
+}
+
+body {
+  font: var(--type-body-1-default-font);
+  letter-spacing: var(--type-body-1-default-letter-spacing);
+  margin: 0;
+  color: var(--color-neutral-800);
+  background-color: var(--background-color);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+body:not(.appear) {
+  display: none;
+}
+
+header {
+  grid-row: 1;
+
+  /* CLS: offer is delayed 3 s, so always pre-paint with the no-offer height; cached exact value from previous visit */
+  min-height: var(--gs-header-height-cache, var(--header-mobile-nav-min-height));
+
+  /* Smooth spacer expansion when the offer bar slides in after 3 s */
+  transition: min-height var(--transition-slow);
+}
+
+header:not(:has(.header-offer)),
+html.header-offer-dismissed header {
+  min-height: var(--gs-header-height-cache, var(--header-mobile-nav-min-height));
+}
+
+@media (min-width: 1100px) {
+  header {
+    min-height: var(--header-desktop-min-height);
+  }
+
+  header:not(:has(.header-offer)),
+  html.header-offer-dismissed header {
+    min-height: var(--header-desktop-nav-min-height);
+  }
+}
+
+main {
+  grid-row: 2;
+}
+
+footer {
+  grid-row: 3;
+}
+
+header .header,
+footer .footer {
+  visibility: hidden;
+}
+
+header .header[data-block-status="loaded"],
+footer .footer[data-block-status="loaded"] {
+  visibility: visible;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0.8em;
+  margin-bottom: 0.25em;
+  line-height: 1.25;
+  scroll-margin: 40px;
+}
+
+h1 {
+  font: var(--type-display-0-font);
+  letter-spacing: var(--type-display-0-letter-spacing);
+}
+
+h2 {
+  font: var(--type-display-2-font);
+  letter-spacing: var(--type-display-2-letter-spacing);
+}
+
+h3 {
+  font: var(--type-display-3-font);
+  letter-spacing: var(--type-display-3-letter-spacing);
+}
+
+h4 {
+  font: var(--type-headline-1-font);
+  letter-spacing: var(--type-headline-1-letter-spacing);
+}
+
+h5 {
+  font: var(--type-headline-2-strong-font);
+  letter-spacing: var(--type-headline-2-strong-letter-spacing);
+}
+
+h6 {
+  font: var(--type-headline-2-default-font);
+  letter-spacing: var(--type-headline-2-default-letter-spacing);
+}
+
+p,
+dl,
+ol,
+ul,
+pre,
+blockquote {
+  margin-top: 1.5625em;
+  margin-bottom: 1.5625em;
+}
+
+code,
+pre {
+  font: var(--type-body-2-default-font);
+  letter-spacing: var(--type-body-2-default-letter-spacing);
+  font-family: var(--type-fixed-font-family);
+}
+
+pre {
+  overflow: scroll;
+}
+
+main > div {
+  margin: var(--spacing-xbig) var(--spacing-small);
+}
+
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}
+
+/* links */
+a:not(.dropin-design a) {
+  color: var(--color-brand-500);
+  letter-spacing: var(--type-body-1-strong-letter-spacing);
+  text-decoration: none;
+  overflow-wrap: break-word;
+  transition: color var(--transition-base);
+}
+
+a:not(.dropin-design a):hover {
+  color: var(--color-brand-600);
+  text-decoration: underline;
+}
+
+/* buttons */
+p.button-wrapper {
+  margin: var(--spacing-small) 0;
+}
+
+/* Base button — Primary Large (default) */
+main a.button:any-link,
+button.button {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  height: var(--btn-height-lg);
+  margin: 0;
+  padding: 0 var(--btn-padding-x-lg);
+  border: 2px solid var(--btn-primary-border);
+  border-radius: var(--btn-radius-lg);
+  font-family: var(--btn-font-family);
+  font-size: var(--btn-font-size-lg);
+  font-weight: var(--btn-font-weight);
+  line-height: var(--btn-line-height);
+  letter-spacing: var(--btn-letter-spacing);
+  text-transform: var(--btn-text-transform);
+  text-decoration: none;
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition:
+    background-color var(--transition-base),
+    color var(--transition-base),
+    border-color var(--transition-base);
+}
+
+main a.button:hover,
+main a.button:focus-visible,
+button.button:hover,
+button.button:focus-visible {
+  background-color: var(--btn-primary-bg-hover);
+}
+
+main a.button:active,
+button.button:active {
+  background-color: var(--btn-primary-bg-active);
+}
+
+/* Primary (explicit) — same as base */
+a.button.primary,
+button.button.primary {
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-color: var(--btn-primary-border);
+}
+
+a.button.primary:hover,
+a.button.primary:focus-visible,
+button.button.primary:hover,
+button.button.primary:focus-visible {
+  background-color: var(--btn-primary-bg-hover);
+}
+
+a.button.primary:active,
+button.button.primary:active {
+  background-color: var(--btn-primary-bg-active);
+}
+
+/* Secondary — outlined Green */
+main a.button.secondary,
+button.button.secondary {
+  background-color: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border: 2px solid var(--btn-secondary-border);
+}
+
+main a.button.secondary:hover,
+main a.button.secondary:focus-visible,
+button.button.secondary:hover,
+button.button.secondary:focus-visible {
+  background-color: var(--btn-secondary-border-hover);
+  color: var(--btn-secondary-text-on-hover);
+  border-color: var(--btn-secondary-border-hover);
+}
+
+main a.button.secondary:active,
+button.button.secondary:active {
+  background-color: var(--btn-secondary-bg-active);
+}
+
+/* Accent — Figma "Violet-Secondary" (soft green tint, fills forest on hover) */
+a.button.accent,
+button.button.accent {
+  background-color: var(--btn-violet-bg);
+  color: var(--btn-violet-text);
+  border-color: var(--btn-violet-border);
+}
+
+a.button.accent:hover,
+a.button.accent:focus-visible,
+button.button.accent:hover,
+button.button.accent:focus-visible {
+  background-color: var(--btn-violet-bg-hover);
+  color: var(--btn-violet-text-hover);
+  border-color: var(--btn-violet-border-hover);
+}
+
+/* Text link button */
+a.button.text,
+button.button.text {
+  height: auto;
+  padding: 0;
+  border: none;
+  background-color: var(--btn-text-primary-bg);
+  color: var(--btn-text-primary-text);
+  text-decoration: var(--btn-text-primary-underline);
+}
+
+a.button.text:hover,
+a.button.text:focus-visible,
+button.button.text:hover,
+button.button.text:focus-visible {
+  background-color: var(--btn-text-primary-bg);
+  color: var(--btn-text-primary-hover);
+}
+
+/* White-on-Dark — scoped under main to outrank base `main a.button:any-link` */
+main a.button.white-on-dark,
+button.button.white-on-dark {
+  background-color: var(--btn-white-on-dark-bg);
+  color: var(--btn-white-on-dark-text);
+  border-color: var(--btn-white-on-dark-border);
+}
+
+main a.button.white-on-dark:hover,
+main a.button.white-on-dark:focus-visible,
+button.button.white-on-dark:hover,
+button.button.white-on-dark:focus-visible {
+  background-color: var(--btn-white-on-dark-bg-hover);
+  color: var(--btn-white-on-dark-text-hover);
+}
+
+main a.button.white-on-dark:active,
+button.button.white-on-dark:active {
+  background-color: var(--btn-white-on-dark-bg-active);
+}
+
+/* Black — dark surface button */
+main a.button.black,
+button.button.black {
+  background-color: var(--btn-black-bg);
+  color: var(--btn-black-text);
+  border-color: transparent;
+}
+
+main a.button.black:hover,
+main a.button.black:focus-visible,
+button.button.black:hover,
+button.button.black:focus-visible {
+  background-color: var(--btn-black-bg-hover);
+}
+
+main a.button.black:active,
+button.button.black:active {
+  background-color: var(--btn-black-bg-active);
+}
+
+/* Light — cream/warm surface button */
+main a.button.light,
+button.button.light {
+  background-color: var(--btn-light-bg);
+  color: var(--btn-light-text);
+  border-color: var(--btn-light-border);
+}
+
+main a.button.light:hover,
+main a.button.light:focus-visible,
+button.button.light:hover,
+button.button.light:focus-visible {
+  background-color: var(--btn-light-bg-hover);
+}
+
+main a.button.light:active,
+button.button.light:active {
+  background-color: var(--btn-light-bg-active);
+}
+
+/* Secondary Light — outlined cream variant, for dark backgrounds */
+main a.button.secondary.light,
+button.button.secondary.light {
+  background-color: var(--btn-secondary-light-bg);
+  color: var(--btn-secondary-light-text);
+  border-color: var(--btn-secondary-light-border);
+}
+
+main a.button.secondary.light:hover,
+main a.button.secondary.light:focus-visible,
+button.button.secondary.light:hover,
+button.button.secondary.light:focus-visible {
+  background-color: var(--btn-secondary-light-bg-hover);
+}
+
+/* Text Secondary — link style, underline on hover only */
+main a.button.text-secondary,
+button.button.text-secondary {
+  height: auto;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  color: var(--btn-text-secondary-text);
+  text-decoration: none;
+  text-transform: none;
+  font-weight: var(--btn-font-weight);
+}
+
+main a.button.text-secondary:hover,
+main a.button.text-secondary:focus-visible,
+button.button.text-secondary:hover,
+button.button.text-secondary:focus-visible {
+  color: var(--btn-text-secondary-hover);
+  text-decoration: var(--btn-text-secondary-underline-hover);
+}
+
+/* Text White — underlined white text link, for dark backgrounds */
+main a.button.text.white,
+button.button.text.white,
+main a.button.text-secondary.white,
+button.button.text-secondary.white {
+  color: var(--btn-text-white-text);
+  text-decoration: var(--btn-text-white-underline);
+}
+
+main a.button.text.white:hover,
+main a.button.text.white:focus-visible,
+button.button.text.white:hover,
+button.button.text.white:focus-visible,
+main a.button.text-secondary.white:hover,
+button.button.text-secondary.white:hover {
+  color: var(--btn-text-white-hover);
+}
+
+/* Disabled state */
+a.button[aria-disabled="true"],
+button.button:disabled {
+  background-color: var(--btn-disabled-bg);
+  color: var(--btn-disabled-text);
+  border-color: var(--btn-disabled-border);
+  cursor: var(--btn-disabled-cursor);
+  pointer-events: none;
+}
+
+/* Size utilities — .btn-sm / .btn-md on a parent container */
+main .btn-sm a.button,
+main .btn-sm button.button {
+  height: var(--btn-height-sm);
+  padding: 0 var(--btn-padding-x-sm);
+  border-radius: var(--btn-radius-sm);
+  font-size: var(--btn-font-size-sm);
+}
+
+main .btn-md a.button,
+main .btn-md button.button {
+  height: var(--btn-height-md);
+  padding: 0 var(--btn-padding-x-md);
+  border-radius: var(--btn-radius-md);
+  font-size: var(--btn-font-size-md);
+}
+
+/* Focus ring (WCAG AA) */
+:focus-visible {
+  outline: var(--focus-ring-width) var(--focus-ring-style) var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+main a.button:focus-visible,
+button:focus-visible {
+  outline: var(--focus-ring-width) var(--focus-ring-style) var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+main img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+}
+
+.icon {
+  display: inline-block;
+  height: 2.4rem;
+  width: 2.4rem;
+}
+
+.icon img {
+  height: 100%;
+  width: 100%;
+}
+
+.icon.icon-gs-logo {
+  width: var(--nav-mobile-logo-width);
+  height: var(--nav-mobile-logo-height);
+  line-height: 0;
+}
+
+.icon.icon-gs-logo img {
+  width: var(--nav-mobile-logo-width);
+  height: var(--nav-mobile-logo-height);
+  object-fit: contain;
+}
+
+/* sections */
+main > .section {
+  margin: var(--spacing-xxbig) 0; /* 48px mobile — GS 3XL */
+}
+
+@media (min-width: 768px) {
+  main > .section {
+    margin: var(--spacing-large) 0; /* 64px tablet — GS 4XL */
+  }
+}
+
+@media (min-width: 1280px) {
+  main > .section {
+    margin: var(--spacing-xxlarge) 0; /* 96px desktop — GS 5XL */
+  }
+}
+
+.section:empty {
+  display: none;
+}
+
+main > .section > div {
+  box-sizing: border-box;
+  max-width: var(--grid-max-width);
+  margin: auto;
+  padding: 0 var(--grid-margin);
+}
+
+/* First section — no top gap ever */
+main > .section:first-of-type {
+  margin-top: 0;
+}
+
+/* Last section — no bottom gap ever */
+main > .section:last-of-type {
+  margin-bottom: 0;
+}
+
+/* 12-column grid utility — add grid-12 to container, col-span-* to children */
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  gap: var(--grid-gutter);
+}
+
+.grid-12 > .col-span-3 { grid-column: span 3; }
+.grid-12 > .col-span-4 { grid-column: span 4; }
+.grid-12 > .col-span-6 { grid-column: span 4; }
+.grid-12 > .col-span-12 { grid-column: 1 / -1; }
+
+@media (min-width: 768px) {
+  .grid-12 > .col-span-6 { grid-column: span 6; }
+}
+
+/* section metadata - styles - start */
+main .section.light,
+main .section.highlight {
+  background-color: var(--color-neutral-100);
+  margin: 0;
+  padding: var(--spacing-xbig) 0;
+}
+
+/* Stories Blue — marine tint backdrop for the stories-testimonials block. */
+main .section.stories-blue {
+  background-color: color-mix(in srgb, var(--color-gs-marine) 15%, transparent);
+}
+
+/* Campaign Sky — light river-blue backdrop for the campaign-highlights block. */
+main .section.campaign-sky {
+  background-color: color-mix(in srgb, var(--color-gs-river) 15%, transparent);
+}
+
+main .section[data-padding="default"] {
+    padding: var(--spacing-xxsmall) 0;
+}
+
+main .section[data-padding="small"] {
+    padding: var(--spacing-xsmall) 0;
+}
+
+main .section[data-padding="medium"] {
+    padding: var(--spacing-small) 0;
+}
+
+main .section[data-padding="large"] {
+    padding: var(--spacing-medium) 0;
+}
+
+main .section[data-padding="big"] {
+    padding: var(--spacing-big) 0;
+}
+
+main .section[data-padding="xbig"] {
+    padding: var(--spacing-xbig) 0;
+}
+
+main .section[data-padding="xxbig"] {
+    padding: var(--spacing-xxbig) 0;
+}
+
+main .section[data-padding="huge"] {
+    padding: var(--spacing-huge) 0;
+}
+
+main .section[data-padding="xhuge"] {
+    padding: var(--spacing-xhuge) 0;
+}
+
+main .section[data-padding="xxhuge"] {
+    padding: var(--spacing-xxhuge) 0;
+}
+
+/* GS-scale abbreviated padding keys */
+main .section[data-padding="none"] {
+    padding: var(--spacing-none) 0; /* 0px */
+}
+
+main .section[data-padding="2xs"] {
+    padding: var(--spacing-2xs) 0; /* 2px */
+}
+
+main .section[data-padding="xs"] {
+    padding: var(--spacing-xxsmall) 0; /* 4px */
+}
+
+main .section[data-padding="sm"] {
+    padding: var(--spacing-xsmall) 0; /* 8px */
+}
+
+main .section[data-padding="md"] {
+    padding: var(--spacing-small) 0; /* 16px */
+}
+
+main .section[data-padding="lg"] {
+    padding: var(--spacing-medium) 0; /* 24px */
+}
+
+main .section[data-padding="xl"] {
+    padding: var(--spacing-big) 0; /* 32px */
+}
+
+main .section[data-padding="2xl"] {
+    padding: var(--spacing-xxbig) 0; /* 48px */
+}
+
+main .section[data-padding="3xl"] {
+    padding: var(--spacing-large) 0; /* 64px */
+}
+
+main .section[data-padding="4xl"] {
+    padding: var(--spacing-xxlarge) 0; /* 96px */
+}
+
+main .section[data-padding="5xl"] {
+    padding: var(--spacing-huge) 0; /* 120px */
+}
+
+
+main .section[data-margin="small"] {
+    margin: var(--spacing-xsmall) 0;
+}
+
+main .section[data-margin="medium"] {
+    margin: var(--spacing-small) 0;
+}
+
+main .section[data-margin="large"] {
+    margin: var(--spacing-medium) 0;
+}
+
+main .section[data-margin="big"] {
+    margin: var(--spacing-big) 0;
+}
+
+main .section[data-margin="xbig"] {
+    margin: var(--spacing-xbig) 0;
+}
+
+main .section[data-margin="xxbig"] {
+    margin: var(--spacing-xxbig) 0;
+}
+
+main .section[data-margin="huge"] {
+    margin: var(--spacing-huge) 0;
+}
+
+main .section[data-margin="xhuge"] {
+    margin: var(--spacing-xhuge) 0;
+}
+
+main .section[data-margin="xxhuge"] {
+    margin: var(--spacing-xxhuge) 0;
+}
+
+/* GS-scale abbreviated margin keys */
+main .section[data-margin="none"] {
+    margin: 0;
+}
+
+main .section[data-margin="2xs"] {
+    margin: var(--spacing-2xs) 0; /* 2px */
+}
+
+main .section[data-margin="xs"] {
+    margin: var(--spacing-xxsmall) 0; /* 4px */
+}
+
+main .section[data-margin="sm"] {
+    margin: var(--spacing-xsmall) 0; /* 8px */
+}
+
+main .section[data-margin="md"] {
+    margin: var(--spacing-small) 0; /* 16px */
+}
+
+/* default — responsive, mirrors the global default section margin */
+main .section[data-margin="default"] {
+    margin: var(--spacing-xxbig) 0; /* 48px mobile */
+}
+
+@media (min-width: 768px) {
+    main .section[data-margin="default"] {
+        margin: var(--spacing-large) 0; /* 64px tablet */
+    }
+}
+
+@media (min-width: 1280px) {
+    main .section[data-margin="default"] {
+        margin: var(--spacing-xxlarge) 0; /* 96px desktop */
+    }
+}
+
+/* lg — feature sections, scales up on desktop */
+main .section[data-margin="lg"] {
+    margin: var(--spacing-large) 0; /* 64px mobile */
+}
+
+@media (min-width: 1280px) {
+    main .section[data-margin="lg"] {
+        margin: var(--spacing-huge) 0; /* 120px desktop */
+    }
+}
+
+/* hero — full bleed, no margin at any viewport */
+main .section[data-margin="hero"] {
+    margin: 0;
+}
+
+/* section metadata - styles - end */
+
+/* Base Design System Tokens */
+.dropin-design.dropin-design {
+  --background-none: none 0 0% no-repeat padding-box;
+}
+
+/* Dropin buttons — align shape/typography/colour to --btn-* system */
+.dropin-design .dropin-button,
+.dropin-design a.dropin-button {
+  height: var(--btn-height-lg);
+  padding: 0 var(--btn-padding-x-lg);
+  border-radius: var(--btn-radius-lg);
+  font-family: var(--btn-font-family);
+  font-size: var(--btn-font-size-lg);
+  font-weight: var(--btn-font-weight);
+  line-height: var(--btn-line-height);
+  letter-spacing: var(--btn-letter-spacing);
+  text-transform: var(--btn-text-transform);
+  text-align: center;
+}
+
+/* Primary dropin → forest green (#005640) to match .button.primary */
+.dropin-design .dropin-button.dropin-button--primary {
+  background-color: var(--btn-primary-bg);
+}
+
+.dropin-design .dropin-button.dropin-button--primary:hover,
+.dropin-design .dropin-button.dropin-button--primary:focus {
+  background-color: var(--btn-primary-bg-hover);
+}
+
+.dropin-design .dropin-button.dropin-button--primary:active {
+  background-color: var(--btn-primary-bg-active);
+}
+
+/* Secondary dropin — 2px forest green outline */
+.dropin-design .dropin-button--secondary {
+  border-width: 2px;
+  border-color: var(--btn-secondary-border);
+  padding: 0 var(--btn-padding-x-lg);
+  color: var(--btn-secondary-text);
+}
+
+.dropin-design .dropin-button--secondary:hover,
+.dropin-design .dropin-button--secondary:focus-visible {
+  border-color: var(--btn-secondary-border-hover);
+  color: var(--btn-secondary-text-hover);
+}
+
+/* Medium size maps to the GS .btn-md step */
+.dropin-design .dropin-button--medium {
+  height: var(--btn-height-md);
+  padding: 0 var(--btn-padding-x-md);
+  border-radius: var(--btn-radius-md);
+  font-size: var(--btn-font-size-md);
+}
+
+/* Layout: Columns */
+body.columns main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1264px;
+  margin: 0 auto;
+  padding: var(--spacing-large) var(--spacing-small);
+  box-sizing: border-box;
+}
+
+body.columns main > .section {
+  flex: 1;
+  flex-basis: 100%;
+  max-width: unset;
+  margin: unset;
+  padding: calc(var(--grid-4-gutters) / 2);
+  box-sizing: border-box;
+}
+
+body.columns main > .section:first-child {
+  padding-inline-start: 0;
+  padding-block-start: 0;
+}
+
+body.columns main > .section:last-child {
+  padding-inline-end: 0;
+  padding-block-end: 0;
+}
+
+body.columns main > .section > div {
+  max-width: unset;
+  padding: unset;
+}
+
+body.columns main > .section > div:not(:last-child) {
+  margin-bottom: var(--gap, unset);
+}
+
+body.columns main > .section:empty {
+  display: none;
+}
+
+@media (min-width: 1280px) {
+  body.columns main {
+    padding: var(--spacing-large) var(--spacing-big);
+    flex-flow: row wrap;
+  }
+
+  body.columns main > .section {
+    flex: 1;
+    flex-basis: var(--column-width, auto);
+  }
+}
+
+/**
+* Reset main element visibility
+* https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden
+*/
+main[hidden] {
+  display: none !important;
+}

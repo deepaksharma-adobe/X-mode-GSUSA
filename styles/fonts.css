@@ -1,0 +1,135 @@
+/* Girl Scouts brand fonts — display/headings
+ *
+ * NOTE: .woff2 files are proprietary GS brand fonts — supply separately,
+ * do NOT substitute Google Fonts. Until added, "Girl Scout" falls back to
+ * "Trefoil Sans" → roboto → system-ui so headings render without breaking.
+ *
+ * Place these files in fonts/ when received from GS:
+ *   girl-scout-light.woff2     (300 — Display Light)
+ *   girl-scout-regular.woff2   (400)
+ *   girl-scout-medium.woff2    (500 — Text Medium)
+ *   girl-scout-bold.woff2      (700 — Text Bold)
+ */
+@font-face {
+    font-family: "Girl Scout";
+    src: url('../fonts/girl-scout-light.woff2') format('woff2');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: "Girl Scout";
+    src: url('../fonts/girl-scout-regular.woff2') format('woff2');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "Girl Scout";
+    src: url('../fonts/girl-scout-medium.woff2') format('woff2');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: "Girl Scout";
+    src: url('../fonts/girl-scout-bold.woff2') format('woff2');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 700;
+}
+
+/* Girl Scouts brand fonts — body/UI */
+@font-face {
+    font-family: "Trefoil Sans";
+    src: url('../fonts/trefoil-sans-light.woff2') format('woff2');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: "Trefoil Sans";
+    src: url('../fonts/trefoil-sans-regular.woff2') format('woff2');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "Trefoil Sans";
+    src: url('../fonts/trefoil-sans-medium.woff2') format('woff2');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: "Trefoil Sans";
+    src: url('../fonts/trefoil-sans-semibold.woff2') format('woff2');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: "Trefoil Sans";
+    src: url('../fonts/trefoil-sans-bold.woff2') format('woff2');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: adobe-clean;
+    src: url('../fonts/adobe-clean-normal-400.woff2') format('woff2');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: adobe-clean;
+    src: url('../fonts/adobe-clean-italic-400.woff2') format('woff2');
+    font-display: swap;
+    font-style: italic;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: adobe-clean;
+    src: url('../fonts/adobe-clean-normal-700.woff2') format('woff2');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 700;
+}
+
+@font-face {
+  font-family: roboto;
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../fonts/roboto-bold.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../fonts/roboto-medium.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: roboto;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/roboto-regular.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}

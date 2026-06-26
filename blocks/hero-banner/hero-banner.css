@@ -1,0 +1,723 @@
+/* ===== Layout — full-bleed: break out of the section/main gutter to span
+   the full viewport width (so the 3:4 mobile banner reaches 360×480). ===== */
+main .section .hero-banner-wrapper {
+  max-width: none;
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  padding: 0;
+}
+
+/* Boxed variant — opt out of full-bleed: cap at the grid max-width and center
+   with normal page margins so the banner aligns with other page content. */
+main .section .hero-banner-wrapper:has(.hero-banner.boxed) {
+  width: auto;
+  max-width: var(--grid-max-width);
+  margin-inline: auto;
+  padding-inline: var(--grid-1-margins);
+}
+
+@media (min-width: 768px) {
+  main .section .hero-banner-wrapper:has(.hero-banner.boxed) {
+    padding-inline: var(--grid-3-margins);
+  }
+}
+
+@media (min-width: 1280px) {
+  main .section .hero-banner-wrapper:has(.hero-banner.boxed) {
+    padding-inline: var(--grid-4-margins);
+  }
+}
+
+.hero-banner {
+  position: relative;
+}
+
+.hero-banner .hero-banner-slides {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  overflow: scroll clip;
+}
+
+.hero-banner .hero-banner-slides::-webkit-scrollbar {
+  display: none;
+}
+
+.hero-banner .hero-banner-slide {
+  position: relative;
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  aspect-ratio: 3 / 4;
+  max-height: 720px;
+}
+
+.hero-banner .hero-banner-slide-image {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-banner .hero-banner-slide-image picture {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-banner .hero-banner-slide-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Background video stacks over the poster picture, filling the slide. */
+.hero-banner .hero-banner-slide-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Adaptive: the slide adopts the media's aspect ratio (set inline by JS), so
+   contain shows the full image/video with no cropping. */
+.hero-banner .hero-banner-slide-adaptive .hero-banner-slide-video,
+.hero-banner .hero-banner-slide-adaptive .hero-banner-slide-image img {
+  object-fit: contain;
+}
+
+/* ===== Background video sound toggle (bottom-right) ===== */
+.hero-banner .hero-banner-sound {
+  position: absolute;
+  right: var(--grid-1-margins);
+  bottom: var(--grid-1-margins);
+  z-index: var(--z-raised);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--color-neutral-50);
+  border-radius: var(--radius-full);
+  background: rgb(0 0 0 / 0.4);
+  color: var(--color-neutral-50);
+  cursor: pointer;
+  transition:
+    background var(--transition-base),
+    color var(--transition-base);
+}
+
+.hero-banner .hero-banner-sound:hover,
+.hero-banner .hero-banner-sound:focus-visible {
+  background: rgb(0 0 0 / 0.7);
+}
+
+/* Speaker glyph */
+.hero-banner .hero-banner-sound::before {
+  content: '';
+  width: 7px;
+  height: 8px;
+  border: 2px solid transparent;
+  border-right-color: currentcolor;
+  background: currentcolor;
+  clip-path: polygon(0 30%, 45% 30%, 100% 0, 100% 100%, 45% 70%, 0 70%);
+}
+
+/* Muted: a slash over the speaker */
+.hero-banner .hero-banner-sound[data-muted='true']::after {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 2px;
+  background: currentcolor;
+  transform: rotate(-45deg);
+}
+
+@media (min-width: 768px) {
+  .hero-banner .hero-banner-sound {
+    right: var(--grid-3-margins);
+    bottom: var(--grid-3-margins);
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-banner .hero-banner-sound {
+    right: var(--grid-4-margins);
+    bottom: var(--grid-4-margins);
+  }
+}
+
+.hero-banner .hero-banner-slide-content {
+  position: relative;
+  z-index: var(--z-raised);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-small);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--grid-max-width);
+  margin-inline: auto;
+  padding: var(--spacing-big) var(--grid-1-margins);
+  color: var(--color-neutral-50);
+}
+
+/* Inner text/buttons stay within the Figma fixed content column */
+.hero-banner .hero-banner-slide-content > * {
+  width: 100%;
+  max-width: 410px;
+}
+
+/* Gradient overlay (Figma: 98deg brown fade left-to-right) */
+.hero-banner .hero-banner-slide::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    98deg,
+    rgb(145 113 64 / 0.98) 0%,
+    rgb(168 138 92 / 0.39) 31%,
+    rgb(168 138 92 / 0) 100%
+  );
+}
+
+/* ===== Typography ===== */
+.hero-banner .hero-banner-slide-content :is(p, h1, h2, h3) {
+  margin: 0;
+  color: inherit;
+}
+
+.hero-banner .hero-banner-slide-content > p:first-child {
+  font: var(--type-body-1-strong-font);
+}
+
+.hero-banner .hero-banner-slide-content :is(h1, h2, h3) {
+  font: var(--type-display-3-font);
+  font-weight: 700;
+}
+
+/* ===== Buttons ===== */
+.hero-banner .hero-banner-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-medium);
+  margin-top: var(--spacing-xsmall);
+}
+
+.hero-banner .hero-banner-button-wrapper {
+  margin: 0;
+}
+
+/* Explore More — uppercase white text link with trailing arrow (Figma) */
+.hero-banner a.button.text.hero-banner-explore {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xxsmall);
+  height: auto;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--btn-text-white-text);
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: var(--btn-font-weight);
+}
+
+.hero-banner a.button.hero-banner-explore::after {
+  content: '';
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  background-color: currentcolor;
+  mask: url('../../icons/chevron-right.svg') center / contain no-repeat;
+}
+
+/* ===== Terms & Conditions (Figma) =====
+   Mobile: full-bleed dark bar, centered, flush to the banner bottom.
+   Desktop: small right-aligned tag within the centered grid frame. */
+.hero-banner .hero-banner-slide-terms {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: var(--z-raised);
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: rgb(0 0 0 / 0.2);
+  pointer-events: none;
+}
+
+.hero-banner .hero-banner-slide-terms p {
+  margin: 0;
+  padding: var(--spacing-xxsmall) 0;
+  font: var(--type-details-caption-semibold-font);
+  color: var(--color-neutral-50);
+  pointer-events: auto;
+}
+
+.hero-banner .hero-banner-slide-terms a {
+  color: inherit;
+}
+
+/* ===== Shared circular nav button (Figma node 2887:35857) ===== */
+.hero-banner .hero-banner-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--color-gs-green);
+  border-radius: var(--radius-full);
+  background: var(--color-positive-200);
+  color: var(--color-gs-forest);
+  cursor: pointer;
+  transition:
+    background var(--transition-base),
+    border-color var(--transition-base),
+    color var(--transition-base);
+}
+
+.hero-banner .hero-banner-nav::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border: 2px solid currentcolor;
+  border-width: 2px 2px 0 0;
+}
+
+.hero-banner .hero-banner-prev::after {
+  transform: rotate(-135deg);
+  margin-left: 3px;
+}
+
+.hero-banner .hero-banner-next::after {
+  transform: rotate(45deg);
+  margin-right: 3px;
+}
+
+.hero-banner .hero-banner-nav:hover,
+.hero-banner .hero-banner-nav:focus-visible {
+  background: var(--color-gs-forest);
+  color: var(--color-neutral-50);
+}
+
+/* ===== Edge nav (large arrows, tablet+ only — hidden on mobile per Figma) ===== */
+.hero-banner .hero-banner-edge-nav {
+  display: none;
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: var(--z-raised);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--grid-max-width);
+  margin-inline: auto;
+  padding-inline: var(--grid-1-margins);
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.hero-banner .hero-banner-edge {
+  width: 40px;
+  height: 40px;
+  pointer-events: auto;
+}
+
+/* ===== Bottom-center graduated dots (Figma node 2886:47420) =====
+   Mobile: sit above the full-bleed Terms bar. */
+.hero-banner .hero-banner-controls {
+  position: absolute;
+  inset-inline: 0;
+  bottom: var(--spacing-large);
+  z-index: var(--z-raised);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--grid-max-width);
+  margin-inline: auto;
+  padding-inline: var(--grid-1-margins);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xsmall);
+}
+
+.hero-banner .hero-banner-indicators {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xsmall);
+}
+
+.hero-banner .hero-banner-indicator {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-neutral-50);
+  cursor: pointer;
+  transition:
+    width var(--transition-base),
+    height var(--transition-base);
+}
+
+/* Graduated sizing: dots shrink with distance from the active slide */
+.hero-banner .hero-banner-indicator[data-distance='0'] {
+  width: 16px;
+  height: 16px;
+}
+
+.hero-banner .hero-banner-indicator[data-distance='1'] {
+  width: 11px;
+  height: 11px;
+}
+
+.hero-banner .hero-banner-indicator[data-distance='2'] {
+  width: 8px;
+  height: 8px;
+}
+
+.hero-banner .hero-banner-indicator[data-distance='3'] {
+  width: 6px;
+  height: 6px;
+}
+
+/* ===== Tablet (16:9, centered content, edge arrows visible) ===== */
+@media (min-width: 768px) {
+  .hero-banner .hero-banner-slide {
+    justify-content: center;
+    aspect-ratio: 16 / 9;
+  }
+
+  /* Left padding clears the edge arrow zone (40px arrow + gap) */
+  .hero-banner .hero-banner-slide-content {
+    padding: var(--spacing-xxbig) var(--grid-3-margins);
+    padding-left: calc(var(--grid-3-margins) + 40px + var(--spacing-medium));
+  }
+
+  .hero-banner .hero-banner-slide-content :is(h1, h2, h3) {
+    font: var(--type-headline-1-font);
+    font-size: 3.4rem;
+    line-height: 1.15;
+  }
+
+  .hero-banner .hero-banner-edge-nav {
+    display: flex;
+    padding-inline: var(--grid-3-margins);
+  }
+
+  /* Tablet+: dots back to bottom edge; Terms becomes a right-aligned tag */
+  .hero-banner .hero-banner-controls {
+    bottom: var(--spacing-medium);
+    padding-inline: var(--grid-3-margins);
+  }
+
+  .hero-banner .hero-banner-slide-terms {
+    max-width: var(--grid-max-width);
+    margin-inline: auto;
+    justify-content: flex-end;
+    background: transparent;
+  }
+
+  .hero-banner .hero-banner-slide-terms p {
+    padding: var(--spacing-xxsmall) var(--spacing-big) var(--spacing-xxsmall) var(--spacing-small);
+    background: rgb(0 0 0 / 0.2);
+  }
+}
+
+/* ===== Desktop ===== */
+@media (min-width: 1280px) {
+  .hero-banner .hero-banner-slide-content {
+    padding: var(--spacing-xxbig) var(--grid-4-margins);
+    padding-left: calc(var(--grid-4-margins) + 40px + var(--spacing-big));
+  }
+
+  .hero-banner .hero-banner-slide-content > p:first-child {
+    font: var(--type-headline-2-strong-font);
+  }
+
+  .hero-banner .hero-banner-slide-content :is(h1, h2, h3) {
+    font: var(--type-display-2-font);
+    font-weight: 700;
+  }
+
+  .hero-banner .hero-banner-edge-nav,
+  .hero-banner .hero-banner-controls {
+    padding-inline: var(--grid-4-margins);
+  }
+}
+
+/* ===== Council variant (Figma node 2749:48467) =====
+   Light cream theme: forest-green text, no dark gradient, green dots. */
+.hero-banner.council .hero-banner-slide {
+  background: var(--btn-light-bg-hover);
+}
+
+.hero-banner.council .hero-banner-slide::before {
+  display: none;
+}
+
+.hero-banner.council .hero-banner-slide-content {
+  color: var(--color-gs-forest);
+}
+
+.hero-banner.council a.button.text.hero-banner-explore {
+  color: var(--color-gs-forest);
+}
+
+/* Shop button: green outline on the light council background */
+.hero-banner.council main a.button.secondary.light,
+.hero-banner.council a.button.secondary.light {
+  color: var(--btn-secondary-text);
+  border-color: var(--btn-secondary-border);
+}
+
+.hero-banner.council a.button.secondary.light:hover,
+.hero-banner.council a.button.secondary.light:focus-visible {
+  color: var(--btn-secondary-text-on-hover);
+  background: var(--btn-secondary-border-hover);
+  border-color: var(--btn-secondary-border-hover);
+}
+
+/* Council theme: forest-green dots on the light background */
+.hero-banner.council .hero-banner-indicator {
+  background: var(--color-gs-forest);
+}
+
+/* ===== Card variant (Figma node 2767:25810) =====
+   Content sits in a solid dark-green box over a full-bleed photo.
+   No gradient and no edge arrows — navigation via bottom dots only. */
+.hero-banner.card .hero-banner-slide::before {
+  display: none;
+}
+
+.hero-banner.card .hero-banner-edge-nav {
+  display: none;
+}
+
+/* Card content stays in the centered grid frame (like base/council);
+   the green box itself caps at 460px and left-aligns inside that frame.
+   Mobile: box has 16px side margins + 24px top (Figma 2767:25811). */
+.hero-banner.card .hero-banner-slide-content {
+  align-items: stretch;
+  padding: var(--spacing-medium) var(--spacing-small) 0;
+}
+
+.hero-banner.card .hero-banner-slide-box {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-small);
+  width: 100%;
+  max-width: 460px;
+  padding: var(--spacing-big);
+  background: var(--color-gs-dark-green);
+}
+
+/* The box owns its own padding — its children fill the box, not the base
+   410px content cap (which caused mobile overflow). */
+.hero-banner.card .hero-banner-slide-box > * {
+  width: 100%;
+  max-width: none;
+}
+
+/* Card eyebrow + headline (Girl Scout serif, white) — px-perfect to Figma */
+.hero-banner.card .hero-banner-slide-box > p:first-child {
+  font: normal normal 700 2rem/2.4rem var(--type-display-font-family);
+}
+
+.hero-banner.card .hero-banner-slide-box :is(h1, h2, h3) {
+  font: normal normal 700 2.6rem/3.1rem var(--type-display-font-family);
+}
+
+/* Card tablet/desktop — no edge-arrow clearance; card hugs the grid margin */
+@media (min-width: 768px) {
+  .hero-banner.card .hero-banner-slide-content {
+    padding: 0 var(--grid-3-margins);
+  }
+
+  .hero-banner.card .hero-banner-slide-box :is(h1, h2, h3) {
+    font: normal normal 700 3.4rem/4rem var(--type-display-font-family);
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-banner.card .hero-banner-slide-content {
+    padding: 0 var(--grid-4-margins);
+  }
+
+  .hero-banner.card .hero-banner-slide-box :is(h1, h2, h3) {
+    font: normal normal 700 4.8rem/5.8rem var(--type-display-font-family);
+  }
+}
+
+/* ===== Secondary variant (Figma node 5168:208535) =====
+   Short, wide promotional banner: full-bleed photo, left black->transparent
+   gradient, eyebrow + headline + subtext + a single solid-white CTA.
+   Overrides the base 16:9 / 3:4 hero proportions. */
+.hero-banner.secondary .hero-banner-slide {
+  justify-content: center;
+  aspect-ratio: 4 / 5;
+  max-height: none;
+}
+
+/* Left-to-right black fade (Figma: 270deg #000 -> transparent). */
+.hero-banner.secondary .hero-banner-slide::before {
+  background: linear-gradient(
+    90deg,
+    rgb(0 0 0 / 0.9) 0%,
+    rgb(0 0 0 / 0) 100%
+  );
+}
+
+.hero-banner.secondary .hero-banner-slide-content {
+  gap: var(--spacing-medium);
+}
+
+.hero-banner.secondary .hero-banner-slide-content > * {
+  max-width: 593px;
+}
+
+/* Eyebrow — Girl Scout bold 20/24 (Figma). */
+.hero-banner.secondary .hero-banner-slide-content > p:first-child {
+  font: normal normal 700 2rem/2.4rem var(--type-display-font-family);
+}
+
+/* Headline — Girl Scout light 36/43 (Figma). */
+.hero-banner.secondary .hero-banner-slide-content :is(h1, h2, h3) {
+  font: normal normal 300 3.6rem/4.3rem var(--type-display-font-family);
+}
+
+/* Subtext — the middle paragraph (after eyebrow, before the CTA). */
+.hero-banner.secondary .hero-banner-slide-content > p:not(:first-child) {
+  font: var(--type-headline-2-default-font);
+  color: var(--color-neutral-100);
+}
+
+/* Solid white CTA — uppercase, no icon. */
+.hero-banner.secondary a.button.hero-banner-cta {
+  text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+  .hero-banner.secondary .hero-banner-slide {
+    aspect-ratio: 21 / 9;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-banner.secondary .hero-banner-slide {
+    aspect-ratio: 1280 / 549;
+    max-height: 549px;
+  }
+}
+
+/* ===== Adaptive banner height (opt-in via the 'adaptive' class) =====
+   The slide adopts the image/video's natural aspect ratio (set inline by JS)
+   so the full media shows uncropped; the height cap is lifted so tall media
+   isn't clipped. Without 'adaptive' the banner keeps its fixed layout height
+   and the media fills it with object-fit: cover. */
+.hero-banner .hero-banner-slide.hero-banner-slide-adaptive {
+  max-height: none;
+}
+
+/* ===== Content alignment modifiers (stack with any layout) =====
+   Default is left-aligned. Add one of these to the block name to change the
+   horizontal alignment; add 'align-vertical-center' to also center vertically.
+   - align-center          : center horizontally
+   - align-right           : align to the right
+   - align-vertical-center : center vertically (combine with any horizontal option) */
+.hero-banner.align-center .hero-banner-slide-content {
+  align-items: center;
+  text-align: center;
+}
+
+.hero-banner.align-right .hero-banner-slide-content {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.hero-banner.align-vertical-center .hero-banner-slide {
+  justify-content: center;
+}
+
+/* ===== Video-banner modifier (Figma node 2734:45937) =====
+   Shorter, wider than the default at tablet+ (21:9 instead of 16:9); mobile
+   keeps the base 3:4. Content is center-aligned and top-anchored per Figma. */
+.hero-banner.video-banner .hero-banner-slide-content {
+  align-items: center;
+  text-align: center;
+  padding-block: var(--spacing-medium); /* 24px top/bottom — Figma mobile */
+}
+
+/* Content spans the full centered column — drop the base 410px cap that would
+   force the wide headline to wrap. */
+.hero-banner.video-banner .hero-banner-slide-content > * {
+  max-width: none;
+}
+
+/* Headline — Girl Scout light 26/31 (mobile & tablet per Figma). */
+.hero-banner.video-banner .hero-banner-slide-content :is(h1, h2, h3) {
+  font: normal normal 300 2.6rem/3.1rem var(--type-display-font-family);
+}
+
+/* Subtext — Trefoil Sans 16/19 (mobile & tablet per Figma). */
+.hero-banner.video-banner .hero-banner-slide-content > p:not(:has(a)) {
+  font: normal normal 400 1.6rem/1.9rem var(--type-base-font-family);
+}
+
+@media (min-width: 768px) {
+  .hero-banner.video-banner .hero-banner-slide {
+    aspect-ratio: 21 / 9;
+    justify-content: flex-start;
+  }
+
+  /* Center the content (no edge-arrow padding offset); 48px top/bottom. */
+  .hero-banner.video-banner .hero-banner-slide-content {
+    padding-block: var(--spacing-xxbig);
+    padding-inline: var(--grid-3-margins);
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-banner.video-banner .hero-banner-slide-content {
+    padding-block: var(--grid-3-margins); /* 56px top/bottom — Figma desktop */
+    padding-inline: var(--grid-4-margins);
+  }
+
+  /* Headline — Girl Scout light 36/43 (desktop per Figma). */
+  .hero-banner.video-banner .hero-banner-slide-content :is(h1, h2, h3) {
+    font: normal normal 300 3.6rem/4.3rem var(--type-display-font-family);
+  }
+
+  /* Subtext — Trefoil Sans 20/24 (desktop per Figma). */
+  .hero-banner.video-banner .hero-banner-slide-content > p:not(:has(a)) {
+    font: normal normal 400 2rem/2.4rem var(--type-base-font-family);
+  }
+}
+
+/* The base content reserves extra left padding for the edge arrows on tablet+.
+   For centered/right content that offset throws off true alignment, so reset
+   it to symmetric horizontal padding. */
+@media (min-width: 768px) {
+  .hero-banner.align-center .hero-banner-slide-content,
+  .hero-banner.align-right .hero-banner-slide-content {
+    padding-inline: var(--grid-3-margins);
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-banner.align-center .hero-banner-slide-content,
+  .hero-banner.align-right .hero-banner-slide-content {
+    padding-inline: var(--grid-4-margins);
+  }
+}
