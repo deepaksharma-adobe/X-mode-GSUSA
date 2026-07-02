@@ -228,8 +228,8 @@ main .section .stories-testimonials-wrapper {
 
 .stories-testimonials .stories-testimonials-arrow::before {
   content: '';
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   background-color: var(--color-gs-forest);
   mask: url('../../icons/chevron-right.svg') center / contain no-repeat;
 }
@@ -241,6 +241,17 @@ main .section .stories-testimonials-wrapper {
 .stories-testimonials .stories-testimonials-arrow:hover:not(:disabled),
 .stories-testimonials .stories-testimonials-arrow:focus-visible:not(:disabled) {
   background: color-mix(in srgb, var(--color-gs-green) 12%, var(--color-positive-200));
+}
+
+.stories-testimonials .stories-testimonials-arrow:hover:not(:disabled),
+.stories-testimonials .stories-testimonials-arrow:focus-visible:not(:disabled) {
+  background: var(--color-gs-forest);
+  border-color: var(--color-gs-forest);
+}
+
+.stories-testimonials .stories-testimonials-arrow:hover:not(:disabled)::before,
+.stories-testimonials .stories-testimonials-arrow:focus-visible:not(:disabled)::before {
+  background-color: var(--color-neutral-50);
 }
 
 .stories-testimonials .stories-testimonials-arrow:disabled {
@@ -298,7 +309,7 @@ main .section .stories-testimonials-wrapper {
   background: color-mix(in srgb, var(--color-gs-green) 12%, var(--color-positive-200));
 }
 
-/* ===== Dots — dynamic forest-green pager (all breakpoints) ===== */
+/* ===== Dots — dynamic forest-green pager (mobile/tablet only) ===== */
 .stories-testimonials .stories-testimonials-dots ol {
   display: flex;
   align-items: center;
@@ -330,6 +341,18 @@ main .section .stories-testimonials-wrapper {
     width var(--transition-base),
     height var(--transition-base),
     opacity var(--transition-base);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .stories-testimonials .stories-testimonials-dot:hover {
+    transform: scale(1.4);
+    opacity: 0.75;
+  }
+
+  .stories-testimonials .stories-testimonials-dot[aria-current='true']:hover {
+    transform: scale(1.1);
+    opacity: 1;
+  }
 }
 
 .stories-testimonials .stories-testimonials-dot[data-distance='2'] {
@@ -528,9 +551,26 @@ main .section .stories-testimonials-wrapper {
     height: 52px;
   }
 
-  /* Arrows visible, centred on the image stage. */
+  /* Arrows visible, dots hidden — desktop uses arrows only. */
   .stories-testimonials .stories-testimonials-arrow {
     display: inline-flex;
+  }
+
+  .stories-testimonials .stories-testimonials-dots {
+    display: none;
+  }
+
+  /* Zoom on hover for clickable peek images — overflow: clip on media contains the scale. */
+  @media (prefers-reduced-motion: no-preference) {
+    .stories-testimonials .stories-testimonials-slide.is-prev .stories-testimonials-media img,
+    .stories-testimonials .stories-testimonials-slide.is-next .stories-testimonials-media img {
+      transition: transform var(--transition-base);
+    }
+
+    .stories-testimonials .stories-testimonials-slide.is-prev:hover .stories-testimonials-media img,
+    .stories-testimonials .stories-testimonials-slide.is-next:hover .stories-testimonials-media img {
+      transform: scale(1.05);
+    }
   }
 
   /* Arrows at 59px from the viewport edge — Figma: centred on the outer edge of the peek slide. */
