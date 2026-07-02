@@ -122,6 +122,10 @@ main .section .guided-navigation-wrapper {
   display: none;
 }
 
+.guided-navigation .guided-navigation-option:hover {
+  background: var(--color-gs-green-hover-surface);
+}
+
 .guided-navigation .guided-navigation-option.is-active,
 .guided-navigation .guided-navigation-option[aria-selected="true"] {
   background: var(--color-gs-green-hover-surface);
@@ -145,6 +149,8 @@ main .section .guided-navigation-wrapper {
   cursor: pointer;
 }
 
+.guided-navigation a.guided-navigation-go:hover,
+.guided-navigation a.guided-navigation-go:focus-visible,
 .guided-navigation button.guided-navigation-go:hover,
 .guided-navigation button.guided-navigation-go:focus-visible {
   background: var(--color-gs-dark-green);
