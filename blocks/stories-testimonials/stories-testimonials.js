@@ -20,27 +20,48 @@ import createCarouselControls from '../../scripts/carousel-controls.js';
 
 let carouselId = 0;
 
-// Match an .mp4 URL anywhere in a string. The CMS sometimes rewrites the ".mp4"
-// extension to a "-mp4" suffix in hrefs, so accept that form too.
-const MP4_URL_RE = /https?:\/\/\S+?\.mp4(?:\?\S*)?/i;
-const MP4_MANGLED_RE = /-mp4(\?|$)/i;
+// Supported video extensions and their MIME types.
+// To add a format: add the extension to VIDEO_EXTS and its MIME type below.
+const VIDEO_EXTS = 'mp4';
+const VIDEO_MIME = {
+  mp4: 'video/mp4',
+};
+// Match a video URL anywhere in a string. The CMS sometimes rewrites the
+// extension to a dash-suffix (e.g. "-mp4"), so accept that mangled form too.
+const VIDEO_URL_RE = new RegExp(`https?://\\S+?\\.(${VIDEO_EXTS})(?:\\?\\S*)?`, 'i');
+const VIDEO_MANGLED_RE = new RegExp(`-(${VIDEO_EXTS})(\\?|$)`, 'i');
+const VIDEO_EXT_RE = new RegExp(`\\.(${VIDEO_EXTS})`, 'i');
 
-// Find an authored video source in the image cell — a link to an .mp4, a plain
-// .mp4 URL, or a mangled "-mp4" href (repaired). Returns the node to remove and
-// the resolved src, or null. Mirrors the hero-banner convention.
+// Resolve a DA media viewer URL (da.live/media#/org/repo/path.mp4) to the
+// actual streamable source served by the DA admin API.
+function resolveDaMediaUrl(href) {
+  try {
+    const url = new URL(href);
+    if (url.hostname === 'da.live' && url.pathname === '/media' && url.hash) {
+      // hash = "#/org/repo/path/to/file.mp4" — strip the leading "#/"
+      const sourcePath = url.hash.replace(/^#\/?/, '');
+      return `https://admin.da.live/source/${sourcePath}`;
+    }
+  } catch (e) { /* not a valid URL — fall through */ }
+  return href;
+}
+
+// Find an authored video source in the image cell. Returns the node to remove
+// and the resolved src, or null.
 function findVideoSource(imageCell) {
   const links = [...imageCell.querySelectorAll('a[href]')];
   for (let i = 0; i < links.length; i += 1) {
     const link = links[i];
-    const textMatch = (link.textContent || '').match(MP4_URL_RE);
-    if (textMatch) return { remove: link, src: textMatch[0] };
+    const textMatch = (link.textContent || '').match(VIDEO_URL_RE);
+    if (textMatch) return { remove: link, src: resolveDaMediaUrl(textMatch[0]) };
     const href = link.getAttribute('href') || '';
-    if (/\.mp4(\?|$)/i.test(href)) return { remove: link, src: href };
-    if (MP4_MANGLED_RE.test(href)) return { remove: link, src: href.replace(MP4_MANGLED_RE, '.mp4$1') };
+    // Match any video extension anywhere in href — DA media URLs carry it in the hash fragment
+    if (VIDEO_EXT_RE.test(href)) return { remove: link, src: resolveDaMediaUrl(href) };
+    if (VIDEO_MANGLED_RE.test(href)) return { remove: link, src: resolveDaMediaUrl(href.replace(VIDEO_MANGLED_RE, '.$1$2')) };
   }
   const paragraphs = [...imageCell.querySelectorAll('p')].filter((p) => !p.querySelector('picture, img'));
   for (let i = 0; i < paragraphs.length; i += 1) {
-    const match = (paragraphs[i].textContent || '').match(MP4_URL_RE);
+    const match = (paragraphs[i].textContent || '').match(VIDEO_URL_RE);
     if (match) return { remove: paragraphs[i], src: match[0] };
   }
   return null;
@@ -57,7 +78,8 @@ function playVideo(media, videoSrc, posterImg) {
   if (posterImg) video.poster = posterImg.currentSrc || posterImg.src;
   const source = document.createElement('source');
   source.src = videoSrc;
-  source.type = 'video/mp4';
+  const ext = (videoSrc.match(VIDEO_EXT_RE) || [])[1]?.toLowerCase() || 'mp4';
+  source.type = VIDEO_MIME[ext] || 'video/mp4';
   video.append(source);
   media.replaceChildren(video);
   video.play?.().catch(() => {});
@@ -85,6 +107,22 @@ function buildSlide(row, uid, i) {
     video.remove.remove();
     slide.classList.add('stories-testimonials-slide-video');
     const posterImg = media.querySelector('picture img');
+
+    if (!posterImg) {
+      // No authored poster — render a muted video with preload="metadata" so the
+      // browser decodes and paints the first frame as the visual placeholder.
+      const previewVid = document.createElement('video');
+      previewVid.className = 'stories-testimonials-video';
+      previewVid.src = video.src;
+      previewVid.preload = 'metadata';
+      previewVid.muted = true;
+      previewVid.playsInline = true;
+      previewVid.addEventListener('loadedmetadata', () => {
+        previewVid.currentTime = 0.1;
+      }, { once: true });
+      media.append(previewVid);
+    }
+
     const play = document.createElement('button');
     play.type = 'button';
     play.className = 'stories-testimonials-play';
@@ -125,11 +163,19 @@ export default function decorate(block) {
   const uid = `stories-testimonials-${carouselId}`;
   const rows = [...block.children];
 
-  // First row with no image is the heading; rows with an image are slides.
+  // First row with no image/video is the heading.
+  // A row is a slide if it has a <picture> OR if its first cell has a video link
+  // (video-only slide — no poster image authored).
+  const isSlideRow = (row) => {
+    if (row.querySelector('picture')) return true;
+    const firstCell = row.children[0];
+    return firstCell ? [...firstCell.querySelectorAll('a[href]')].some((a) => VIDEO_EXT_RE.test(a.getAttribute('href') || '')) : false;
+  };
+
   let heading = null;
   const slideRows = [];
   rows.forEach((row) => {
-    if (row.querySelector('picture')) slideRows.push(row);
+    if (isSlideRow(row)) slideRows.push(row);
     else if (!heading) heading = row;
   });
 
