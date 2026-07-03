@@ -1,0 +1,31 @@
+{
+  "definitions": [
+    {
+      "title": "Feature Highlight Banner",
+      "id": "feature-highlight-banner",
+      "model": "feature-highlight-banner",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            { "name": "content", "selector": "div:nth-child(1)" }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "feature-highlight-banner",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "content",
+          "label": "Heading, subtext and CTA link",
+          "valueType": "string"
+        }
+      ]
+    }
+  ]
+}
