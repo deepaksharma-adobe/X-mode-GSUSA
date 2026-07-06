@@ -1,11 +1,10 @@
 // Drop-in Tools
 import { events } from '@dropins/tools/event-bus.js';
 
-import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
-import { fetchPlaceholders, getProductLink, rootLink } from '../../scripts/commerce.js';
+import { fetchPlaceholders, rootLink } from '../../scripts/commerce.js';
 
 import { setAudience, clearAudience, isLeaderAudience } from '../../scripts/audience.js';
 import { applyApiNavigation, createNavSectionsContainer, layoutMegaMenuRows } from './buildNavMenu.js';
@@ -825,7 +824,7 @@ export default async function decorate(block) {
   navTools.append(navToolIcons);
 
   /** Search — first in tools row per Figma (2697:345653) */
-  const searchLabel = 'Search Products';
+  const searchLabel = labels.Global?.SearchProducts || labels.Global?.Search || 'Search Products';
   const searchFragment = document.createRange().createContextualFragment(`
   <div class="search-wrapper nav-tools-wrapper">
     <button type="button" class="nav-search-button" aria-label="${searchLabel}">
@@ -970,8 +969,76 @@ export default async function decorate(block) {
     }
   }, { eager: true });
 
+  /**
+   * Routes to the search results page for a given phrase.
+   * @param {string} phrase The query or suggestion to search for
+   */
+  function goToSearch(phrase) {
+    const query = (phrase || '').trim();
+    if (query.length) {
+      window.location.href = `${rootLink('/search')}?q=${encodeURIComponent(query)}`;
+    }
+  }
+
+  /**
+   * Renders the type-ahead suggestion list (product names) from a Live Search result.
+   * @param {{ totalCount: number, items: Array<{ name: string }> }} result Popover search result
+   */
+  function renderSuggestions(result) {
+    searchResult.textContent = '';
+    const input = searchForm.querySelector('input');
+    const totalCount = result?.totalCount || 0;
+    const names = [...new Set(
+      (result?.items || []).map((item) => item?.name?.trim()).filter(Boolean),
+    )];
+
+    if (!names.length) {
+      searchResult.style.display = 'block';
+      input?.setAttribute('aria-expanded', 'false');
+      const empty = document.createElement('p');
+      empty.className = 'nav-search-empty';
+      empty.textContent = labels.Global?.SearchNoResults || 'No results found';
+      searchResult.append(empty);
+      return;
+    }
+
+    searchResult.style.display = 'block';
+    input?.setAttribute('aria-expanded', 'true');
+
+    const heading = document.createElement('p');
+    heading.className = 'nav-search-suggestions-title';
+    heading.textContent = `${labels.Global?.Suggestions || 'Suggestions'} (${totalCount})`;
+    searchResult.append(heading);
+
+    const list = document.createElement('ul');
+    list.className = 'nav-search-suggestions';
+    list.id = 'nav-search-suggestions';
+    list.setAttribute('role', 'listbox');
+    list.setAttribute('aria-label', labels.Global?.Suggestions || 'Suggestions');
+
+    names.forEach((name) => {
+      const item = document.createElement('li');
+      item.setAttribute('role', 'option');
+      item.setAttribute('aria-selected', 'false');
+
+      const link = document.createElement('a');
+      link.className = 'nav-search-suggestion';
+      link.href = `${rootLink('/search')}?q=${encodeURIComponent(name)}`;
+      link.textContent = name;
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        goToSearch(name);
+      });
+
+      item.append(link);
+      list.append(item);
+    });
+
+    searchResult.append(list);
+  }
+
   async function toggleSearch(state) {
-    const pageSize = 4;
+    const pageSize = 10;
 
     if (state) {
       await withLoadingState(searchPanel, searchButton, async () => {
@@ -980,75 +1047,49 @@ export default async function decorate(block) {
         // Load search components in parallel
         const [
           { search },
-          { render },
-          { SearchResults },
-          { provider: UI, Input, Button },
+          { provider: UI, Input },
         ] = await Promise.all([
           import('@dropins/storefront-product-discovery/api.js'),
-          import('@dropins/storefront-product-discovery/render.js'),
-          import('@dropins/storefront-product-discovery/containers/SearchResults.js'),
           import('@dropins/tools/components.js'),
           import('@dropins/tools/lib.js'),
         ]);
 
-        render.render(SearchResults, {
-          skeletonCount: pageSize,
-          scope: 'popover',
-          routeProduct: ({ urlKey, sku }) => getProductLink(urlKey, sku),
-          onSearchResult: (results) => {
-            searchResult.style.display = results.length > 0 ? 'block' : 'none';
-          },
-          slots: {
-            ProductImage: (ctx) => {
-              const { product, defaultImageProps } = ctx;
-              const anchorWrapper = document.createElement('a');
-              anchorWrapper.href = getProductLink(product.urlKey, product.sku);
-
-              tryRenderAemAssetsImage(ctx, {
-                alias: product.sku,
-                imageProps: defaultImageProps,
-                wrapper: anchorWrapper,
-                params: {
-                  width: defaultImageProps.width,
-                  height: defaultImageProps.height,
-                },
-              });
-            },
-            Footer: async (ctx) => {
-              // View all results button
-              const viewAllResultsWrapper = document.createElement('div');
-
-              const viewAllResultsButton = await UI.render(Button, {
-                children: labels.Global?.SearchViewAll,
-                variant: 'secondary',
-                href: rootLink('/search'),
-              })(viewAllResultsWrapper);
-
-              ctx.appendChild(viewAllResultsWrapper);
-
-              ctx.onChange((next) => {
-                viewAllResultsButton?.setProps((prev) => ({
-                  ...prev,
-                  href: `${rootLink('/search')}?q=${encodeURIComponent(next.variables?.phrase || '')}`,
-                }));
-              });
-            },
-          },
-        })(searchResult);
+        // Render product-name suggestions from Live Search popover results
+        events.on('search/result', ({ result }) => {
+          renderSuggestions(result);
+        }, { scope: 'popover' });
 
         searchForm.addEventListener('submit', (e) => {
           e.preventDefault();
-          const query = e.target.search.value;
-          if (query.length) {
-            window.location.href = `${rootLink('/search')}?q=${encodeURIComponent(query)}`;
-          }
+          const active = searchResult.querySelector('li[aria-selected="true"] .nav-search-suggestion');
+          goToSearch(active ? active.textContent : e.target.search.value);
+        });
+
+        // Keyboard navigation (Arrow Up/Down) across suggestion rows
+        searchForm.addEventListener('keydown', (e) => {
+          if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+          const items = [...searchResult.querySelectorAll('.nav-search-suggestions li')];
+          if (!items.length) return;
+          e.preventDefault();
+
+          const currentIndex = items.findIndex((li) => li.getAttribute('aria-selected') === 'true');
+          const delta = e.key === 'ArrowDown' ? 1 : -1;
+          let nextIndex = currentIndex + delta;
+          if (nextIndex < 0) nextIndex = items.length - 1;
+          if (nextIndex >= items.length) nextIndex = 0;
+
+          items.forEach((li, i) => li.setAttribute('aria-selected', i === nextIndex ? 'true' : 'false'));
+          items[nextIndex].querySelector('.nav-search-suggestion')?.scrollIntoView({ block: 'nearest' });
         });
 
         UI.render(Input, {
           name: 'search',
-          placeholder: labels.Global?.Search,
+          placeholder: searchLabel,
           onValue: (phrase) => {
             if (!phrase) {
+              searchResult.textContent = '';
+              searchResult.style.display = 'none';
+              searchForm.querySelector('input')?.setAttribute('aria-expanded', 'false');
               search(null, { scope: 'popover' });
               return;
             }
@@ -1066,6 +1107,15 @@ export default async function decorate(block) {
             }, { scope: 'popover' });
           },
         })(searchForm);
+
+        // Combobox semantics for the type-ahead input
+        const searchInput = searchForm.querySelector('input');
+        if (searchInput) {
+          searchInput.setAttribute('role', 'combobox');
+          searchInput.setAttribute('aria-expanded', 'false');
+          searchInput.setAttribute('aria-autocomplete', 'list');
+          searchInput.setAttribute('aria-controls', 'nav-search-suggestions');
+        }
       });
     }
 

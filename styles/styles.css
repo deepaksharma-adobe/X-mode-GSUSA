@@ -124,6 +124,7 @@
   --spacing-huge: 120px;
   --spacing-xhuge: 144px;
   --spacing-xxhuge: 192px;
+  --tap-target-min: 44px; /* WCAG 2.1 AA minimum touch target */
 
   /* Girl Scouts spacing scale — missing base steps (Figma node 3:1005) */
   --spacing-none: 0px; /* GS: None/Zero */
