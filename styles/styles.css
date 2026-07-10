@@ -214,6 +214,11 @@
   --header-nav-glass-bg: rgb(255 255 255 / 0.7);
   --color-gs-nav-surface: rgb(226 219 193 / 0.22);
   --nav-search-field-width: 211px;
+
+  /* Search suggestions dropdown panel — Figma 3132:62114 (Search_bar) */
+  --nav-search-panel-width: 370px;
+  --nav-search-panel-shadow: 0 10px 20px rgb(0 0 0 / 0.1);
+  --nav-search-panel-max-height: 400px;
   --color-gs-green-hover-surface: rgb(0 174 67 / 0.1);
   --color-gs-green-surface: color-mix(in srgb, var(--color-gs-green) 6%, transparent); /* pale green panel — values block (Figma) */
   --nav-top-zone-leading: 387px;

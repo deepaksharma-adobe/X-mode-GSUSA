@@ -4,11 +4,12 @@ import { events } from '@dropins/tools/event-bus.js';
 import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
-import { fetchPlaceholders, rootLink } from '../../scripts/commerce.js';
+import { fetchPlaceholders, getProductLink, rootLink } from '../../scripts/commerce.js';
 
 import { setAudience, clearAudience, isLeaderAudience } from '../../scripts/audience.js';
 import { applyApiNavigation, createNavSectionsContainer, layoutMegaMenuRows } from './buildNavMenu.js';
 import { fetchNav } from './fetchNav.js';
+import { fetchSearchSuggestions } from './fetchSearchSuggestions.js';
 import renderAuthCombine from './renderAuthCombine.js';
 import { renderAuthDropdown } from './renderAuthDropdown.js';
 import renderSellerAssistedBuyingBanner from './renderSellerAssistedBuyingBanner.js';
@@ -828,24 +829,48 @@ export default async function decorate(block) {
   const searchFragment = document.createRange().createContextualFragment(`
   <div class="search-wrapper nav-tools-wrapper">
     <button type="button" class="nav-search-button" aria-label="${searchLabel}">
-      <span class="nav-search-row">
-        <span class="nav-search-label">${searchLabel}</span>
-        <span class="nav-search-icon" aria-hidden="true"></span>
-      </span>
-      <span class="nav-search-underline" aria-hidden="true"></span>
+      <span class="nav-search-label">${searchLabel}</span>
     </button>
     <div class="nav-search-input nav-search-panel nav-tools-panel">
       <form id="search-bar-form"></form>
-      <div class="search-bar-result" style="display: none;"></div>
+      <div class="search-dropdown" style="display: none;">
+        <div class="search-bar-result" style="display: none;"></div>
+        <div class="search-related-products-result" style="display: none;"></div>
+        <p class="search-empty-result nav-search-empty" style="display: none;"></p>
+      </div>
     </div>
+    <span class="nav-search-icon" aria-hidden="true"></span>
+    <span class="nav-search-underline" aria-hidden="true"></span>
   </div>
   `);
   navTools.prepend(searchFragment);
 
+  const searchWrapper = navTools.querySelector('.search-wrapper');
   const searchPanel = navTools.querySelector('.nav-search-panel');
   const searchButton = navTools.querySelector('.nav-search-button');
   const searchForm = searchPanel.querySelector('#search-bar-form');
   const searchResult = searchPanel.querySelector('.search-bar-result');
+  const relatedProductsResult = searchPanel.querySelector('.search-related-products-result');
+  const searchEmptyResult = searchPanel.querySelector('.search-empty-result');
+  const searchDropdown = searchPanel.querySelector('.search-dropdown');
+
+  // Shared across Suggestions and Related Products so the two independent,
+  // asynchronously-resolving lookups (see toggleSearch) can be reconciled
+  // into a single "No results found" state once both have reported back.
+  let hasSuggestions = false;
+  let hasRelatedProducts = false;
+  let suggestionsLoaded = false;
+  let relatedProductsLoaded = false;
+
+  // The divider separates Suggestions from Related Products, so it has
+  // nothing to separate — and leaves stray top space — when Suggestions
+  // isn't showing. Set once the Related Products Header slot mounts it.
+  let relatedProductsDivider = null;
+  function updateRelatedProductsDivider() {
+    if (relatedProductsDivider) {
+      relatedProductsDivider.style.display = hasSuggestions ? '' : 'none';
+    }
+  }
 
   /** Wishlist */
   const wishlist = document.createRange().createContextualFragment(`
@@ -981,33 +1006,67 @@ export default async function decorate(block) {
   }
 
   /**
-   * Renders the type-ahead suggestion list (product names) from a Live Search result.
-   * @param {{ totalCount: number, items: Array<{ name: string }> }} result Popover search result
+   * Shows or hides the floating dropdown chrome (background/border/shadow)
+   * based on whether any of its three panels — Suggestions, Related
+   * Products, or the shared empty state — currently has anything to show.
+   * The chrome itself has no content of its own, so it must never be left
+   * visible with all three panels hidden (an empty floating box).
+   */
+  function updateSearchDropdownVisibility() {
+    const suggestionsVisible = searchResult.style.display === 'block';
+    const relatedProductsVisible = relatedProductsResult.style.display === 'block';
+    const emptyVisible = searchEmptyResult.style.display === 'block';
+    searchDropdown.style.display = (suggestionsVisible || relatedProductsVisible || emptyVisible) ? 'block' : 'none';
+  }
+
+  /**
+   * Reconciles the shared "No results found" state once both Suggestions
+   * and Related Products have reported back for the current phrase — shown
+   * only when both come back empty, not per-section.
+   */
+  function updateSearchEmptyState() {
+    if (suggestionsLoaded && relatedProductsLoaded) {
+      const bothEmpty = !hasSuggestions && !hasRelatedProducts;
+      if (bothEmpty) {
+        searchEmptyResult.textContent = labels.Global?.SearchNoResults || 'No results found';
+      }
+      searchEmptyResult.style.display = bothEmpty ? 'block' : 'none';
+    }
+    updateSearchDropdownVisibility();
+  }
+
+  /**
+   * Renders the type-ahead suggestion list from a Live Search suggestions result.
+   * Suggestions with no matches render nothing here — the shared empty state
+   * (see updateSearchEmptyState) takes over once Related Products also
+   * reports back empty.
+   * @param {{ suggestions: string[] }} result fetchSearchSuggestions() result
    */
   function renderSuggestions(result) {
     searchResult.textContent = '';
     const input = searchForm.querySelector('input');
-    const totalCount = result?.totalCount || 0;
-    const names = [...new Set(
-      (result?.items || []).map((item) => item?.name?.trim()).filter(Boolean),
+    const terms = [...new Set(
+      (result?.suggestions || []).map((term) => term?.trim()).filter(Boolean),
     )];
 
-    if (!names.length) {
-      searchResult.style.display = 'block';
+    hasSuggestions = terms.length > 0;
+    suggestionsLoaded = true;
+    updateRelatedProductsDivider();
+
+    if (!hasSuggestions) {
+      searchResult.style.display = 'none';
       input?.setAttribute('aria-expanded', 'false');
-      const empty = document.createElement('p');
-      empty.className = 'nav-search-empty';
-      empty.textContent = labels.Global?.SearchNoResults || 'No results found';
-      searchResult.append(empty);
+      updateSearchEmptyState();
       return;
     }
 
     searchResult.style.display = 'block';
+    updateSearchEmptyState();
     input?.setAttribute('aria-expanded', 'true');
 
     const heading = document.createElement('p');
     heading.className = 'nav-search-suggestions-title';
-    heading.textContent = `${labels.Global?.Suggestions || 'Suggestions'} (${totalCount})`;
+    heading.textContent = `${labels.Global?.Suggestions || 'Suggestions'} (${terms.length})`;
     searchResult.append(heading);
 
     const list = document.createElement('ul');
@@ -1016,18 +1075,18 @@ export default async function decorate(block) {
     list.setAttribute('role', 'listbox');
     list.setAttribute('aria-label', labels.Global?.Suggestions || 'Suggestions');
 
-    names.forEach((name) => {
+    terms.forEach((term) => {
       const item = document.createElement('li');
       item.setAttribute('role', 'option');
       item.setAttribute('aria-selected', 'false');
 
       const link = document.createElement('a');
       link.className = 'nav-search-suggestion';
-      link.href = `${rootLink('/search')}?q=${encodeURIComponent(name)}`;
-      link.textContent = name;
+      link.href = `${rootLink('/search')}?q=${encodeURIComponent(term)}`;
+      link.textContent = term;
       link.addEventListener('click', (e) => {
         e.preventDefault();
-        goToSearch(name);
+        goToSearch(term);
       });
 
       item.append(link);
@@ -1041,23 +1100,86 @@ export default async function decorate(block) {
     const pageSize = 10;
 
     if (state) {
+      // Desktop: once activated, the real input permanently replaces the label
+      // (see .search-wrapper--active in header.css) — it never reverts to the
+      // placeholder button, matching how a real search field behaves.
+      searchWrapper.classList.add('search-wrapper--active');
+
       await withLoadingState(searchPanel, searchButton, async () => {
         await import('../../scripts/initializers/search.js');
 
         // Load search components in parallel
         const [
           { search },
+          { render },
+          { SearchResults },
           { provider: UI, Input },
+          { tryRenderAemAssetsImage },
         ] = await Promise.all([
           import('@dropins/storefront-product-discovery/api.js'),
+          import('@dropins/storefront-product-discovery/render.js'),
+          import('@dropins/storefront-product-discovery/containers/SearchResults.js'),
           import('@dropins/tools/components.js'),
           import('@dropins/tools/lib.js'),
+          import('@dropins/tools/lib/aem/assets.js'),
         ]);
 
-        // Render product-name suggestions from Live Search popover results
-        events.on('search/result', ({ result }) => {
-          renderSuggestions(result);
-        }, { scope: 'popover' });
+        // Related Products — the dropin's own SearchResults container, driven
+        // by the search() calls below (scope: 'popover'). Kept on the dropin's
+        // native rendering path (unlike Suggestions) so this needs no rework
+        // once @dropins/storefront-product-discovery ships suggestions support.
+        render.render(SearchResults, {
+          skeletonCount: pageSize,
+          scope: 'popover',
+          routeProduct: ({ urlKey, sku }) => getProductLink(urlKey, sku),
+          onSearchResult: (results) => {
+            hasRelatedProducts = results.length > 0;
+            relatedProductsLoaded = true;
+            relatedProductsResult.style.display = hasRelatedProducts ? 'block' : 'none';
+            updateSearchEmptyState();
+          },
+          slots: {
+            Header: (ctx) => {
+              const { products } = ctx;
+              const header = document.createElement('div');
+              header.className = 'search-results-header';
+
+              const title = document.createElement('p');
+              title.className = 'search-results-header-title';
+              title.textContent = `${labels.Global?.RelatedProducts || 'Related Products'} (${products.length})`;
+
+              const divider = document.createElement('div');
+              divider.className = 'search-results-header-divider';
+              divider.setAttribute('aria-hidden', 'true');
+
+              header.append(divider, title);
+              ctx.appendChild(header);
+
+              relatedProductsDivider = divider;
+              updateRelatedProductsDivider();
+
+              ctx.onChange((next) => {
+                title.textContent = `${labels.Global?.RelatedProducts || 'Related Products'} (${next.products.length})`;
+                updateRelatedProductsDivider();
+              });
+            },
+            ProductImage: (ctx) => {
+              const { product, defaultImageProps } = ctx;
+              const anchorWrapper = document.createElement('a');
+              anchorWrapper.href = getProductLink(product.urlKey, product.sku);
+
+              tryRenderAemAssetsImage(ctx, {
+                alias: product.sku,
+                imageProps: defaultImageProps,
+                wrapper: anchorWrapper,
+                params: {
+                  width: defaultImageProps.width,
+                  height: defaultImageProps.height,
+                },
+              });
+            },
+          },
+        })(relatedProductsResult);
 
         searchForm.addEventListener('submit', (e) => {
           e.preventDefault();
@@ -1089,6 +1211,14 @@ export default async function decorate(block) {
             if (!phrase) {
               searchResult.textContent = '';
               searchResult.style.display = 'none';
+              relatedProductsResult.style.display = 'none';
+              searchEmptyResult.style.display = 'none';
+              hasSuggestions = false;
+              hasRelatedProducts = false;
+              suggestionsLoaded = false;
+              relatedProductsLoaded = false;
+              updateRelatedProductsDivider();
+              updateSearchDropdownVisibility();
               searchForm.querySelector('input')?.setAttribute('aria-expanded', 'false');
               search(null, { scope: 'popover' });
               return;
@@ -1098,29 +1228,78 @@ export default async function decorate(block) {
               return;
             }
 
-            search({
-              phrase,
-              pageSize,
-              filter: [
-                { attribute: 'visibility', in: ['Search', 'Catalog, Search'] },
-              ],
-            }, { scope: 'popover' });
+            const filter = [
+              { attribute: 'visibility', in: ['Search', 'Catalog, Search'] },
+            ];
+
+            // Reset the shared empty state before firing a new search so a
+            // stale "No results found" from the previous phrase doesn't
+            // flash while Suggestions/Related Products are still loading.
+            suggestionsLoaded = false;
+            relatedProductsLoaded = false;
+            searchEmptyResult.style.display = 'none';
+            updateSearchDropdownVisibility();
+
+            // Fire the dropin's own search so its ACDL analytics events
+            // (searchRequestSent/searchResultsView) keep firing — its result
+            // is otherwise unused here.
+            search({ phrase, pageSize, filter }, { scope: 'popover' });
+
+            // Render from our own lightweight suggestions query — real Live
+            // Search suggestions, not deduped product names (see
+            // fetchSearchSuggestions.js for why this is a separate request).
+            fetchSearchSuggestions({ phrase, pageSize, filter })
+              .then((result) => renderSuggestions(result))
+              .catch((error) => {
+                // eslint-disable-next-line no-console
+                console.warn('header: search suggestions unavailable', error);
+                renderSuggestions({ suggestions: [] });
+              });
           },
         })(searchForm);
 
-        // Combobox semantics for the type-ahead input
+        // Combobox semantics for the type-ahead input. autocomplete="off" also
+        // suppresses the browser's own native autofill dropdown, which would
+        // otherwise stack on top of our custom listbox.
         const searchInput = searchForm.querySelector('input');
         if (searchInput) {
           searchInput.setAttribute('role', 'combobox');
           searchInput.setAttribute('aria-expanded', 'false');
           searchInput.setAttribute('aria-autocomplete', 'list');
           searchInput.setAttribute('aria-controls', 'nav-search-suggestions');
+          searchInput.setAttribute('autocomplete', 'off');
         }
+
+        // Refocusing a field that already has suggestions/related products
+        // re-opens the dropdown instead of leaving it stranded closed (native
+        // input UX). Delegated on the (stable) form rather than the
+        // dropin-rendered input directly, since that node can be replaced on
+        // re-render.
+        searchForm.addEventListener('focusin', () => {
+          if (hasSuggestions) {
+            searchResult.style.display = 'block';
+            searchForm.querySelector('input')?.setAttribute('aria-expanded', 'true');
+          }
+          if (hasRelatedProducts) {
+            relatedProductsResult.style.display = 'block';
+          }
+          updateSearchEmptyState();
+        });
       });
     }
 
     togglePanel(searchPanel, state);
-    if (state) searchForm?.querySelector('input')?.focus();
+    if (state) {
+      searchForm?.querySelector('input')?.focus();
+    } else {
+      // Closing only dismisses the suggestions dropdown — the real input
+      // (once activated) keeps whatever value the user typed, like a real field.
+      searchResult.style.display = 'none';
+      searchForm?.querySelector('input')?.setAttribute('aria-expanded', 'false');
+      relatedProductsResult.style.display = 'none';
+      searchEmptyResult.style.display = 'none';
+      updateSearchDropdownVisibility();
+    }
   }
 
   searchButton.addEventListener('click', () => toggleSearch(!searchPanel.classList.contains('nav-tools-panel--show')));
@@ -1152,7 +1331,7 @@ export default async function decorate(block) {
       toggleMiniCart(false);
     }
 
-    if (!searchPanel.contains(e.target) && !searchButton.contains(e.target)) {
+    if (!searchWrapper.contains(e.target)) {
       toggleSearch(false);
     }
   });

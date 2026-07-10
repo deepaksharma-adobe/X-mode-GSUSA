@@ -152,13 +152,6 @@ header nav[aria-expanded='true'] .nav-top {
     justify-content: flex-end;
   }
 
-  header nav .nav-search-row {
-    display: flex;
-  }
-
-  header nav .nav-search-underline {
-    display: block;
-  }
 }
 
 header nav p {
@@ -747,7 +740,7 @@ header nav .nav-tools button.nav-search-button {
   background-size: var(--spacing-medium);
 }
 
-header nav .nav-search-row,
+header nav .nav-search-icon,
 header nav .nav-search-underline {
   display: none;
 }
@@ -770,42 +763,61 @@ header nav .dropdown-wrapper.nav-tools-wrapper {
     width: var(--spacing-big);
   }
 
+  /* Single field shell: icon + underline are persistent chrome shared by the
+     button (closed) and the real input (open), so they never visually shift. */
   header nav .search-wrapper {
     position: relative;
-    flex-direction: column;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: var(--spacing-xsmall);
+    row-gap: var(--spacing-xsmall-plus);
+    align-items: center;
     align-self: center;
     width: var(--nav-search-field-width);
     height: auto;
     min-height: 0;
-    padding: 0;
+    padding: var(--spacing-xsmall-plus) 0 0;
     border-bottom: 0;
     box-sizing: border-box;
   }
 
   header nav .nav-tools button.nav-search-button {
     display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--spacing-xsmall-plus);
+    align-items: center;
+    grid-column: 1;
+    grid-row: 1;
     width: 100%;
+    min-width: 0;
+    min-height: 0;
     height: auto;
-    padding: var(--spacing-xsmall-plus) 0 0;
+    padding: 0;
     border: 0;
     border-radius: 0;
+    background-color: transparent;
     background-image: none;
     font-size: inherit;
   }
 
-  header nav .nav-search-row {
+  header nav .nav-search-panel {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  /* Once activated, the real input permanently takes the button's place —
+     closing only dismisses the suggestions dropdown, not the field itself. */
+  header nav .search-wrapper.search-wrapper--active .nav-search-panel {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    gap: var(--spacing-xsmall);
+  }
+
+  header nav .search-wrapper.search-wrapper--active .nav-search-button {
+    display: none;
   }
 
   header nav .nav-search-icon {
+    display: block;
+    grid-column: 2;
+    grid-row: 1;
     flex-shrink: 0;
     width: var(--spacing-medium);
     height: var(--spacing-medium);
@@ -816,21 +828,24 @@ header nav .dropdown-wrapper.nav-tools-wrapper {
 
   header nav .nav-search-underline {
     display: block;
+    grid-column: 1 / -1;
+    grid-row: 2;
     width: 100%;
     height: 1px;
-    background-color: var(--color-neutral-400);
+    background-color: var(--color-neutral-500);
     transition: background-color var(--transition-base);
   }
 
-  /* Hover + active/open: forest-green icon and underline accents (Figma) */
-  header nav .nav-search-button:hover .nav-search-icon,
-  header nav .nav-search-button:focus-visible .nav-search-icon,
+  /* Hover + focus-within + open: forest-green icon/underline/label accents (brand
+     treatment kept beyond Figma's static grey-only mock — see PR discussion). */
+  header nav .search-wrapper:hover .nav-search-icon,
+  header nav .search-wrapper:focus-within .nav-search-icon,
   header nav .search-wrapper:has(.nav-search-panel.nav-tools-panel--show) .nav-search-icon {
     background-color: var(--color-gs-forest);
   }
 
-  header nav .nav-search-button:hover .nav-search-underline,
-  header nav .nav-search-button:focus-visible .nav-search-underline,
+  header nav .search-wrapper:hover .nav-search-underline,
+  header nav .search-wrapper:focus-within .nav-search-underline,
   header nav .search-wrapper:has(.nav-search-panel.nav-tools-panel--show) .nav-search-underline {
     background-color: var(--color-gs-forest);
   }
@@ -849,7 +864,7 @@ header nav .dropdown-wrapper.nav-tools-wrapper {
     text-align: left;
   }
 
-  header nav .nav-search-button:hover .nav-search-label {
+  header nav .search-wrapper:hover .nav-search-label {
     color: var(--color-gs-forest);
   }
 
@@ -878,6 +893,7 @@ header .nav-search-panel input {
   font: var(--type-headline-2-default-font);
   letter-spacing: var(--type-headline-2-default-letter-spacing);
   color: var(--color-gs-footer-border);
+  background-color: transparent;
   border: 0;
   border-bottom: 1px solid var(--color-neutral-400);
   appearance: none;
@@ -890,13 +906,23 @@ header .nav-search-panel input:focus-visible {
   outline: none;
 }
 
-header .nav-search-panel .dropin-input-container {
+header .nav-search-panel .dropin-input-container,
+header .nav-search-panel .dropin-input-label-container {
   width: 100%;
+  background-color: transparent;
+  border: 0;
+}
+
+header .nav-search-panel .search-dropdown {
+  width: 100%;
+  position: relative;
+  max-height: var(--nav-search-panel-max-height);
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 header .nav-search-panel .search-bar-result {
   width: 100%;
-  position: relative;
 }
 
 /* Suggestions (N) type-ahead list — product-name terms (Figma) */
@@ -904,9 +930,9 @@ header .nav-search-panel .nav-search-suggestions-title {
   margin: var(--spacing-small) 0 0;
   padding-bottom: var(--spacing-xsmall);
   border-bottom: 1px solid var(--color-neutral-400);
-  font: var(--type-details-caption-semibold-font);
-  letter-spacing: var(--type-details-caption-semibold-letter-spacing);
-  color: var(--color-gs-footer-border);
+  font: var(--type-body-2-semibold-font);
+  letter-spacing: var(--type-body-2-semibold-letter-spacing);
+  color: var(--color-neutral-800);
 }
 
 header .nav-search-panel .nav-search-suggestions {
@@ -918,7 +944,9 @@ header .nav-search-panel .nav-search-suggestions {
 header .nav-search-panel .nav-search-suggestion {
   display: block;
   padding: var(--spacing-xsmall) var(--spacing-xxsmall);
-  color: var(--color-gs-footer-border);
+  font: var(--nav-search-label-font);
+  letter-spacing: var(--nav-search-label-letter-spacing);
+  color: var(--color-neutral-900);
   text-decoration: none;
   border-radius: var(--radius-xs);
 }
@@ -934,6 +962,96 @@ header .nav-search-panel .nav-search-empty {
   margin: var(--spacing-small) 0 0;
   padding: var(--spacing-xsmall) var(--spacing-xxsmall);
   color: var(--color-gs-footer-border);
+}
+
+/* Related Products — dropin SearchResults container (Figma 3201:52304). */
+header .nav-search-panel .search-related-products-result {
+  width: 100%;
+}
+
+header .nav-search-panel .search-related-products-result .search-results-header-divider {
+  height: 0;
+  margin: var(--spacing-small) calc(-1 * var(--spacing-small));
+  border: 0;
+  border-top: 1px solid var(--color-neutral-400);
+}
+
+header .nav-search-panel .search-related-products-result .search-results-header-title {
+  margin: 0;
+  font: var(--type-body-2-semibold-font);
+  letter-spacing: var(--type-body-2-semibold-letter-spacing);
+  color: var(--color-neutral-800);
+}
+
+header .nav-search-panel .search-related-products-result .product-discovery-product-list__grid {
+  margin: var(--spacing-small) 0;
+}
+
+header .nav-search-panel .search-related-products-result .dropin-product-item-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xsmall-plus);
+}
+
+header .nav-search-panel .search-related-products-result .dropin-product-item-card__image-container {
+  flex-shrink: 0;
+  width: var(--spacing-xbig);
+  height: var(--spacing-xbig);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-gs-khaki) 60%, transparent);
+  border-radius: var(--radius-xs);
+}
+
+/* Image sits behind two unstyled dropin wrappers (ProductImage slot div,
+   then an <a>) before the <img> itself — size them through so the 40x40
+   crop actually holds regardless of the image's native aspect ratio. */
+header .nav-search-panel .search-related-products-result .dropin-product-item-card__image-container .dropin-product-item-card__image,
+header .nav-search-panel .search-related-products-result .dropin-product-item-card__image-container a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+header .nav-search-panel .search-related-products-result .dropin-product-item-card__image-container img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+header .nav-search-panel .search-related-products-result .dropin-product-item-card__content {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  gap: 0;
+}
+
+/* Title/price render as dropin-default <a> links, so .dropin-design a's
+   global color (see dropins/tools) must be overridden on the anchor itself —
+   a parent's color rule can't win against the child's own explicit color. */
+header .nav-search-panel .search-related-products-result .dropin-product-item-card__title,
+header .nav-search-panel .search-related-products-result .dropin-product-item-card__title a {
+  font: var(--type-body-2-medium-font);
+  letter-spacing: var(--type-body-2-medium-letter-spacing);
+  color: var(--color-neutral-900);
+  text-decoration: none;
+}
+
+/* Price text is a further-nested .dropin-price span that sets its own
+   explicit font (700 bold via .dropin-price--small/--bold), so the font
+   override has to reach that span directly, not just the anchor. */
+header .nav-search-panel .search-related-products-result .dropin-product-item-card__price,
+header .nav-search-panel .search-related-products-result .dropin-product-item-card__price a,
+header .nav-search-panel .search-related-products-result .dropin-product-item-card__price .dropin-price {
+  font: var(--type-body-2-semibold-font);
+  letter-spacing: var(--type-body-2-semibold-letter-spacing);
+  color: var(--color-gs-forest);
+  text-decoration: none;
+}
+
+header .nav-search-panel .search-related-products-result .product-discovery-product-list__footer .dropin-button {
+  width: 100%;
 }
 
 /* Mini Cart  */
@@ -967,8 +1085,48 @@ header .nav-search-input .search_autocomplete .popover-container {
     width: 398px;
   }
 
+  /* Search panel is inline chrome here (see .search-wrapper grid above), not a
+     floating dropdown — only .search-bar-result below gets the dropdown look.
+     background/box-shadow reset because both are set by the shared
+     .nav-tools-panel rule (white panel + drop shadow), which would otherwise
+     render the input row itself as a floating box. */
   header nav .nav-search-panel {
-    width: 398px;
+    position: static;
+    top: auto;
+    width: auto;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  header nav .nav-search-panel form {
+    flex: 1;
+    min-width: 0;
+  }
+
+  header nav .nav-search-panel input {
+    padding: 0;
+    border-bottom: 0;
+    font: var(--nav-search-label-font);
+    letter-spacing: var(--nav-search-label-letter-spacing);
+  }
+
+  header nav .nav-search-panel .search-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: var(--nav-search-panel-width);
+    padding: var(--spacing-small) var(--spacing-small) var(--spacing-xsmall);
+    background: var(--color-neutral-50);
+    border-radius: var(--radius-xs);
+    border: var(--shape-border-width-1) solid var(--color-neutral-300);
+    box-shadow: var(--nav-search-panel-shadow);
+    box-sizing: border-box;
+    z-index: 100;
+  }
+
+  header nav .nav-search-panel .nav-search-suggestions-title {
+    margin-top: 0;
   }
 }
 
