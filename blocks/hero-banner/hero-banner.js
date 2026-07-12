@@ -145,11 +145,14 @@ function decorateBackgroundVideo(slide, imageCell) {
   const toggle = createSoundToggle(video);
   slide.append(toggle);
 
-  // Autoplay blocked (e.g. low-power mode) — remove the video and its toggle
-  // so the poster picture remains the visible background.
+  // Autoplay blocked (e.g. low-power mode). Only fall back to the poster picture
+  // when one was authored — otherwise keep the video so the slide isn't blank
+  // (it shows the first frame; the sound toggle can start playback on tap).
   video.play?.().catch(() => {
-    video.remove();
-    toggle.remove();
+    if (posterImg) {
+      video.remove();
+      toggle.remove();
+    }
   });
 
   return video;
@@ -396,5 +399,36 @@ export default async function decorate(block) {
     block.append(terms);
   }
 
-  updateSlide(block, 0, true);
+  // Position on the first slide once layout is ready. Doing this synchronously
+  // during decorate is unreliable: a last-slide clone sits at offset 0, so the
+  // first real slide is offset by one slide width, and with scroll-snap +
+  // CSS `scroll-behavior: smooth` the instant scroll can land on a neighbour
+  // before images/layout settle. Force a non-animated jump (temporarily disable
+  // smooth scrolling) after layout has flushed, then re-assert once the hero
+  // image loads (its size can shift slide offsets).
+  const settleFirstSlide = () => {
+    const slidesEl = block.querySelector('.hero-banner-slides');
+    const firstReal = block.querySelector('.hero-banner-slide:not([data-clone])');
+    if (!slidesEl || !firstReal) return;
+    // Position the carousel by setting only the container's own scrollLeft — never
+    // scrollIntoView, which also scrolls the whole window/page to reveal the slide
+    // (the tall hero would drag the page down). Temporarily disable CSS smooth
+    // scrolling so the jump is instant and doesn't get intercepted by snap.
+    const prev = slidesEl.style.scrollBehavior;
+    slidesEl.style.scrollBehavior = 'auto';
+    slidesEl.scrollLeft = firstReal.offsetLeft;
+    block.dataset.activeSlide = 0;
+    updateSlide(block, 0, true);
+    requestAnimationFrame(() => { slidesEl.style.scrollBehavior = prev; });
+  };
+
+  // Re-assert across the first few frames to defeat any transient repositioning
+  // from scroll-snap / late image layout before autoplay (6s) can take over.
+  requestAnimationFrame(() => requestAnimationFrame(settleFirstSlide));
+  [100, 300, 600].forEach((ms) => setTimeout(settleFirstSlide, ms));
+
+  const firstImg = block.querySelector('.hero-banner-slide:not([data-clone]) img');
+  if (firstImg && !firstImg.complete) {
+    firstImg.addEventListener('load', settleFirstSlide, { once: true });
+  }
 }

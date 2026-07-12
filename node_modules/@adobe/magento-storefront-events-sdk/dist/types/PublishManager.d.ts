@@ -1,0 +1,40 @@
+import { Base } from "./Base";
+import { CustomContext } from "./types/contexts";
+import { RecommendationUnit, RecommendedProduct, SearchResultUnit, SearchResultCategory, SearchResultProduct, SearchResultSuggestion } from "./types/schemas";
+export default class PublishManager extends Base {
+    addToCart(context?: CustomContext): void;
+    addToRequisitionList(context?: CustomContext): void;
+    createAccount(context?: CustomContext): void;
+    createRequisitionList(context?: CustomContext): void;
+    deleteRequisitionList(context?: CustomContext): void;
+    custom(context?: CustomContext): void;
+    customUrl(context?: CustomContext): void;
+    editAccount(context?: CustomContext): void;
+    initiateCheckout(context?: CustomContext): void;
+    openCart(context?: CustomContext): void;
+    pageActivitySummary(context?: CustomContext): void;
+    pageView(context?: CustomContext): void;
+    placeOrder(context?: CustomContext): void;
+    productPageView(context?: CustomContext): void;
+    recsItemAddToCartClick(unitId: RecommendationUnit["unitId"], productId: RecommendedProduct["productId"], context?: CustomContext): void;
+    recsItemClick(unitId: RecommendationUnit["unitId"], productId: RecommendedProduct["productId"], context?: CustomContext): void;
+    recsRequestSent(context?: CustomContext): void;
+    recsResponseReceived(context?: CustomContext): void;
+    recsUnitRender(unitId: RecommendationUnit["unitId"], context?: CustomContext): void;
+    recsUnitView(unitId: RecommendationUnit["unitId"], context?: CustomContext): void;
+    referrerUrl(context?: CustomContext): void;
+    removeFromCart(context?: CustomContext): void;
+    removeFromRequisitionList(context?: CustomContext): void;
+    searchCategoryClick(searchUnitId: SearchResultUnit["searchUnitId"], name: SearchResultCategory["name"], context?: CustomContext): void;
+    searchProductClick(searchUnitId: SearchResultUnit["searchUnitId"], sku: SearchResultProduct["sku"], context?: CustomContext): void;
+    searchRequestSent(searchUnitId: SearchResultUnit["searchUnitId"], context?: CustomContext): void;
+    searchResponseReceived(searchUnitId: SearchResultUnit["searchUnitId"], context?: CustomContext): void;
+    searchResultsView(searchUnitId: SearchResultUnit["searchUnitId"], context?: CustomContext): void;
+    categoryResultsView(searchUnitId: SearchResultUnit["searchUnitId"], context?: CustomContext): void;
+    searchSuggestionClick(searchUnitId: SearchResultUnit["searchUnitId"], suggestion: SearchResultSuggestion["suggestion"], context?: CustomContext): void;
+    shoppingCartView(context?: CustomContext): void;
+    signIn(context?: CustomContext): void;
+    signOut(context?: CustomContext): void;
+    updateCart(context?: CustomContext): void;
+}
+//# sourceMappingURL=PublishManager.d.ts.map

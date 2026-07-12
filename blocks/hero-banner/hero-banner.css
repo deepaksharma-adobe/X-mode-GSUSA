@@ -412,6 +412,15 @@ main .section .hero-banner-wrapper:has(.hero-banner.boxed) {
   .hero-banner .hero-banner-edge-nav {
     display: flex;
     padding-inline: var(--grid-3-margins);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+  }
+
+  /* Reveal the prev/next arrows only when hovering the banner (or when a
+     control is keyboard-focused, for accessibility). */
+  .hero-banner:hover .hero-banner-edge-nav,
+  .hero-banner:focus-within .hero-banner-edge-nav {
+    opacity: 1;
   }
 
   /* Tablet+: dots back to bottom edge; Terms becomes a right-aligned tag */
@@ -430,6 +439,19 @@ main .section .hero-banner-wrapper:has(.hero-banner.boxed) {
   .hero-banner .hero-banner-slide-terms p {
     padding: var(--spacing-xxsmall) var(--spacing-big) var(--spacing-xxsmall) var(--spacing-small);
     background: rgb(0 0 0 / 0.2);
+  }
+
+  /* Council: keep the terms tag within the centered fixed-width frame (right
+     edge of grid-max-width, inherited above) and lift it up off the very bottom
+     of the banner (Figma 5168:283941). */
+  .hero-banner.council .hero-banner-slide-terms {
+    bottom: var(--spacing-xlarge);
+  }
+
+  /* Council: raise the slider dots off the bottom to match Figma (the slider
+     sits ~96px above the banner base, clear of the overlapping section below). */
+  .hero-banner.council .hero-banner-controls {
+    bottom: var(--spacing-xxlarge);
   }
 }
 

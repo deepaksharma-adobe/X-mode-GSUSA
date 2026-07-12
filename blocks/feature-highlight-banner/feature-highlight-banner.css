@@ -1,0 +1,156 @@
+/* ===== Feature Highlight Banner (Figma 2749:49697) =====
+   Bright GS-green quick-order banner: daisy top-left, lightbulb bottom-right,
+   centered heading + subtext + green CTA. Constrained to the centered grid frame. */
+
+/* Mobile: drop the section wrapper's grid gutter so the band is edge-to-edge.
+   Tablet+ restores it (see media query below). */
+main .section .feature-highlight-banner-wrapper {
+  max-width: none;
+  padding-inline: 0;
+}
+
+.feature-highlight-banner {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--grid-max-width);
+  margin-inline: auto;
+
+  /* Mobile: full-bleed (no side gutter, square corners). Tablet+ restores the
+     centered grid margins and rounded card below. */
+  padding-inline: 0;
+
+  /* Decorative-art placement + size (inset = top right bottom left).
+     Only these tokens change per breakpoint; the rules below stay put. */
+  --fhb-daisy-inset: var(--spacing-xsmall) auto auto var(--spacing-xsmall);
+  --fhb-daisy-width: 40px;
+  --fhb-daisy-height: 33px;
+  --fhb-bulb-inset: auto var(--spacing-xsmall) var(--spacing-xsmall) auto;
+  --fhb-bulb-width: 40px;
+  --fhb-bulb-height: 50px;
+
+  /* How far the "overlap" variant lifts the band over the section above.
+     Zero on mobile — the band is full-width and sits flush below the hero;
+     the overlap is a tablet/desktop effect (see media queries below). */
+  --fhb-overlap: 0;
+}
+
+/* ===== Overlap variant (opt-in via the "overlap" block class) =====
+   Lifts the band up so it sits over the preceding section — e.g. placed
+   directly under a hero-banner, the two read as one composed unit. The section
+   above needs no changes; the band just pulls up and stacks on top. */
+.feature-highlight-banner.overlap {
+  position: relative;
+  z-index: 1;
+  margin-top: calc(-1 * var(--fhb-overlap));
+}
+
+.feature-highlight-banner .feature-highlight-banner-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-small);
+  padding: var(--spacing-xxbig) var(--spacing-medium) var(--spacing-big);
+  border-radius: 0;
+  background: var(--color-gs-green);
+  text-align: center;
+}
+
+/* ===== Content ===== */
+.feature-highlight-banner .feature-highlight-banner-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-small);
+  max-width: 720px;
+}
+
+.feature-highlight-banner .feature-highlight-banner-heading {
+  margin: 0;
+  font: normal normal 300 2.6rem/3.1rem var(--type-display-font-family);
+  color: var(--color-neutral-900);
+}
+
+.feature-highlight-banner .feature-highlight-banner-subtext {
+  margin: 0;
+  font: normal normal 400 1.8rem/2.2rem var(--type-base-font-family);
+  color: var(--color-neutral-800);
+}
+
+/* ===== CTA — solid forest-green pill (base .button.primary handles fill/hover) ===== */
+.feature-highlight-banner .feature-highlight-banner-cta-wrapper {
+  display: flex;
+  margin-top: var(--spacing-xsmall);
+}
+
+.feature-highlight-banner a.button.feature-highlight-banner-cta {
+  min-width: 210px;
+}
+
+/* ===== Decorative art (aria-hidden, code-provided) ===== */
+.feature-highlight-banner .feature-highlight-banner-daisy {
+  position: absolute;
+  inset: var(--fhb-daisy-inset);
+  width: var(--fhb-daisy-width);
+  height: var(--fhb-daisy-height);
+  background: url('/icons/quick-order-daisy.svg') no-repeat center / contain;
+}
+
+.feature-highlight-banner .feature-highlight-banner-bulb {
+  position: absolute;
+  inset: var(--fhb-bulb-inset);
+  width: var(--fhb-bulb-width);
+  height: var(--fhb-bulb-height);
+  background: url('/icons/lightbulb.svg') no-repeat center bottom / contain;
+}
+
+/* ===== Tablet ===== */
+@media (min-width: 768px) {
+  main .section .feature-highlight-banner-wrapper {
+    padding-inline: var(--grid-margin);
+  }
+
+  .feature-highlight-banner {
+    padding-inline: var(--grid-3-margins);
+
+    /* inset unchanged from base; only the art grows. */
+    --fhb-daisy-width: 48px;
+    --fhb-daisy-height: 40px;
+    --fhb-bulb-width: 48px;
+    --fhb-bulb-height: 60px;
+    --fhb-overlap: var(--spacing-xxbig);
+  }
+
+  .feature-highlight-banner .feature-highlight-banner-card {
+    padding: var(--spacing-xxbig) var(--spacing-big);
+    border-radius: var(--radius-md);
+  }
+}
+
+/* ===== Desktop (Figma 1280×276) ===== */
+@media (min-width: 1280px) {
+  .feature-highlight-banner {
+    padding-inline: var(--grid-4-margins);
+
+    /* Art overhangs the card corners at desktop width. */
+    --fhb-daisy-inset: -21px auto auto -21px;
+    --fhb-daisy-width: 82px;
+    --fhb-daisy-height: 68px;
+    --fhb-bulb-inset: auto -22px -7px auto;
+    --fhb-bulb-width: 72px;
+    --fhb-bulb-height: 78px;
+    --fhb-overlap: var(--spacing-large);
+  }
+
+  .feature-highlight-banner .feature-highlight-banner-card {
+    padding: var(--grid-4-margins);
+  }
+
+  .feature-highlight-banner .feature-highlight-banner-heading {
+    font: normal normal 300 3.6rem/4.3rem var(--type-display-font-family);
+  }
+
+  .feature-highlight-banner .feature-highlight-banner-subtext {
+    font: normal normal 400 2rem/2.4rem var(--type-base-font-family);
+  }
+}

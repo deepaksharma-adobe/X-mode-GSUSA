@@ -4,7 +4,16 @@
       "title": "Category Grid",
       "id": "category-grid",
       "model": "category-grid",
-      "filter": "category-grid"
+      "filter": "category-grid",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            { "name": "heading", "selector": "div:nth-child(1)" }
+          ]
+        }
+      }
     },
     {
       "title": "Category Card",
@@ -25,6 +34,18 @@
     }
   ],
   "models": [
+    {
+      "id": "category-grid",
+      "fields": [
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "heading",
+          "label": "Heading",
+          "description": "Optional heading shown above the grid. Leave empty to use a section heading authored above the block."
+        }
+      ]
+    },
     {
       "id": "category-grid-card",
       "fields": [

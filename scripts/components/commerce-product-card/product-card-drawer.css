@@ -1,0 +1,378 @@
+.commerce-product-card-drawer__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  justify-content: flex-end;
+  background-color: rgb(0 0 0 / 0.35);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--transition-slow),
+    visibility var(--transition-slow);
+}
+
+.commerce-product-card-drawer__backdrop[data-state='open'] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.commerce-product-card-drawer {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 50rem);
+  max-width: 100%;
+  height: 100%;
+  background-color: var(--background-color);
+  box-shadow: var(--shadow-lg);
+  transform: translateX(100%);
+  transition: transform var(--transition-slow);
+}
+
+.commerce-product-card-drawer__backdrop[data-state='open'] .commerce-product-card-drawer {
+  transform: translateX(0);
+}
+
+.commerce-product-card-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-xsmall);
+  padding: var(--spacing-medium) var(--spacing-small);
+  background-color: var(--color-gs-tab-surface);
+}
+
+.commerce-product-card-drawer__title {
+  margin: 0;
+  font: normal normal 400 1.8rem/2.2rem var(--type-display-font-family);
+  letter-spacing: var(--type-display-3-letter-spacing);
+  color: var(--color-neutral-800);
+}
+
+.commerce-product-card-drawer__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--spacing-medium);
+  height: var(--spacing-medium);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  cursor: pointer;
+}
+
+.commerce-product-card-drawer__close .icon-close,
+.commerce-product-card-drawer__close .icon-close img,
+.commerce-product-card-drawer__close svg {
+  width: var(--spacing-medium);
+  height: var(--spacing-medium);
+}
+
+.commerce-product-card-drawer__close:focus-visible {
+  outline: 2px solid var(--color-gs-green);
+  outline-offset: 2px;
+}
+
+.commerce-product-card-drawer__alert:empty {
+  display: none;
+}
+
+.commerce-product-card-drawer__alert {
+  padding: 0 var(--spacing-medium);
+}
+
+.commerce-product-card-drawer__summary {
+  display: flex;
+  gap: var(--spacing-xsmall-plus);
+  padding: var(--spacing-small) var(--spacing-small) var(--spacing-medium);
+  border-bottom: 1px solid rgb(217 217 217 / 0.6);
+}
+
+.commerce-product-card-drawer__summary-image {
+  flex: 0 0 auto;
+  width: 8rem;
+  height: 8rem;
+  overflow: clip;
+  border-radius: var(--radius-xs);
+  background-color: var(--color-neutral-100);
+}
+
+.commerce-product-card-drawer__summary-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.commerce-product-card-drawer__summary-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxsmall);
+  min-width: 0;
+}
+
+.commerce-product-card-drawer__summary-name {
+  margin: 0;
+  font: var(--type-body-1-semibold-font);
+  letter-spacing: var(--type-body-1-semibold-letter-spacing);
+  color: var(--color-neutral-900);
+}
+
+.commerce-product-card-drawer__summary-meta {
+  margin: 0;
+  font: var(--type-details-caption-1-font);
+  letter-spacing: var(--type-details-caption-1-letter-spacing);
+  color: var(--color-neutral-800);
+}
+
+.commerce-product-card-drawer__summary-meta-label {
+  color: var(--color-neutral-700);
+}
+
+.commerce-product-card-drawer__summary-meta-value {
+  font: var(--type-details-caption-semibold-font);
+  color: var(--color-neutral-900);
+}
+
+.commerce-product-card-drawer__options,
+.commerce-product-card-drawer__quantity-section {
+  padding: var(--spacing-medium);
+}
+
+.commerce-product-card-drawer__options {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+.commerce-product-card-drawer__loading {
+  margin: 0;
+  font: var(--type-body-2-default-font);
+  letter-spacing: var(--type-body-2-default-letter-spacing);
+  color: var(--color-neutral-700);
+}
+
+/* Quantity selection hidden per Figma (5830:199605) — kept in the DOM so the
+   dropin still tracks quantity (defaults to 1). */
+.commerce-product-card-drawer__quantity-section {
+  display: none;
+  flex-direction: column;
+  gap: var(--spacing-xsmall);
+  border-top: 1px solid var(--color-neutral-200);
+}
+
+.commerce-product-card-drawer__quantity-label {
+  margin: 0;
+  font: var(--type-details-caption-1-font);
+  letter-spacing: var(--type-details-caption-1-letter-spacing);
+  color: var(--color-neutral-800);
+}
+
+.commerce-product-card-drawer__options .pdp-swatches {
+  gap: var(--spacing-medium);
+}
+
+.commerce-product-card-drawer__options .dropin-product-option__label,
+.commerce-product-card-drawer__options .pdp-swatches__field__label {
+  font: normal normal 400 1.8rem / 2.2rem var(--type-display-font-family);
+  letter-spacing: var(--type-body-1-strong-letter-spacing);
+}
+
+/* ===== Color swatches (Figma 5168:202505) — 32px circles, hover ring; the
+   selected swatch gets a forest ring with a gap plus a top-right check badge. */
+.commerce-product-card-drawer__options .dropin-color-swatch__container {
+  overflow: visible;
+}
+
+.commerce-product-card-drawer__options .dropin-color-swatch__span {
+  position: relative;
+  width: 3.2rem;
+  height: 3.2rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  transition: border-color var(--transition-base);
+}
+
+.commerce-product-card-drawer__options .dropin-color-swatch__container:hover .dropin-color-swatch__span {
+  border-color: var(--color-neutral-500);
+}
+
+/* Forest ring with a background-coloured gap between ring and swatch fill. */
+.commerce-product-card-drawer__options .dropin-color-swatch__container:has(input:checked) .dropin-color-swatch__span {
+  border-color: transparent;
+  box-shadow:
+    0 0 0 2px var(--background-color),
+    0 0 0 3px var(--color-gs-forest);
+}
+
+/* Check badge floating at the top-right of the selected swatch: ::before is the
+   pale circle, ::after is the forest check masked on top of it. */
+.commerce-product-card-drawer__options .dropin-color-swatch__container:has(input:checked) .dropin-color-swatch__span::before,
+.commerce-product-card-drawer__options .dropin-color-swatch__container:has(input:checked) .dropin-color-swatch__span::after {
+  content: "";
+  position: absolute;
+  top: -0.4rem;
+  right: -0.4rem;
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.commerce-product-card-drawer__options .dropin-color-swatch__container:has(input:checked) .dropin-color-swatch__span::before {
+  border-radius: var(--radius-full);
+  background-color: var(--color-neutral-100);
+  box-shadow: var(--shadow-xs);
+}
+
+.commerce-product-card-drawer__options .dropin-color-swatch__container:has(input:checked) .dropin-color-swatch__span::after {
+  background-color: var(--color-gs-forest);
+  mask: url("/icons/check.svg") center / 1rem 1rem no-repeat;
+}
+
+.commerce-product-card-drawer__options .dropin-color-swatch__container:has(input:focus-visible) .dropin-color-swatch__span {
+  outline: 2px solid var(--color-gs-forest);
+  outline-offset: 4px;
+}
+
+/* ===== Size options as pill tags (Figma 6927:295893) =====
+   The dropin renders non-swatch options (e.g. Size) as a native <select>. JS
+   builds pill-tag buttons from it (.product-card-drawer__size-tags) and mirrors
+   selection back to the hidden <select>, which stays the source of truth. */
+.commerce-product-card-drawer__options .dropin-picker[data-tags-enhanced] .dropin-picker__select,
+.commerce-product-card-drawer__options .dropin-picker[data-tags-enhanced] .dropin-picker__chevronDown {
+  display: none;
+}
+
+.commerce-product-card-drawer__size-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-small);
+}
+
+.commerce-product-card-drawer__size-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xsmall) var(--spacing-small);
+  border: 1px solid var(--color-neutral-500);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-light);
+  font: var(--type-body-2-medium-font);
+  letter-spacing: var(--type-body-2-medium-letter-spacing);
+  cursor: pointer;
+  transition:
+    color var(--transition-base),
+    border-color var(--transition-base),
+    background-color var(--transition-base);
+}
+
+.commerce-product-card-drawer__size-tag:hover:not([disabled]) {
+  border-color: var(--color-gs-forest);
+  color: var(--color-gs-forest);
+}
+
+.commerce-product-card-drawer__size-tag[aria-selected='true'] {
+  border-color: var(--color-gs-forest);
+  background: var(--color-gs-green-surface);
+  color: var(--color-gs-forest);
+}
+
+.commerce-product-card-drawer__size-tag[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.commerce-product-card-drawer__size-tag:focus-visible {
+  outline: 2px solid var(--color-gs-forest);
+  outline-offset: 2px;
+}
+
+.commerce-product-card-drawer__footer-price .pdp-price {
+  margin: 0;
+  justify-content: center;
+}
+
+.commerce-product-card-drawer__footer-price .dropin-price {
+  font: var(--type-headline-2-strong-font);
+  letter-spacing: var(--type-headline-2-strong-letter-spacing);
+  color: var(--color-neutral-900);
+}
+
+.commerce-product-card-drawer__footer {
+  margin-top: auto;
+  padding: var(--spacing-small);
+  border-top: 1px solid var(--color-neutral-200);
+  background-color: var(--color-gs-green-surface);
+}
+
+/* Disabled ATC state (Figma 6918:182903) — footer sits on a neutral surface. */
+.commerce-product-card-drawer__footer:has(.dropin-button[disabled]) {
+  background-color: var(--color-neutral-100);
+}
+
+.commerce-product-card-drawer__footer-price {
+  margin-bottom: var(--spacing-small);
+  text-align: center;
+}
+
+/* Validation hint (Figma 6918:182903) — 14/20 dark-grey, centred above price. */
+.commerce-product-card-drawer__footer-hint {
+  margin: 0 0 var(--spacing-xsmall);
+  font: var(--type-body-2-default-font);
+  letter-spacing: var(--type-body-2-default-letter-spacing);
+  color: var(--color-neutral-800);
+  text-align: center;
+}
+
+.commerce-product-card-drawer__footer-hint[hidden] {
+  display: none;
+}
+
+.commerce-product-card-drawer__footer-button .dropin-button {
+  width: 100%;
+  text-transform: uppercase;
+}
+
+/* Disabled ATC (Figma 6918:182903) — grey fill #d9d9d9, muted #4e4e4e label. */
+.commerce-product-card-drawer__footer-button .dropin-button[disabled],
+.commerce-product-card-drawer__footer-button .dropin-button:disabled {
+  background: var(--color-neutral-400);
+  border-color: var(--color-neutral-400);
+  color: var(--color-text-light);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+/* ===== Size guide link (Figma 6918:182903) — forest link + ruler icon ===== */
+.commerce-product-card-drawer__options .pdp-swatches__field__label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-xsmall);
+}
+
+.commerce-product-card-drawer__options a.commerce-product-card-drawer__size-guide {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xxsmall);
+  color: var(--color-gs-forest);
+  font: var(--type-body-2-semibold-font);
+  letter-spacing: var(--type-body-2-semibold-letter-spacing);
+  text-decoration: underline;
+}
+
+.commerce-product-card-drawer__options a.commerce-product-card-drawer__size-guide:hover,
+.commerce-product-card-drawer__options a.commerce-product-card-drawer__size-guide:focus-visible {
+  color: var(--color-gs-dark-green);
+}
+
+.commerce-product-card-drawer__size-guide-icon {
+  width: 1rem;
+  height: 1rem;
+  background-color: currentcolor;
+  mask: url("/icons/size-guide.svg") center / contain no-repeat;
+}
+
+body.commerce-product-card-drawer-open {
+  overflow: hidden;
+}

@@ -28,7 +28,19 @@ Add the variant to the block name to enable the signpost + flower art:
 
 `Mission Banner (art)`
 
-The art is decorative (`aria-hidden`) and added automatically; it is not authored content.
+The art is decorative (`aria-hidden`). Both illustrations default to built-in SVGs
+(`mission-signpost.svg`, `mission-flower.svg`) but can be **overridden per instance** by
+adding labelled image rows:
+
+| mission-banner (art) ||
+|---|---|
+| ## When you support Girl Scouts…<br>Body copy…<br>[Know More](/about) ||
+| Signpost | ![](my-signpost.svg) |
+| Flower | ![](my-flower.svg) |
+
+- **`Signpost`** *(optional)* — image replacing the default signpost illustration.
+- **`Flower`** *(optional)* — image replacing the default corner flower.
+- Omit either row to keep its default SVG. These rows are ignored on the non-art variant.
 
 ## Behavior Patterns
 

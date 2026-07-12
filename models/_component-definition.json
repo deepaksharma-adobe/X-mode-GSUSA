@@ -51,16 +51,28 @@
           "...": "../blocks/hero-banner/_*.json#/definitions"
         },
         {
+          "...": "../blocks/feature-highlight-banner/_*.json#/definitions"
+        },
+        {
           "...": "../blocks/need-help/_*.json#/definitions"
         },
         {
           "...": "../blocks/values/_*.json#/definitions"
         },
         {
+          "...": "../blocks/wave-header/_*.json#/definitions"
+        },
+        {
+          "...": "../blocks/promo-card/_*.json#/definitions"
+        },
+        {
           "...": "../blocks/mission-banner/_*.json#/definitions"
         },
         {
           "...": "../blocks/category-grid/_*.json#/definitions"
+        },
+        {
+          "...": "../blocks/info-feature-callout/_*.json#/definitions"
         },
         {
           "...": "../blocks/shop-by-collection/_*.json#/definitions"

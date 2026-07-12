@@ -1,0 +1,689 @@
+/* ===== Commerce Product Card ===== */
+
+/* List/grid wrapper when rendering many cards (PLP, sliders, recs) */
+
+.commerce-product-card-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-small);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.commerce-product-card-list__item {
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .commerce-product-card-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .commerce-product-card-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.commerce-product-card {
+  /* Hover motion — Figma card hover (Smart Animate: 0.3s ease-out) */
+  --card-hover-motion: 0.3s ease-out;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xsmall);
+  min-width: 0;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.commerce-product-card:hover,
+.commerce-product-card:focus-within {
+  box-shadow: none;
+}
+
+.commerce-product-card__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1px solid color-mix(in srgb, var(--color-gs-khaki) 60%, transparent);
+  border-radius: var(--radius-xs);
+  background-color: var(--background-color);
+  overflow: clip;
+}
+
+.commerce-product-card__media-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.commerce-product-card__media-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.commerce-product-card__media-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition:
+    opacity var(--card-hover-motion),
+    transform var(--card-hover-motion);
+}
+
+/* Image zooms in on hover — centered ~1.1 scale (Figma 274→302px). */
+.commerce-product-card:hover .commerce-product-card__media-image,
+.commerce-product-card:focus-within .commerce-product-card__media-image {
+  transform: scale(1.1);
+}
+
+.commerce-product-card__media-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-neutral-100);
+}
+
+.commerce-product-card__media-placeholder::before {
+  content: '';
+  width: var(--spacing-xxbig);
+  height: var(--spacing-xxbig);
+  background-color: var(--color-neutral-400);
+  mask: url('../../../icons/tag.svg') center / contain no-repeat;
+  opacity: 0.55;
+}
+
+.commerce-product-card__media--placeholder {
+  background-color: var(--color-neutral-100);
+}
+
+.commerce-product-card__media-image--hover {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+/* Hover swap — whole tile hover, not only the media band. */
+.commerce-product-card--has-hover:hover .commerce-product-card__media-image--primary,
+.commerce-product-card--has-hover:focus-within .commerce-product-card__media-image--primary {
+  opacity: 0;
+}
+
+.commerce-product-card--has-hover:hover .commerce-product-card__media-image--hover,
+.commerce-product-card--has-hover:focus-within .commerce-product-card__media-image--hover {
+  opacity: 1;
+}
+
+.commerce-product-card__media--carousel .commerce-product-card__media-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.commerce-product-card__media-hover-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--card-hover-motion);
+}
+
+.commerce-product-card__media-hover-overlay .commerce-product-card__media-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Overlay hover image must stay fully opaque when the overlay is shown. */
+.commerce-product-card__media-hover-overlay .commerce-product-card__media-image--hover {
+  opacity: 1;
+}
+
+/* Carousel: hover image only on slide 1 so arrows can reveal other gallery images. */
+.commerce-product-card--has-hover:hover .commerce-product-card__media--carousel.commerce-product-card__media--slide-active-0 .commerce-product-card__media-hover-overlay,
+.commerce-product-card--has-hover:focus-within .commerce-product-card__media--carousel.commerce-product-card__media--slide-active-0 .commerce-product-card__media-hover-overlay {
+  opacity: 1;
+}
+
+.commerce-product-card__media-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+}
+
+.commerce-product-card__media-track::-webkit-scrollbar {
+  display: none;
+}
+
+.commerce-product-card__media-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 100%;
+  scroll-snap-align: start;
+  height: 100%;
+}
+
+.commerce-product-card__media--carousel .commerce-product-card-media-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: var(--z-dropdown);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--spacing-medium);
+  height: var(--spacing-medium);
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  box-shadow: none;
+  cursor: pointer;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-50%);
+}
+
+.commerce-product-card__media--carousel .commerce-product-card-media-arrow::before {
+  content: '';
+  width: var(--spacing-small);
+  height: var(--spacing-small);
+  background-color: var(--color-neutral-500);
+  mask: url('../../../icons/chevron-right.svg') center / contain no-repeat;
+}
+
+.commerce-product-card__media--carousel .commerce-product-card-media-arrow-prev::before {
+  transform: scaleX(-1);
+}
+
+/* No hover background — only the chevron darkens for feedback. */
+.commerce-product-card__media--carousel .commerce-product-card-media-arrow:hover:not(:disabled)::before,
+.commerce-product-card__media--carousel .commerce-product-card-media-arrow:focus-visible:not(:disabled)::before {
+  background-color: var(--color-gs-forest);
+}
+
+.commerce-product-card__media--carousel .commerce-product-card-media-arrow:disabled {
+  opacity: 0.35;
+  pointer-events: none;
+  cursor: default;
+}
+
+.commerce-product-card__media--carousel .commerce-product-card-media-arrow-prev {
+  left: var(--spacing-xxsmall);
+}
+
+.commerce-product-card__media--carousel .commerce-product-card-media-arrow-next {
+  right: var(--spacing-xxsmall);
+}
+
+/* Badge containers — a top-left stack and a full-width bottom bar. Which badges
+   land where is driven by ProductBadges.*.location in placeholders/product.json. */
+.commerce-product-card__badges {
+  position: absolute;
+  z-index: var(--z-raised);
+  display: flex;
+  gap: var(--spacing-xxsmall);
+  pointer-events: none;
+}
+
+.commerce-product-card__badges--top-left {
+  /* Wrap into rows; cap the width so badges never slide under the top-right
+     wishlist icon (icon zone = right spacing-xsmall + spacing-big width). */
+  top: var(--spacing-xsmall);
+  left: var(--spacing-xsmall);
+  flex-flow: row wrap;
+  align-content: flex-start;
+  max-width: calc(100% - var(--spacing-xlarge));
+}
+
+.commerce-product-card__badges--bottom {
+  right: 0;
+  bottom: 0;
+  left: 0;
+  justify-content: center;
+  transition:
+    opacity var(--card-hover-motion),
+    transform var(--card-hover-motion);
+}
+
+/* On hover the Add-to-Cart actions take the bottom of the card, so the bottom
+   bar slides down slightly and fades out to make room (Figma hover state). */
+.commerce-product-card:hover .commerce-product-card__badges--bottom,
+.commerce-product-card:focus-within .commerce-product-card__badges--bottom,
+.commerce-product-card--out-of-stock .commerce-product-card__badges--bottom {
+  opacity: 0;
+  transform: translateY(var(--spacing-small));
+}
+
+/* Shared pill shape (Figma CartTags 2697:353238 — 6px radius, 4px/12px padding,
+   uppercase 12px). */
+.commerce-product-card__badge {
+  padding: var(--spacing-xxsmall) var(--spacing-xsmall-plus);
+  border-radius: var(--radius-sm);
+  font-size: var(--badge-font-size);
+  font-weight: var(--badge-font-weight);
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+/* ===== Status colors (Figma CartTags 2697:353238). The status comes from the
+   kebab-cased ProductBadges.* key. Top pills that aren't a mapped status fall
+   back to the translucent-gold "pending" look; bottom bars default to green. ===== */
+
+/* Top-left pills — default (pending): translucent GS Gold, body-grey text. */
+.commerce-product-card__badges--top-left .commerce-product-card__badge {
+  background-color: var(--color-gs-gold-surface);
+  color: var(--color-neutral-800);
+  transition: opacity var(--card-hover-motion);
+}
+
+/* On hover, only the New badge stays; the other top badges fade out (they
+   reappear on mouse-out). */
+.commerce-product-card:hover .commerce-product-card__badges--top-left .commerce-product-card__badge:not(.commerce-product-card__badge--new),
+.commerce-product-card:focus-within .commerce-product-card__badges--top-left .commerce-product-card__badge:not(.commerce-product-card__badge--new) {
+  opacity: 0;
+}
+
+/* New — solid GS Green, black text. */
+.commerce-product-card__badges--top-left .commerce-product-card__badge--new {
+  background-color: var(--color-gs-green);
+  color: var(--color-neutral-900);
+}
+
+/* Sold out — light red surface, cherry text. */
+.commerce-product-card__badges--top-left .commerce-product-card__badge--sold-out {
+  background-color: var(--color-gs-light-red);
+  color: var(--color-gs-cherry);
+}
+
+/* Back Soon — light orange surface, cherry text. */
+.commerce-product-card__badges--top-left .commerce-product-card__badge--back-soon {
+  background-color: var(--color-gs-light-orange);
+  color: var(--color-gs-cherry);
+}
+
+/* Pre-Order — light river blue (15% tint over white, opaque), body-grey text. */
+.commerce-product-card__badges--top-left .commerce-product-card__badge--pre-order {
+  background-color: color-mix(in srgb, var(--color-gs-river) 15%, var(--color-neutral-50));
+  color: var(--color-neutral-800);
+}
+
+/* Bottom bars — full width; square top, bottom corners rounded to match the
+   card media. Default green, distinct color per merchandising type. */
+.commerce-product-card__badges--bottom .commerce-product-card__badge {
+  width: 100%;
+  padding-block: var(--spacing-xsmall);
+  border-radius: 0 0 var(--radius-xs) var(--radius-xs);
+  background-color: var(--color-gs-green);
+  color: var(--color-neutral-900);
+  text-align: center;
+}
+
+.commerce-product-card__badges--bottom .commerce-product-card__badge--best-seller {
+  background-color: var(--color-gs-deep-purple);
+  color: var(--color-neutral-50);
+}
+
+.commerce-product-card__badges--bottom .commerce-product-card__badge--clearance {
+  background-color: var(--color-gs-cherry);
+  color: var(--color-neutral-50);
+}
+
+.commerce-product-card__badges--bottom .commerce-product-card__badge--limited-edition {
+  background-color: var(--color-gs-gold);
+  color: var(--color-neutral-900);
+}
+
+.commerce-product-card__wishlist {
+  position: absolute;
+  top: var(--spacing-xsmall);
+  right: var(--spacing-xsmall);
+  z-index: var(--z-raised);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--spacing-big);
+  height: var(--spacing-big);
+  border-radius: var(--radius-full);
+  background-color: var(--background-color);
+}
+
+.commerce-product-card__actions {
+  position: absolute;
+  right: var(--spacing-xsmall);
+  bottom: var(--spacing-xsmall);
+  left: var(--spacing-xsmall);
+  z-index: var(--z-raised);
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(var(--spacing-xxsmall));
+  transition:
+    opacity var(--card-hover-motion),
+    transform var(--card-hover-motion);
+}
+
+.commerce-product-card:hover .commerce-product-card__actions,
+.commerce-product-card:focus-within .commerce-product-card__actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.commerce-product-card--out-of-stock .commerce-product-card__actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.commerce-product-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xsmall-plus);
+  align-items: flex-start;
+  width: 100%;
+  padding: 0;
+  min-width: 0;
+}
+
+.commerce-product-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xsmall);
+  width: 100%;
+}
+
+.commerce-product-card__rating {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xxsmall);
+  padding-block: var(--spacing-xxsmall);
+  font: var(--type-body-2-default-font);
+  letter-spacing: var(--type-body-2-default-letter-spacing);
+  color: var(--color-neutral-900);
+}
+
+.commerce-product-card__stars {
+  display: inline-flex;
+  gap: 2px;
+  color: var(--color-neutral-900);
+}
+
+.commerce-product-card__star {
+  width: var(--rating-size);
+  height: var(--rating-size);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  background-color: currentcolor;
+}
+
+.commerce-product-card__star--empty {
+  color: var(--color-neutral-400);
+}
+
+.commerce-product-card__star--half {
+  background: linear-gradient(
+    90deg,
+    var(--color-neutral-900) 50%,
+    var(--color-neutral-400) 50%
+  );
+}
+
+/* Rating value — Trefoil Sans SemiBold 14px/19.6px, black. */
+.commerce-product-card__rating-value {
+  font: normal normal 600 1.4rem/1.96rem var(--type-base-font-family);
+  color: var(--color-neutral-900);
+}
+
+/* Rating count — Trefoil Sans Regular 14px/19.6px, light grey. */
+.commerce-product-card__rating-count {
+  font: normal normal 400 1.4rem/1.96rem var(--type-base-font-family);
+  color: var(--btn-disabled-text);
+}
+
+/* Figma card (5168:202088): Trefoil Sans SemiBold 16px/22.4px, black. */
+.commerce-product-card a.commerce-product-card__title {
+  margin: 0;
+  font: normal normal 600 1.6rem/2.24rem var(--type-base-font-family);
+  color: var(--color-neutral-900);
+  text-decoration: none;
+}
+
+.commerce-product-card a.commerce-product-card__title:hover,
+.commerce-product-card a.commerce-product-card__title:focus-visible {
+  color: var(--color-gs-forest);
+  text-decoration: none;
+}
+
+.commerce-product-card__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xsmall);
+  width: 100%;
+}
+
+.commerce-product-card__sku {
+  margin: 0;
+  font: var(--type-body-2-default-font);
+  letter-spacing: var(--type-body-2-default-letter-spacing);
+  color: var(--color-neutral-900);
+}
+
+.commerce-product-card__pricing {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxsmall);
+  width: 100%;
+}
+
+.commerce-product-card__price-label {
+  margin: 0;
+  font: var(--type-body-2-default-font);
+  letter-spacing: var(--type-body-2-default-letter-spacing);
+  color: var(--form-field-placeholder);
+}
+
+.commerce-product-card__price-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-xsmall);
+}
+
+/* Current price — Trefoil Sans SemiBold 16px/22.4px, forest green (Figma). */
+.commerce-product-card__price-current {
+  font: normal normal 600 1.6rem/2.24rem var(--type-base-font-family);
+  color: var(--color-gs-forest);
+}
+
+/* Struck original price — Trefoil Sans Regular 14px/18.2px, grey. */
+.commerce-product-card__price-regular {
+  font: normal normal 400 1.4rem/1.82rem var(--type-base-font-family);
+  color: var(--form-field-placeholder);
+  text-decoration: line-through;
+}
+
+/* "% Off" — Trefoil Sans SemiBold 12px/16.8px, brown on light yellow (Figma). */
+.commerce-product-card__price-badge {
+  padding: var(--spacing-2xs) 5px;
+  border-radius: var(--radius-xxs);
+  font: normal normal 600 1.2rem/1.68rem var(--type-base-font-family);
+  background-color: var(--color-gs-light-yellow);
+  color: var(--color-gs-brown);
+}
+
+.commerce-product-card__swatches {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-xsmall-plus);
+  min-height: var(--spacing-medium);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.commerce-product-card__swatch-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: var(--spacing-medium);
+  height: var(--spacing-medium);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  background-color: transparent;
+  transition:
+    border-color var(--transition-base),
+    background-color var(--transition-base);
+}
+
+.commerce-product-card__swatch-item--selected {
+  padding: calc(var(--spacing-xxsmall) / 2);
+  border-color: var(--color-neutral-400);
+  background-color: var(--background-color);
+}
+
+.commerce-product-card__swatch-item:hover {
+  padding: calc(var(--spacing-xxsmall) / 2);
+  border-style: dashed;
+  border-color: var(--color-neutral-900);
+  background-color: var(--background-color);
+}
+
+.commerce-product-card__swatch-item--selected:not(:hover) {
+  border-style: solid;
+}
+
+.commerce-product-card__swatch {
+  display: block;
+  flex-shrink: 0;
+  width: var(--spacing-small);
+  height: var(--spacing-small);
+  border-radius: var(--radius-full);
+  background-color: var(--color-neutral-200);
+  overflow: hidden;
+}
+
+.commerce-product-card__swatch--image {
+  background-color: var(--color-neutral-100);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.commerce-product-card__swatch--text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--badge-font-size);
+  font-weight: var(--badge-font-weight);
+  line-height: 1;
+  color: var(--color-neutral-700);
+  background-color: var(--color-neutral-100);
+}
+
+.commerce-product-card__swatch-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--spacing-medium);
+  height: var(--spacing-medium);
+  min-width: var(--spacing-medium);
+  font: var(--type-body-2-default-font);
+  letter-spacing: var(--type-body-2-default-letter-spacing);
+  color: var(--color-neutral-700);
+}
+
+.commerce-product-card__swatch--unavailable {
+  opacity: 0.45;
+}
+
+@media (min-width: 768px) {
+  .commerce-product-card__actions {
+    right: var(--spacing-small);
+    bottom: var(--spacing-small);
+    left: var(--spacing-small);
+  }
+}
+
+/* Dropin button overrides — Figma Card 5168:202087 (load after dropin styles inject) */
+
+.commerce-product-card__wishlist .dropin-button,
+.commerce-product-card__wishlist button {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  color: var(--color-gs-footer-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.commerce-product-card__wishlist .dropin-button:hover:not(:disabled),
+.commerce-product-card__wishlist .dropin-button:focus-visible:not(:disabled),
+.commerce-product-card__wishlist button:hover:not(:disabled),
+.commerce-product-card__wishlist button:focus-visible:not(:disabled) {
+  background: transparent;
+  border: none;
+  color: var(--color-neutral-50);
+  background-color: var(--color-gs-forest);
+}
+
+.commerce-product-card__actions .dropin-button {
+  width: auto;
+  max-width: calc(100% - var(--spacing-small));
+  height: var(--btn-height-sm);
+  min-height: var(--btn-height-sm);
+  padding-inline: var(--spacing-small);
+  background-color: var(--btn-secondary-bg-hover);
+  border: 1px solid var(--btn-violet-border);
+  color: var(--btn-secondary-text);
+  font-size: var(--btn-font-size-sm);
+  font-weight: var(--btn-font-weight);
+  text-transform: var(--btn-text-transform);
+  border-radius: var(--btn-radius-lg);
+  gap: var(--spacing-xxsmall);
+}
+
+.commerce-product-card__actions .dropin-button .dropin-icon {
+  width: var(--spacing-small);
+  height: var(--spacing-small);
+}
+
+.commerce-product-card__actions .dropin-button:hover:not(:disabled),
+.commerce-product-card__actions .dropin-button:focus-visible:not(:disabled) {
+  background-color: var(--btn-secondary-border);
+  border-color: var(--btn-secondary-border-hover);
+  color: var(--btn-secondary-text-on-hover);
+}
+
+.commerce-product-card__actions .dropin-button:disabled,
+.commerce-product-card__actions .dropin-button[aria-disabled='true'] {
+  background-color: var(--btn-secondary-bg-hover);
+  border-color: var(--btn-violet-border);
+  color: var(--btn-secondary-text);
+  opacity: 0.65;
+}

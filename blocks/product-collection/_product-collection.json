@@ -1,0 +1,101 @@
+{
+  "definitions": [
+    {
+      "title": "Product Collection",
+      "id": "product-collection",
+      "model": "product-collection",
+      "plugins": {
+        "da": {
+          "type": "key-value-block"
+        }
+      }
+    },
+    {
+      "title": "Product Collection (No Wave)",
+      "id": "product-collection-no-wave",
+      "model": "product-collection",
+      "plugins": {
+        "da": {
+          "type": "key-value-block",
+          "classes": ["no-wave"]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "product-collection",
+      "fields": [
+        {
+          "component": "text",
+          "name": "heading",
+          "label": "Heading"
+        },
+        {
+          "component": "text",
+          "name": "skus",
+          "label": "SKUs (comma separated)"
+        },
+        {
+          "component": "text",
+          "name": "categoryId",
+          "label": "Category ID"
+        },
+        {
+          "component": "number",
+          "name": "maxItems",
+          "label": "Max Items",
+          "value": 4
+        },
+        {
+          "component": "text",
+          "name": "badge",
+          "label": "Badge Label"
+        },
+        {
+          "component": "boolean",
+          "name": "showAddToCart",
+          "label": "Show Add to Cart",
+          "value": true
+        },
+        {
+          "component": "text",
+          "name": "bgColor",
+          "label": "Background Color",
+          "description": "Optional. Any CSS color — a hex code (e.g. #f6f3ec) or a color name (e.g. cornsilk). Applied to the full-width section behind the collection."
+        },
+        {
+          "component": "select",
+          "name": "headingAlign",
+          "label": "Heading Alignment",
+          "description": "Optional. Center-aligns the collection heading.",
+          "options": [
+            { "name": "Default", "value": "" },
+            { "name": "Center", "value": "center" }
+          ]
+        },
+        {
+          "component": "select",
+          "name": "wave",
+          "label": "Decorative Wave",
+          "description": "Bottom wave transition. On by default; select Off to disable it for this block.",
+          "options": [
+            { "name": "On", "value": "" },
+            { "name": "Off", "value": "off" }
+          ]
+        },
+        {
+          "component": "select",
+          "name": "waveCurve",
+          "label": "Wave Curve",
+          "description": "Direction the wave peaks. Defaults to Peak Right.",
+          "options": [
+            { "name": "Peak Right", "value": "peak-right" },
+            { "name": "Peak Left", "value": "peak-left" }
+          ]
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

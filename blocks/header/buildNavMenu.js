@@ -4,9 +4,6 @@ import { rootLink } from '../../scripts/commerce.js';
  * @typedef {import('./fetchNav.js').NavItem} NavItem
  */
 
-/** Max links per column before flowing to the next — Figma 2938:22045 (~44px × 6 rows). */
-const MEGA_MENU_MAX_LINKS_PER_COLUMN = 6;
-
 /**
  * Creates a localized anchor for a nav item.
  * @param {string} href Item path
@@ -21,45 +18,31 @@ function createNavLink(href, label) {
 }
 
 /**
- * Splits a nav item into one or more column chunks when link count exceeds the max.
+ * Approx vertical rows a group occupies: a (up to two-line) heading plus one
+ * row per child link. Used to pack groups into columns.
  * @param {NavItem} item Second-level nav item
- * @returns {NavItem[]}
+ * @returns {number}
  */
-function buildColumnChunks(item) {
-  if (!item.children?.length) {
-    return [item];
-  }
-
-  if (item.children.length <= MEGA_MENU_MAX_LINKS_PER_COLUMN) {
-    return [item];
-  }
-
-  const chunks = [];
-  for (let index = 0; index < item.children.length; index += MEGA_MENU_MAX_LINKS_PER_COLUMN) {
-    chunks.push({
-      href: item.href,
-      label: item.label,
-      children: item.children.slice(index, index + MEGA_MENU_MAX_LINKS_PER_COLUMN),
-    });
-  }
-  return chunks;
+function groupWeight(item) {
+  return 2 + (item.children?.length || 0);
 }
 
+/** Row budget per column — groups pack down a column until adding the next
+ * would exceed this, then a new column starts (~2 groups per column,
+ * Figma 8869:171142). */
+const MEGA_MENU_MAX_ROWS_PER_COLUMN = 13;
+
 /**
- * Builds a mega-menu column with a heading link and child links.
- * @param {NavItem} item Column item with optional nested children
- * @param {boolean} [showHeading=true] False for overflow columns (Figma 2938:22045)
- * @returns {HTMLLIElement}
+ * Builds a mega-menu group: a heading link plus its child links.
+ * @param {NavItem} item Second-level nav item with optional nested children
+ * @returns {HTMLElement}
  */
-function buildColumnItem(item, showHeading = true) {
-  const column = document.createElement('li');
+function buildGroup(item) {
+  const group = document.createElement('div');
+  group.className = 'mega-menu-group';
   const heading = document.createElement('p');
   heading.append(createNavLink(item.href, item.label));
-  if (!showHeading) {
-    heading.className = 'mega-menu-heading-spacer';
-    heading.setAttribute('aria-hidden', 'true');
-  }
-  column.append(heading);
+  group.append(heading);
 
   if (item.children?.length) {
     const list = document.createElement('ul');
@@ -68,26 +51,37 @@ function buildColumnItem(item, showHeading = true) {
       row.append(createNavLink(child.href, child.label));
       list.append(row);
     });
-    column.append(list);
+    group.append(list);
   }
 
-  return column;
+  return group;
 }
 
 /**
- * Builds the submenu list for a top-level nav item.
- * Each API child becomes one or more columns; long lists flow to the next column.
+ * Builds the submenu list, packing second-level groups into columns top-to-
+ * bottom: a new group starts immediately below the previous one, and a new
+ * column begins only when the row budget is exceeded — no blank space between
+ * groups (Figma 8869:171142).
  * @param {NavItem[]} children Second-level nav items
  * @returns {HTMLUListElement}
  */
 function buildSubmenuList(children) {
   const submenu = document.createElement('ul');
+  let column = null;
+  let rows = 0;
+
   children.forEach((child) => {
-    const chunks = buildColumnChunks(child);
-    chunks.forEach((chunk, chunkIndex) => {
-      submenu.append(buildColumnItem(chunk, chunkIndex === 0));
-    });
+    const weight = groupWeight(child);
+    if (!column || (rows > 0 && rows + weight > MEGA_MENU_MAX_ROWS_PER_COLUMN)) {
+      column = document.createElement('li');
+      column.className = 'mega-menu-column';
+      submenu.append(column);
+      rows = 0;
+    }
+    column.append(buildGroup(child));
+    rows += weight;
   });
+
   return submenu;
 }
 
@@ -98,6 +92,8 @@ function buildSubmenuList(children) {
  */
 function buildTopLevelItem(item) {
   const row = document.createElement('li');
+  // Menu path — used to look up this menu's promo fragment in placeholders/nav.json
+  if (item.href) row.dataset.navPath = item.href;
   const label = document.createElement('p');
   label.append(createNavLink(item.href, item.label));
   row.append(label);
@@ -120,37 +116,6 @@ export function buildNavMenuList(navItems) {
     list.append(buildTopLevelItem(item));
   });
   return list;
-}
-
-/**
- * Inserts full-width row dividers when mega-menu columns wrap to a new line.
- * Figma 2697:357110 — horizontal rule between wrapped rows.
- * @param {HTMLUListElement|null|undefined} submenu Mega menu column list
- */
-export function layoutMegaMenuRows(submenu) {
-  if (!submenu) return;
-
-  submenu.querySelectorAll(':scope > li.mega-menu-row-border').forEach((el) => el.remove());
-
-  const columns = [...submenu.querySelectorAll(':scope > li:not(.mega-menu-row-border)')];
-  if (columns.length < 2) return;
-
-  const rowStarts = [];
-  let rowTop = columns[0].offsetTop;
-
-  columns.slice(1).forEach((column) => {
-    if (column.offsetTop > rowTop) {
-      rowStarts.push(column);
-      rowTop = column.offsetTop;
-    }
-  });
-
-  rowStarts.forEach((column) => {
-    const divider = document.createElement('li');
-    divider.className = 'mega-menu-row-border';
-    divider.setAttribute('aria-hidden', 'true');
-    submenu.insertBefore(divider, column);
-  });
 }
 
 /**

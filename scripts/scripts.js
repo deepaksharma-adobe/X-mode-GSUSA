@@ -22,6 +22,44 @@ import {
   IS_DA,
 } from './commerce.js';
 
+// Blocks that populate their content asynchronously (fetch/GraphQL/fragments)
+// after decoration, so they are legitimately empty at decorate time and must
+// never be auto-removed. Commerce blocks (commerce-*) are excluded separately.
+const ASYNC_BLOCKS = new Set([
+  'fragment',
+  'enrichment',
+  'targeted-block',
+  'product-details',
+  'product-list-page',
+  'product-recommendations',
+]);
+
+/**
+ * True when a block has no authored content: no non-whitespace text and no
+ * media/links (img, picture, video, source, icon span, anchors, etc.).
+ * @param {Element} block The block element
+ * @returns {boolean}
+ */
+function isBlockEmpty(block) {
+  if (block.textContent.trim()) return false;
+  return !block.querySelector('img, picture, video, source, a[href], .icon, iframe, svg');
+}
+
+/**
+ * Removes authored blocks that have no content so empty shells (and their
+ * section spacing) don't render. Skips commerce blocks, async/dynamic blocks,
+ * and authoring modes (UE/DA) where empty blocks must stay editable.
+ * @param {Element} main The main element
+ */
+function removeEmptyBlocks(main) {
+  if (IS_UE || IS_DA) return;
+  main.querySelectorAll('div.section > div > div[data-block-name]').forEach((block) => {
+    const name = block.dataset.blockName;
+    if (name.startsWith('commerce-') || ASYNC_BLOCKS.has(name)) return;
+    if (isBlockEmpty(block)) (block.closest('.section') || block).remove();
+  });
+}
+
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
@@ -132,7 +170,18 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  removeEmptyBlocks(main);
   decorateButtons(main);
+}
+
+/**
+ * Derives the document language from the first path segment when it is a
+ * locale node (e.g. /en/, /fr/). Falls back to 'en' for root-level content.
+ * @returns {string} ISO language code
+ */
+function getDocumentLang() {
+  const [segment] = window.location.pathname.split('/').filter(Boolean);
+  return /^[a-z]{2}(-[a-z]{2})?$/i.test(segment || '') ? segment.toLowerCase() : 'en';
 }
 
 /**
@@ -140,7 +189,7 @@ export function decorateMain(main) {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  document.documentElement.lang = 'en';
+  document.documentElement.lang = getDocumentLang();
   decorateTemplateAndTheme();
 
   const main = doc.querySelector('main');

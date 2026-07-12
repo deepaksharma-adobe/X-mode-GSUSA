@@ -4,7 +4,16 @@
       "title": "Shop By Collection",
       "id": "shop-by-collection",
       "model": "shop-by-collection",
-      "filter": "shop-by-collection"
+      "filter": "shop-by-collection",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            { "name": "heading", "selector": "div:nth-child(1)" }
+          ]
+        }
+      }
     },
     {
       "title": "Shop By Collection (Infinite Loop)",
@@ -13,7 +22,12 @@
       "filter": "shop-by-collection",
       "plugins": {
         "da": {
-          "classes": ["infinite-loop"]
+          "classes": ["infinite-loop"],
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            { "name": "heading", "selector": "div:nth-child(1)" }
+          ]
         }
       }
     },
@@ -35,6 +49,18 @@
     }
   ],
   "models": [
+    {
+      "id": "shop-by-collection",
+      "fields": [
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "heading",
+          "label": "Heading",
+          "description": "Optional heading shown above the carousel. Leave empty to use a section heading authored above the block."
+        }
+      ]
+    },
     {
       "id": "shop-by-collection-card",
       "fields": [

@@ -1,0 +1,119 @@
+{
+  "definitions": [
+    {
+      "title": "Wave Header",
+      "id": "wave-header",
+      "model": "wave-header",
+      "plugins": {
+        "da": {
+          "type": "key-value-block"
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "wave-header",
+      "fields": [
+        {
+          "component": "select",
+          "valueType": "string",
+          "name": "position",
+          "label": "Position",
+          "value": "top",
+          "options": [
+            { "name": "Top", "value": "top" },
+            { "name": "Bottom", "value": "bottom" }
+          ]
+        },
+        {
+          "component": "select",
+          "valueType": "string",
+          "name": "shape",
+          "label": "Shape",
+          "value": "standard",
+          "options": [
+            { "name": "Standard", "value": "standard" },
+            { "name": "Shallow", "value": "shallow" }
+          ]
+        },
+        {
+          "component": "select",
+          "valueType": "string",
+          "name": "curve",
+          "label": "Curve",
+          "value": "peak-left",
+          "options": [
+            { "name": "Peak left", "value": "peak-left" },
+            { "name": "Peak right", "value": "peak-right" }
+          ]
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "color",
+          "label": "Color",
+          "description": "Any CSS colour — e.g. #00AE43 or red"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "opacity",
+          "label": "Opacity",
+          "description": "Optional — e.g. 6% (applied to the colour above)"
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "illustrationLeft",
+          "label": "Illustration left",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "leftAlt",
+          "label": "Left alt"
+        },
+        {
+          "component": "select",
+          "valueType": "string",
+          "name": "leftAnimate",
+          "label": "Left animate",
+          "value": "off",
+          "description": "Continuous float loop for the left illustration (fade-in on scroll is automatic)",
+          "options": [
+            { "name": "On", "value": "on" },
+            { "name": "Off", "value": "off" }
+          ]
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "illustrationRight",
+          "label": "Illustration right",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "rightAlt",
+          "label": "Right alt"
+        },
+        {
+          "component": "select",
+          "valueType": "string",
+          "name": "rightAnimate",
+          "label": "Right animate",
+          "value": "off",
+          "description": "Continuous float loop for the right illustration (fade-in on scroll is automatic)",
+          "options": [
+            { "name": "On", "value": "on" },
+            { "name": "Off", "value": "off" }
+          ]
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

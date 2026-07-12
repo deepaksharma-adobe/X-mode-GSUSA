@@ -247,15 +247,23 @@
               "fields": [
                 {
                   "name": "image",
-                  "selector": "div>div>picture>img[src]"
+                  "selector": "div>div>p>picture>img[src]"
                 },
                 {
                   "name": "alt",
-                  "selector": "div>div>picture>img[alt]"
+                  "selector": "div>div>p>picture>img[alt]"
                 },
                 {
-                  "name": "text",
+                  "name": "heading",
                   "selector": "div>div>h1"
+                },
+                {
+                  "name": "body",
+                  "selector": "div>div>p:nth-of-type(2)"
+                },
+                {
+                  "name": "cta",
+                  "selector": "div>div>p>a"
                 }
               ]
             }
@@ -389,6 +397,43 @@
           }
         },
         {
+          "title": "Feature Highlight Banner",
+          "id": "feature-highlight-banner",
+          "model": "feature-highlight-banner",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 1,
+              "fields": [
+                {
+                  "name": "content",
+                  "selector": "div:nth-child(1)"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Feature Highlight Banner (Overlap)",
+          "id": "feature-highlight-banner-overlap",
+          "model": "feature-highlight-banner",
+          "plugins": {
+            "da": {
+              "classes": [
+                "overlap"
+              ],
+              "rows": 1,
+              "columns": 1,
+              "fields": [
+                {
+                  "name": "content",
+                  "selector": "div:nth-child(1)"
+                }
+              ]
+            }
+          }
+        },
+        {
           "title": "Need Help",
           "id": "need-help",
           "model": "need-help",
@@ -420,6 +465,19 @@
           "filter": "values"
         },
         {
+          "title": "Values (Flat)",
+          "id": "values-flat",
+          "model": "values",
+          "filter": "values",
+          "plugins": {
+            "da": {
+              "classes": [
+                "flat"
+              ]
+            }
+          }
+        },
+        {
           "title": "Value Card",
           "id": "values-card",
           "model": "values-card",
@@ -445,6 +503,121 @@
           }
         },
         {
+          "title": "Wave Header",
+          "id": "wave-header",
+          "model": "wave-header",
+          "plugins": {
+            "da": {
+              "type": "key-value-block"
+            }
+          }
+        },
+        {
+          "title": "Promo Card",
+          "id": "promo-card",
+          "model": "promo-card",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 3,
+              "fields": [
+                {
+                  "name": "image",
+                  "selector": "div:nth-child(1)>picture>img[src]"
+                },
+                {
+                  "name": "imageAlt",
+                  "selector": "div:nth-child(1)>picture>img[alt]"
+                },
+                {
+                  "name": "heading",
+                  "selector": "div:nth-child(2)"
+                },
+                {
+                  "name": "cta",
+                  "selector": "div:nth-child(3)>a[href]"
+                },
+                {
+                  "name": "ctaText",
+                  "selector": "div:nth-child(3)>a"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Promo Card (Compact)",
+          "id": "promo-card-compact",
+          "model": "promo-card",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 3,
+              "classes": [
+                "compact"
+              ],
+              "fields": [
+                {
+                  "name": "image",
+                  "selector": "div:nth-child(1)>picture>img[src]"
+                },
+                {
+                  "name": "imageAlt",
+                  "selector": "div:nth-child(1)>picture>img[alt]"
+                },
+                {
+                  "name": "heading",
+                  "selector": "div:nth-child(2)"
+                },
+                {
+                  "name": "cta",
+                  "selector": "div:nth-child(3)>a[href]"
+                },
+                {
+                  "name": "ctaText",
+                  "selector": "div:nth-child(3)>a"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Promo Card (Vertical)",
+          "id": "promo-card-vertical",
+          "model": "promo-card",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 3,
+              "classes": [
+                "vertical"
+              ],
+              "fields": [
+                {
+                  "name": "image",
+                  "selector": "div:nth-child(1)>picture>img[src]"
+                },
+                {
+                  "name": "imageAlt",
+                  "selector": "div:nth-child(1)>picture>img[alt]"
+                },
+                {
+                  "name": "heading",
+                  "selector": "div:nth-child(2)"
+                },
+                {
+                  "name": "cta",
+                  "selector": "div:nth-child(3)>a[href]"
+                },
+                {
+                  "name": "ctaText",
+                  "selector": "div:nth-child(3)>a"
+                }
+              ]
+            }
+          }
+        },
+        {
           "title": "Mission Banner",
           "id": "mission-banner",
           "model": "mission-banner",
@@ -458,11 +631,9 @@
         {
           "title": "Mission Banner (Art)",
           "id": "mission-banner-art",
-          "model": "mission-banner",
+          "model": "mission-banner-art",
           "plugins": {
             "da": {
-              "rows": 1,
-              "columns": 1,
               "classes": [
                 "art"
               ]
@@ -473,7 +644,19 @@
           "title": "Category Grid",
           "id": "category-grid",
           "model": "category-grid",
-          "filter": "category-grid"
+          "filter": "category-grid",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 1,
+              "fields": [
+                {
+                  "name": "heading",
+                  "selector": "div:nth-child(1)"
+                }
+              ]
+            }
+          }
         },
         {
           "title": "Category Card",
@@ -499,6 +682,331 @@
                 {
                   "name": "options",
                   "selector": "div:nth-child(3)"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Info Feature Callout",
+          "id": "info-feature-callout",
+          "model": "info-feature-callout",
+          "filter": "info-feature-callout"
+        },
+        {
+          "title": "Info Feature Callout (Image Left)",
+          "id": "info-feature-callout-image-left",
+          "model": "info-feature-callout",
+          "filter": "info-feature-callout",
+          "plugins": {
+            "da": {
+              "classes": [
+                "image-left"
+              ]
+            }
+          }
+        },
+        {
+          "title": "Info Feature Callout (Feature List)",
+          "id": "info-feature-callout-list",
+          "model": "info-feature-callout",
+          "filter": "info-feature-callout",
+          "plugins": {
+            "da": {
+              "classes": [
+                "list"
+              ]
+            }
+          }
+        },
+        {
+          "title": "Info Feature Callout (Teal Gradient)",
+          "id": "info-feature-callout-teal-gradient",
+          "model": "info-feature-callout",
+          "filter": "info-feature-callout",
+          "plugins": {
+            "da": {
+              "classes": [
+                "teal-gradient"
+              ]
+            }
+          }
+        },
+        {
+          "title": "Callout Feature",
+          "id": "info-feature-callout-feature",
+          "model": "info-feature-callout-feature",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 2,
+              "fields": [
+                {
+                  "name": "icon",
+                  "selector": "div:nth-child(1)>picture>img[src]"
+                },
+                {
+                  "name": "iconAlt",
+                  "selector": "div:nth-child(1)>picture>img[alt]"
+                },
+                {
+                  "name": "content",
+                  "selector": "div:nth-child(2)"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Callout Content",
+          "id": "info-feature-callout-content",
+          "model": "info-feature-callout-content",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 1,
+              "fields": [
+                {
+                  "name": "content",
+                  "selector": "div:nth-child(1)"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Callout Image",
+          "id": "info-feature-callout-image",
+          "model": "info-feature-callout-image",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 1,
+              "fields": [
+                {
+                  "name": "image",
+                  "selector": "div:nth-child(1)>picture>img[src]"
+                },
+                {
+                  "name": "imageAlt",
+                  "selector": "div:nth-child(1)>picture>img[alt]"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Shop By Collection",
+          "id": "shop-by-collection",
+          "model": "shop-by-collection",
+          "filter": "shop-by-collection",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 1,
+              "fields": [
+                {
+                  "name": "heading",
+                  "selector": "div:nth-child(1)"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Shop By Collection (Infinite Loop)",
+          "id": "shop-by-collection-infinite-loop",
+          "model": "shop-by-collection",
+          "filter": "shop-by-collection",
+          "plugins": {
+            "da": {
+              "classes": [
+                "infinite-loop"
+              ],
+              "rows": 1,
+              "columns": 1,
+              "fields": [
+                {
+                  "name": "heading",
+                  "selector": "div:nth-child(1)"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Collection Card",
+          "id": "shop-by-collection-card",
+          "model": "shop-by-collection-card",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 2,
+              "fields": [
+                {
+                  "name": "image",
+                  "selector": "div:nth-child(1)>picture>img[src]"
+                },
+                {
+                  "name": "imageAlt",
+                  "selector": "div:nth-child(1)>picture>img[alt]"
+                },
+                {
+                  "name": "content",
+                  "selector": "div:nth-child(2)"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Stories & Testimonials",
+          "id": "stories-testimonials",
+          "model": "stories-testimonials",
+          "filter": "stories-testimonials"
+        },
+        {
+          "title": "Stories & Testimonials (Infinite Loop)",
+          "id": "stories-testimonials-infinite-loop",
+          "model": "stories-testimonials",
+          "filter": "stories-testimonials",
+          "plugins": {
+            "da": {
+              "classes": [
+                "infinite-loop"
+              ]
+            }
+          }
+        },
+        {
+          "title": "Story Slide",
+          "id": "stories-testimonials-slide",
+          "model": "stories-testimonials-slide",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 2,
+              "fields": [
+                {
+                  "name": "image",
+                  "selector": "div:nth-child(1)>picture>img[src]"
+                },
+                {
+                  "name": "imageAlt",
+                  "selector": "div:nth-child(1)>picture>img[alt]"
+                },
+                {
+                  "name": "video",
+                  "selector": "div:nth-child(1)>p>a[href]"
+                },
+                {
+                  "name": "content",
+                  "selector": "div:nth-child(2)"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Campaign Highlights",
+          "id": "campaign-highlights",
+          "model": "campaign-highlights",
+          "filter": "campaign-highlights"
+        },
+        {
+          "title": "Campaign Highlights (Infinite Loop)",
+          "id": "campaign-highlights-infinite-loop",
+          "model": "campaign-highlights",
+          "filter": "campaign-highlights",
+          "plugins": {
+            "da": {
+              "classes": [
+                "infinite-loop"
+              ]
+            }
+          }
+        },
+        {
+          "title": "Campaign Heading",
+          "id": "campaign-highlights-heading",
+          "model": "campaign-highlights-heading",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 1,
+              "fields": [
+                {
+                  "name": "content",
+                  "selector": "div:nth-child(1)"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Campaign Tile",
+          "id": "campaign-highlights-tile",
+          "model": "campaign-highlights-tile",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 2,
+              "fields": [
+                {
+                  "name": "image",
+                  "selector": "div:nth-child(1)>picture>img[src]"
+                },
+                {
+                  "name": "imageAlt",
+                  "selector": "div:nth-child(1)>picture>img[alt]"
+                },
+                {
+                  "name": "panel",
+                  "selector": "div:nth-child(2)"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Campaign CTA",
+          "id": "campaign-highlights-cta",
+          "model": "campaign-highlights-cta",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 1,
+              "fields": [
+                {
+                  "name": "cta",
+                  "selector": "div:nth-child(1)"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Guided Navigation",
+          "id": "guided-navigation",
+          "model": "guided-navigation",
+          "filter": "guided-navigation"
+        },
+        {
+          "title": "Navigation Link",
+          "id": "guided-navigation-link",
+          "model": "guided-navigation-link",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 1,
+              "fields": [
+                {
+                  "name": "link",
+                  "selector": "a[href]"
+                },
+                {
+                  "name": "linkText",
+                  "selector": "a"
                 }
               ]
             }
@@ -821,6 +1329,29 @@
       "title": "Product",
       "id": "product",
       "components": [
+        {
+          "title": "Product Collection",
+          "id": "product-collection",
+          "model": "product-collection",
+          "plugins": {
+            "da": {
+              "type": "key-value-block"
+            }
+          }
+        },
+        {
+          "title": "Product Collection (No Wave)",
+          "id": "product-collection-no-wave",
+          "model": "product-collection",
+          "plugins": {
+            "da": {
+              "type": "key-value-block",
+              "classes": [
+                "no-wave"
+              ]
+            }
+          }
+        },
         {
           "title": "Product Details",
           "id": "product-details",

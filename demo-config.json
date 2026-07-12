@@ -4,7 +4,7 @@
       "commerce-core-endpoint": "https://www.aemshop.net/graphql",
       "commerce-endpoint": "https://www.aemshop.net/cs-graphql",
       "commerce-assets-enabled": true,
-      "nav-api-endpoint": "/blocks/header/nav-data.mock.json",
+      "nav-api-endpoint": "true",
       "headers": {
         "all": {
           "Store": "default"

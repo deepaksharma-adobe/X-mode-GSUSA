@@ -1,37 +1,134 @@
-.hero-container .hero-wrapper {
-  max-width: unset;
+/* ===== Hero (Figma node 2967:68941) =====
+   Full-bleed PLP hero: background image with optional left-aligned text overlay. */
+
+/* Full-bleed: break out of the section/main gutter to span the viewport width. */
+main .section .hero-wrapper {
+  max-width: none;
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
   padding: 0;
 }
 
 .hero {
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+  display: flex;
+  align-items: center;
+  overflow: clip;
+  aspect-ratio: 3 / 2; /* mobile 360×240 */
 }
 
-.hero h1 {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
-}
-
-.hero picture {
+/* ===== Image ===== */
+.hero .hero-image,
+.hero .hero-link {
   position: absolute;
-  z-index: -1;
   inset: 0;
-  object-fit: cover;
-  box-sizing: border-box;
+  z-index: 0;
 }
 
-.hero img {
-  object-fit: cover;
+.hero .hero-link {
+  display: block;
+}
+
+.hero .hero-image picture {
+  position: absolute;
+  inset: 0;
+}
+
+.hero .hero-image img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
-@media (min-width: 900px) {
+/* ===== Whole-banner link — zoom (desktop) / pressed (mobile) ===== */
+.hero.hero--linked:has(.hero-text) .hero-text {
+  pointer-events: none;
+}
+
+.hero.hero--linked:has(.hero-text) .hero-text a[href] {
+  pointer-events: auto;
+}
+
+@media (hover: hover) {
+  .hero.hero--linked .hero-image img,
+  .hero .hero-link .hero-image img {
+    transition: transform var(--transition-medium);
+  }
+
+  .hero.hero--linked:has(.hero-link:hover) .hero-image img,
+  .hero.hero--linked:hover .hero-image img,
+  .hero .hero-link:hover .hero-image img {
+    transform: scale(1.04);
+  }
+}
+
+.hero.hero--linked:active .hero-image img,
+.hero .hero-link:active .hero-image img {
+  transform: scale(0.99);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero .hero-image img {
+    transition: none;
+  }
+
+  .hero.hero--linked:hover .hero-image img,
+  .hero.hero--linked:active .hero-image img,
+  .hero .hero-link:hover .hero-image img,
+  .hero .hero-link:active .hero-image img {
+    transform: none;
+  }
+}
+
+/* ===== Text ===== */
+.hero .hero-text {
+  position: relative;
+  z-index: var(--z-raised);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-xsmall-plus);
+  width: 100%;
+  max-width: var(--grid-max-width);
+  padding-left: var(--spacing-small);
+  color: var(--color-neutral-50);
+}
+
+.hero .hero-text > * {
+  width: 100%;
+  max-width: 480px;
+  margin: 0;
+  color: inherit;
+}
+
+.hero .hero-text > :is(h1, h2, h3, h4, h5, h6) {
+  font: var(--type-display-3-font);
+  letter-spacing: var(--type-display-3-letter-spacing);
+}
+
+.hero .hero-text > p {
+  font: var(--type-body-1-default-font);
+  letter-spacing: var(--type-body-1-default-letter-spacing);
+}
+
+@media (min-width: 768px) {
   .hero {
-    padding: 40px 32px;
+    aspect-ratio: 3 / 2;
+  }
+
+  .hero .hero-text {
+    padding-left: var(--grid-4-margins);
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero {
+    aspect-ratio: 4 / 1;
+  }
+
+  .hero .hero-text > :is(h1, h2, h3, h4, h5, h6) {
+    font: var(--type-display-2-font);
+    letter-spacing: var(--type-display-2-letter-spacing);
   }
 }

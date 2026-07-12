@@ -64,7 +64,7 @@
   isolation: isolate;
   overflow: hidden;
   background-color: color-mix(in srgb, var(--color-gs-river) 15%, transparent);
-  padding-block: var(--spacing-xxbig); /* 48px mobile/tablet (Figma py-48) */
+  padding-block: var(--block-padding-block);
 }
 
 .campaign-highlights-container::before {
@@ -104,8 +104,6 @@
 
 .campaign-highlights .campaign-highlights-heading {
   margin: 0;
-  font: var(--ch-heading-font);
-  color: var(--ch-heading-color);
   text-align: center;
 }
 
@@ -289,19 +287,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 10px;
-  height: 10px;
+  width: var(--carousel-dot-size-active);
+  height: var(--carousel-dot-size-active);
 }
 
 .campaign-highlights .campaign-highlights-dot {
   display: block;
-  width: 6px;
-  height: 6px;
+  width: var(--carousel-dot-size);
+  height: var(--carousel-dot-size);
   padding: 0;
   border: 0;
   border-radius: var(--radius-full);
   background: var(--color-gs-forest);
-  opacity: 0.5;
+  opacity: var(--carousel-dot-opacity);
   cursor: pointer;
   transition:
     width var(--transition-base),
@@ -309,20 +307,16 @@
     opacity var(--transition-base);
 }
 
-.campaign-highlights .campaign-highlights-dot[data-distance='2'] {
-  width: 5px;
-  height: 5px;
-}
-
+.campaign-highlights .campaign-highlights-dot[data-distance='2'],
 .campaign-highlights .campaign-highlights-dot[data-distance='3'] {
-  width: 4px;
-  height: 4px;
-  opacity: 0.35;
+  width: var(--carousel-dot-size-far);
+  height: var(--carousel-dot-size-far);
+  opacity: var(--carousel-dot-opacity-far);
 }
 
 .campaign-highlights .campaign-highlights-dot[aria-current='true'] {
-  width: 10px;
-  height: 10px;
+  width: var(--carousel-dot-size-active);
+  height: var(--carousel-dot-size-active);
   opacity: 1;
 }
 
@@ -346,11 +340,6 @@
 
   .campaign-highlights-container {
     background-color: color-mix(in srgb, var(--color-gs-sky) 40%, transparent);
-    padding-block: var(--spacing-xlarge); /* ~80px target (Figma py-80; xlarge=72px nearest) */
-  }
-
-  .campaign-highlights .campaign-highlights-heading {
-    font: var(--ch-heading-font-desktop);
   }
 
   .campaign-highlights .campaign-highlights-arrow {

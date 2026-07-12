@@ -4,7 +4,13 @@
  * A coverflow image carousel: the active image is centred and large; the
  * previous/next images peek on the sides, dimmed. Below sits the active
  * slide's two-line quote and a "KNOW MORE" CTA. Prev/next arrows (desktop)
- * and a dynamic dot pager (tablet/mobile) drive navigation. No autoplay.
+ * and a dynamic dot pager (tablet/mobile) drive navigation.
+ *
+ * Variants (opt-in via block class):
+ *   infinite-loop — wraps from last slide back to first
+ *   autoplay      — advances one slide every 6 s; pauses on hover and keyboard
+ *                   focus; respects prefers-reduced-motion; wraps to slide 0 on
+ *                   non-infinite carousels
  *
  * Authoring: row 1 (single cell, no image) = the section heading. Each
  * subsequent row is one slide: cell 1 = image (+ optional .mp4 link/URL for a
@@ -17,30 +23,52 @@
  * coverflow/crossfade engine. Prev/next arrows are intentionally hidden.
  */
 import createCarouselControls from '../../scripts/carousel-controls.js';
+import { decorateWave, extractIllustrations, readWaveConfig } from '../../scripts/wave/wave.js';
 
 let carouselId = 0;
 
-// Match an .mp4 URL anywhere in a string. The CMS sometimes rewrites the ".mp4"
-// extension to a "-mp4" suffix in hrefs, so accept that form too.
-const MP4_URL_RE = /https?:\/\/\S+?\.mp4(?:\?\S*)?/i;
-const MP4_MANGLED_RE = /-mp4(\?|$)/i;
+// Supported video extensions and their MIME types.
+// To add a format: add the extension to VIDEO_EXTS and its MIME type below.
+const VIDEO_EXTS = 'mp4';
+const VIDEO_MIME = {
+  mp4: 'video/mp4',
+};
+// Match a video URL anywhere in a string. The CMS sometimes rewrites the
+// extension to a dash-suffix (e.g. "-mp4"), so accept that mangled form too.
+const VIDEO_URL_RE = new RegExp(`https?://\\S+?\\.(${VIDEO_EXTS})(?:\\?\\S*)?`, 'i');
+const VIDEO_MANGLED_RE = new RegExp(`-(${VIDEO_EXTS})(\\?|$)`, 'i');
+const VIDEO_EXT_RE = new RegExp(`\\.(${VIDEO_EXTS})`, 'i');
 
-// Find an authored video source in the image cell — a link to an .mp4, a plain
-// .mp4 URL, or a mangled "-mp4" href (repaired). Returns the node to remove and
-// the resolved src, or null. Mirrors the hero-banner convention.
+// Resolve a DA media viewer URL (da.live/media#/org/repo/path.mp4) to the
+// actual streamable source served by the DA admin API.
+function resolveDaMediaUrl(href) {
+  try {
+    const url = new URL(href);
+    if (url.hostname === 'da.live' && url.pathname === '/media' && url.hash) {
+      // hash = "#/org/repo/path/to/file.mp4" — strip the leading "#/"
+      const sourcePath = url.hash.replace(/^#\/?/, '');
+      return `https://admin.da.live/source/${sourcePath}`;
+    }
+  } catch (e) { /* not a valid URL — fall through */ }
+  return href;
+}
+
+// Find an authored video source in the image cell. Returns the node to remove
+// and the resolved src, or null.
 function findVideoSource(imageCell) {
   const links = [...imageCell.querySelectorAll('a[href]')];
   for (let i = 0; i < links.length; i += 1) {
     const link = links[i];
-    const textMatch = (link.textContent || '').match(MP4_URL_RE);
-    if (textMatch) return { remove: link, src: textMatch[0] };
+    const textMatch = (link.textContent || '').match(VIDEO_URL_RE);
+    if (textMatch) return { remove: link, src: resolveDaMediaUrl(textMatch[0]) };
     const href = link.getAttribute('href') || '';
-    if (/\.mp4(\?|$)/i.test(href)) return { remove: link, src: href };
-    if (MP4_MANGLED_RE.test(href)) return { remove: link, src: href.replace(MP4_MANGLED_RE, '.mp4$1') };
+    // Match any video extension anywhere in href — DA media URLs carry it in the hash fragment
+    if (VIDEO_EXT_RE.test(href)) return { remove: link, src: resolveDaMediaUrl(href) };
+    if (VIDEO_MANGLED_RE.test(href)) return { remove: link, src: resolveDaMediaUrl(href.replace(VIDEO_MANGLED_RE, '.$1$2')) };
   }
   const paragraphs = [...imageCell.querySelectorAll('p')].filter((p) => !p.querySelector('picture, img'));
   for (let i = 0; i < paragraphs.length; i += 1) {
-    const match = (paragraphs[i].textContent || '').match(MP4_URL_RE);
+    const match = (paragraphs[i].textContent || '').match(VIDEO_URL_RE);
     if (match) return { remove: paragraphs[i], src: match[0] };
   }
   return null;
@@ -57,7 +85,8 @@ function playVideo(media, videoSrc, posterImg) {
   if (posterImg) video.poster = posterImg.currentSrc || posterImg.src;
   const source = document.createElement('source');
   source.src = videoSrc;
-  source.type = 'video/mp4';
+  const ext = (videoSrc.match(VIDEO_EXT_RE) || [])[1]?.toLowerCase() || 'mp4';
+  source.type = VIDEO_MIME[ext] || 'video/mp4';
   video.append(source);
   media.replaceChildren(video);
   video.play?.().catch(() => {});
@@ -85,6 +114,22 @@ function buildSlide(row, uid, i) {
     video.remove.remove();
     slide.classList.add('stories-testimonials-slide-video');
     const posterImg = media.querySelector('picture img');
+
+    if (!posterImg) {
+      // No authored poster — render a muted video with preload="metadata" so the
+      // browser decodes and paints the first frame as the visual placeholder.
+      const previewVid = document.createElement('video');
+      previewVid.className = 'stories-testimonials-video';
+      previewVid.src = video.src;
+      previewVid.preload = 'metadata';
+      previewVid.muted = true;
+      previewVid.playsInline = true;
+      previewVid.addEventListener('loadedmetadata', () => {
+        previewVid.currentTime = 0.1;
+      }, { once: true });
+      media.append(previewVid);
+    }
+
     const play = document.createElement('button');
     play.type = 'button';
     play.className = 'stories-testimonials-play';
@@ -125,12 +170,19 @@ export default function decorate(block) {
   const uid = `stories-testimonials-${carouselId}`;
   const rows = [...block.children];
 
-  // First row with no image is the heading; rows with an image are slides.
+  // Rows labelled "Illustration [Left|Right]" configure the wave (any position); the first
+  // text-only row is the heading; remaining rows with an image are slides.
+  const { illustrations, configRows } = extractIllustrations(rows);
+  // Wave key/value rows (e.g. "Wave curve") are config, not heading/slides.
+  const waveConfig = readWaveConfig(block);
   let heading = null;
   const slideRows = [];
   rows.forEach((row) => {
-    if (row.querySelector('picture')) slideRows.push(row);
-    else if (!heading) heading = row;
+    if (configRows.has(row)) return;
+    if (row.querySelector('picture')) { slideRows.push(row); return; }
+    const key = row.children[0]?.textContent.trim().toLowerCase() || '';
+    if (key.startsWith('wave ')) return;
+    if (!heading) heading = row;
   });
 
   const built = slideRows.map((row, i) => buildSlide(row, uid, i));
@@ -142,18 +194,21 @@ export default function decorate(block) {
   block.setAttribute('role', 'region');
   block.setAttribute('aria-roledescription', 'carousel');
 
-  // ----- Decorative curve header (Figma 5168:208537) -----
-  // Full-bleed white band; wave shape via CSS mask on ::after; tree on right.
-  const header = document.createElement('div');
-  header.className = 'stories-testimonials-header';
-  header.setAttribute('aria-hidden', 'true');
-  const headerInner = document.createElement('div');
-  headerInner.className = 'stories-testimonials-header-inner';
-  const graphic = document.createElement('span');
-  graphic.className = 'stories-testimonials-header-graphic';
-  headerInner.append(graphic);
-  header.append(headerInner);
-  block.append(header);
+  // ----- Decorative curve header via the shared wave util (Figma 5168:208537) -----
+  // Default to the tree on the right when nothing was authored
+  if (!illustrations.length) {
+    const tree = document.createElement('img');
+    tree.src = `${window.hlx.codeBasePath}/icons/stories-tree.svg`;
+    tree.setAttribute('loading', 'lazy');
+    illustrations.push({ el: tree, alt: '', side: 'right' });
+  }
+  // Curve direction is authorable via a "Wave curve" row (peak-left | peak-right);
+  // defaults to peak-left. Position stays top for this block.
+  decorateWave(block, {
+    position: 'top',
+    curve: waveConfig.curve || 'peak-left',
+    illustrations,
+  });
 
   // ----- Coverflow viewport -----
   const viewport = document.createElement('div');
@@ -174,6 +229,7 @@ export default function decorate(block) {
   // Infinite loop is opt-in via the "infinite-loop" block variant (class).
   // Default: a finite coverflow with arrows disabling at the first/last slide.
   const loop = count > 1 && block.classList.contains('infinite-loop');
+  const shouldAutoplay = count > 1 && block.classList.contains('autoplay');
 
   // Shared dot pager + prev/next arrows. loop makes the dot taper ring-aware to
   // match the infinite coverflow.
@@ -189,6 +245,13 @@ export default function decorate(block) {
     onSelect: (i) => goTo(i),
     onPrev: () => goTo(active - 1),
     onNext: () => goTo(active + 1),
+    // Autoplay — opt-in via the "autoplay" variant; wraps to slide 0 at the end
+    // even when finite, and pauses on hover/keyboard focus (handled by the util).
+    autoplay: shouldAutoplay ? {
+      root: block,
+      interval: 6000,
+      onTick: () => goTo(loop || active < count - 1 ? active + 1 : 0),
+    } : undefined,
   });
   viewport.append(controls.prev, controls.next);
 

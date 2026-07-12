@@ -2,30 +2,34 @@
 
 ## Overview
 
-Full-width hero banner typically used at the top of a page. Supports background images, heading text, body copy, and CTA buttons authored via the CMS.
+Full-bleed promotional hero for product list pages (PLP). A background image spans the
+viewport width with an optional left-aligned text overlay (Figma node 2967:68941).
+Any legibility gradient is baked into the authored image — not applied in CSS.
 
-## Authored Structure
+## Authoring
 
-| Content |
+| hero |
 |---|
-| Image (background) |
-| Heading, body text, links/buttons |
+| ![](background.jpg) |
+| # Heading |
+| Body copy paragraph. |
+| [Shop now](/shop) |
 
-## Behaviour
+- **Image** — first `<picture>` in the block.
+- **Text** — heading, body, and optional link (styled by global `decorateButtons`).
 
-- First `<picture>` in the block is used as the hero background image
-- Remaining content (headings, paragraphs, links) is rendered as overlay text
-- Links are automatically decorated as buttons by `scripts.js`
+Decoration produces two wrappers: `.hero-image` and `.hero-text`.
 
-## CSS Classes
+### DA / Universal Editor
 
-| Class | Description |
+Defined in `blocks/hero/_hero.json`. Run `npm run build:json` after changes.
+
+## Responsive layout
+
+| Breakpoint | Aspect ratio |
 |---|---|
-| `.hero` | Root block element |
-| `.hero-content` | Text/CTA overlay container |
+| Mobile (default) | 3:2 |
+| Tablet (768px+) | 3:2 |
+| Desktop (1280px+) | 4:1 |
 
-## Responsive
-
-- Mobile: stacked layout, image above content
-- Tablet (`768px`+): side-by-side or full overlay depending on styles
-- Desktop (`1280px`+): full-width with max content width
+Place the hero in a section with `data-margin="hero"` for zero vertical margin.

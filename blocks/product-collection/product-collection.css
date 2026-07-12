@@ -1,0 +1,502 @@
+/* Section-level background — transparent by default. Authors set any CSS color
+   via the block's `bgColor` config, applied as an inline style in JS. */
+.product-collection-section {
+  padding-block: var(--block-padding-block);
+}
+
+/* Block-level tokens — no global equivalent exists for these arrow dimensions */
+.product-collection {
+  --pc-arrow-size: 40px;
+  --pc-arrow-icon-size: 20px;
+  --pc-arrow-block-start: 36%;
+}
+
+/* Section heading authored above the block */
+.product-collection-section > :is(h1, h2, h3, h4) {
+  margin: 0;
+  padding-inline: var(--grid-1-margins);
+  text-align: center;
+}
+
+
+/* Optional author-selected center alignment (headingAlign: center).
+   !important-free override that wins at any breakpoint via specificity. */
+.product-collection > .product-collection-heading-center,
+.product-collection.has-tabs .product-collection-header > .product-collection-heading-center {
+  text-align: center;
+}
+
+/* Container — vertical padding only; horizontal is owned by the section wrapper */
+.product-collection .product-collection-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+  padding-block: var(--spacing-medium) var(--spacing-xxbig);
+}
+
+/* Viewport wrapper — positioning context for arrows so they centre on the card row */
+.product-collection .product-collection-viewport-wrapper {
+  position: relative;
+}
+
+/* Viewport */
+.product-collection .product-collection-viewport {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.product-collection .product-collection-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+/* Track */
+.product-collection .product-collection-track {
+  display: flex;
+  gap: var(--spacing-xsmall);
+}
+
+.product-collection .product-collection-track > .commerce-product-card {
+  flex: 0 0 calc((100% - var(--spacing-xsmall)) / 2);
+  scroll-snap-align: start;
+}
+
+/* Smooth content swap — fade in whatever enters the track (shimmer, then real
+   cards, or the empty message) so tab switches transition gently. */
+@keyframes product-collection-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.product-collection .product-collection-track > * {
+  animation: product-collection-fade-in var(--transition-base);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-collection .product-collection-track > * {
+    animation: none;
+  }
+}
+
+/* Arrows — desktop only */
+.product-collection .product-collection-arrow {
+  display: none;
+}
+
+/* Dots — mobile and tablet only; JS never creates the dots nav for ≤ 2 cards.
+   createCarouselControls wraps dots in <nav> > <ol> > <li> > <button> */
+.product-collection .product-collection-dots {
+  display: flex;
+  justify-content: center;
+}
+
+.product-collection .product-collection-dots ol {
+  display: flex;
+  gap: var(--spacing-xxsmall);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.product-collection .product-collection-dot {
+  width: var(--carousel-dot-size);
+  height: var(--carousel-dot-size);
+  padding: 0;
+  background: var(--color-neutral-300);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-base),
+    width var(--transition-fast),
+    height var(--transition-fast);
+}
+
+.product-collection .product-collection-dot.is-active {
+  width: var(--carousel-dot-size-active);
+  height: var(--carousel-dot-size-active);
+  background: var(--color-gs-forest);
+}
+
+/* ===== Skeleton (loading shimmer) — mirrors the product-card footprint ===== */
+.product-collection .product-collection-skeleton {
+  display: flex;
+  flex: 0 0 calc((100% - var(--spacing-xsmall)) / 2);
+  flex-direction: column;
+  gap: var(--spacing-xsmall);
+}
+
+.product-collection .product-collection-skeleton-media {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-md);
+}
+
+.product-collection .product-collection-skeleton-line {
+  height: var(--spacing-small);
+  border-radius: var(--radius-xs);
+}
+
+.product-collection .product-collection-skeleton-line--short {
+  width: 60%;
+}
+
+/* ===== Empty state ===== */
+.product-collection .product-collection-empty {
+  margin: 0;
+  padding: var(--spacing-big) var(--grid-1-margins);
+  width: 100%;
+  text-align: center;
+  color: var(--color-neutral-700);
+  font: var(--type-body-1-default-font);
+}
+
+/* ===== CTA link ===== */
+.product-collection .product-collection-cta {
+  display: flex;
+  justify-content: center;
+  padding-block-end: var(--spacing-xxbig);
+}
+
+.product-collection .product-collection-cta:empty {
+  display: none;
+}
+
+/* ===== Wave decoration ===== */
+
+/* --wave-color: CSS.supports() rejects var() values in some browsers, so we
+   set it here instead of relying on the JS buildWave() inline-style path.
+   --wave-flip-y: 1 cancels the .wave--bottom vertical flip — without this,
+   the white fill sits at the TOP of the wave div instead of the BOTTOM, which
+   creates section-background leaking below the white curve. */
+.product-collection-section .wave {
+  --wave-color: var(--color-neutral-50);
+  --wave-flip-y: 1;
+
+  max-width: none;
+  padding: 0;
+  margin-block-end: calc(-1 * var(--block-padding-block));
+}
+
+/* ===== Multi-tab variation ===== */
+
+.product-collection.has-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+}
+
+/* Zero out the base container's block padding — flex gap on .has-tabs provides spacing */
+.product-collection.has-tabs .product-collection-container {
+  padding-block: 0;
+}
+
+/* Header: heading (left) + tab bar (right) on desktop; stacks vertically on mobile */
+.product-collection.has-tabs .product-collection-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+  align-items: center;
+  padding-inline: var(--grid-1-margins);
+}
+
+/* Heading pulled into header from .default-content-wrapper — reset its section-level styles */
+.product-collection.has-tabs .product-collection-header > :is(h1, h2, h3, h4) {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+/* Tab bar container */
+.product-collection .product-collection-tabs {
+  display: flex;
+  flex-shrink: 0;
+  padding: var(--spacing-xxsmall);
+  background: var(--color-gs-tab-surface);
+  border: var(--shape-border-width-1) solid var(--color-gs-tab-border);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.product-collection .product-collection-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+/* Tab button */
+.product-collection .product-collection-tab {
+  padding: var(--spacing-xsmall-plus) var(--spacing-small);
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-neutral-800);
+  font: var(--type-details-caption-1-font);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+.product-collection .product-collection-tab.is-active {
+  background: var(--color-gs-forest);
+  color: var(--color-neutral-50);
+}
+
+/* ===== Fragment panel — base styles ===== */
+
+/* Shown at full width on mobile and tablet (stacked above the carousel).
+   Desktop grid (1280px) positions it as the left column alongside the carousel. */
+.product-collection .product-collection-fragment {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.product-collection .product-collection-fragment .section {
+  padding: 0;
+  margin: 0;
+}
+
+.product-collection .product-collection-fragment img,
+.product-collection .product-collection-fragment picture {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* has-tabs + fragment: visual order = heading → fragment → cards → CTA at all breakpoints.
+   DOM order has fragment prepended first; CSS order corrects this for the flex-column layout
+   (mobile/tablet) and also ensures correct auto-row placement within the desktop grid column. */
+.product-collection.has-tabs.has-fragment .product-collection-header { order: 1; }
+.product-collection.has-tabs.has-fragment .product-collection-fragment { order: 2; }
+.product-collection.has-tabs.has-fragment .product-collection-container { order: 3; }
+.product-collection.has-tabs.has-fragment .product-collection-cta { order: 4; }
+
+/* ===== Tablet (768px) ===== */
+@media (min-width: 768px) {
+  .product-collection .product-collection-track {
+    gap: var(--spacing-medium);
+  }
+
+  .product-collection .product-collection-track > .commerce-product-card,
+  .product-collection .product-collection-skeleton {
+    flex-basis: calc((100% - 3 * var(--spacing-medium)) / 4);
+  }
+
+  /* Hide dots when ≤ 4 cards */
+  .product-collection .product-collection-container:is([data-count="1"], [data-count="2"], [data-count="3"], [data-count="4"]) .product-collection-dots {
+    display: none;
+  }
+}
+
+/* ===== Desktop (1280px) ===== */
+@media (min-width: 1280px) {
+  .product-collection-section > :is(h1, h2, h3, h4) {
+    padding-inline: var(--grid-3-margins);
+  }
+
+  .product-collection .product-collection-container {
+    padding-block-end: var(--spacing-medium);
+  }
+
+  /* Default: 4 cards visible; overridden to 3 when fragment panel is present */
+  .product-collection .product-collection-track > .commerce-product-card {
+    flex-basis: calc((100% - 3 * var(--spacing-medium)) / 4);
+  }
+
+  /* Arrows visible on desktop */
+  .product-collection .product-collection-arrow {
+    position: absolute;
+    inset-block-start: var(--pc-arrow-block-start);
+    z-index: var(--z-raised);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--pc-arrow-size);
+    height: var(--pc-arrow-size);
+    padding: 0;
+    background: var(--color-gs-green-surface);
+    border: var(--shape-border-width-1) solid var(--color-gs-green-hover-surface);
+    border-radius: var(--radius-full);
+    color: var(--color-gs-forest);
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition:
+      background-color var(--transition-base),
+      border-color var(--transition-base),
+      color var(--transition-base),
+      opacity var(--transition-base);
+  }
+
+  .product-collection .product-collection-arrow:hover,
+  .product-collection .product-collection-arrow:focus-visible {
+    background: var(--btn-primary-bg);
+    border-color: var(--btn-primary-bg);
+    color: var(--color-neutral-50);
+  }
+
+  /* Icon via mask-image so currentcolor controls the fill */
+  .product-collection .product-collection-arrow::after {
+    content: '';
+    display: block;
+    width: var(--pc-arrow-icon-size);
+    height: var(--pc-arrow-icon-size);
+    background-color: currentcolor;
+    mask: url('/icons/chevron-right.svg') center / contain no-repeat;
+  }
+
+  .product-collection .product-collection-arrow-prev::after {
+    mask: url('/icons/chevron-left.svg') center / contain no-repeat;
+  }
+
+  /* Negative inset pulls arrows out of the viewport wrapper and into the container padding.
+     Value = -(--grid-3-margins - --spacing-xsmall) = -(56px - 8px) = -48px.
+     This centres each arrow in its 56px padding gutter with an 8px gap from the cards. */
+  .product-collection .product-collection-arrow-prev {
+    inset-inline-start: calc(-1 * (var(--grid-3-margins) - var(--spacing-xsmall)));
+  }
+
+  .product-collection .product-collection-arrow-next {
+    inset-inline-end: calc(-1 * (var(--grid-3-margins) - var(--spacing-xsmall)));
+  }
+
+  .product-collection .product-collection-arrow[disabled] {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Hide arrows when all 4 cards fit on screen (default: 4 per row) */
+  .product-collection .product-collection-container:is([data-count="1"], [data-count="2"], [data-count="3"], [data-count="4"]) .product-collection-arrow {
+    display: none;
+  }
+
+  /* With fragment: 3 cards visible — show arrows for 4+ products */
+  .product-collection.has-fragment .product-collection-container[data-count="4"] .product-collection-arrow {
+    display: flex;
+  }
+
+  /* Dots always hidden on desktop */
+  .product-collection .product-collection-dots {
+    display: none;
+  }
+
+  /* Multi-tab */
+  .product-collection.has-tabs {
+    gap: var(--spacing-big);
+  }
+
+  .product-collection.has-tabs .product-collection-header {
+    flex-direction: row;
+    gap: var(--spacing-big);
+    padding-inline: var(--grid-3-margins);
+  }
+
+  .product-collection.has-tabs .product-collection-header > :is(h1, h2, h3, h4) {
+    flex: 1 0 0;
+    text-align: left;
+  }
+
+  .product-collection .product-collection-tabs {
+    padding: var(--spacing-xsmall);
+  }
+
+  .product-collection .product-collection-tab {
+    border-radius: var(--radius-md);
+    font: var(--type-body-2-default-font);
+  }
+
+  /* ===== Fragment panel — desktop layout ===== */
+
+  /* 4 equal columns: fragment + 3 product cards each take 25% of the block width.
+     1fr/3fr = 25%/75%; with 3 visible cards each card = 25% of total = 1 fragment width.
+     minmax(0, …fr) forces minimum to 0 so fr fractions distribute freely regardless
+     of card content width; the carousel viewport handles overflow via overflow-x: auto. */
+  .product-collection.has-fragment {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+    column-gap: var(--spacing-medium);
+    align-items: start;
+  }
+
+  /* Fragment panel — left column, stretches to fill its grid area.
+     span 2 covers carousel + optional CTA row in single-cat mode; if no CTA row exists
+     the extra span has no effect. Multi-tab overrides with span 3 below. */
+  .product-collection.has-fragment .product-collection-fragment {
+    display: flex;
+    flex-direction: column;
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-self: stretch;
+  }
+
+  /* Make the section and its wrapper fill the full fragment column height so the
+     cover image stretches to cover rather than stopping at its natural size. */
+  .product-collection.has-fragment .product-collection-fragment .section {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .product-collection.has-fragment .product-collection-fragment .section > div {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* Multi-tab with fragment: fragment occupies row 2 only (header is row 1, CTA is row 3) */
+  .product-collection.has-tabs.has-fragment .product-collection-fragment {
+    grid-row: 2;
+  }
+
+  /* All carousel-side children go in right column */
+  .product-collection.has-fragment .product-collection-header,
+  .product-collection.has-fragment .product-collection-container,
+  .product-collection.has-fragment .product-collection-cta {
+    grid-column: 2;
+    padding: 0;
+  }
+
+  /* 3 cards visible in the 70% carousel panel */
+  .product-collection.has-fragment .product-collection-track > .commerce-product-card {
+    flex-basis: calc((100% - 2 * var(--spacing-medium)) / 3);
+  }
+
+  /* Arrows sit within the carousel panel using padding on viewport-wrapper as a gutter */
+  .product-collection.has-fragment .product-collection-viewport-wrapper {
+    padding-inline: calc(var(--pc-arrow-size) + var(--spacing-xxsmall));
+  }
+
+  .product-collection.has-fragment .product-collection-arrow-prev {
+    inset-inline-start: 0;
+  }
+
+  .product-collection.has-fragment .product-collection-arrow-next {
+    inset-inline-end: 0;
+  }
+
+  /* ===== has-tabs + fragment: 3-row desktop layout ===== */
+
+  /* 20% / 80% column split — fragment narrower than in single-cat (was 1fr/3fr) */
+  .product-collection.has-tabs.has-fragment {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 4fr);
+  }
+
+  /* Row 1: heading + tab bar span full width */
+  .product-collection.has-tabs.has-fragment .product-collection-header {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  /* Row 2: carousel right column */
+  .product-collection.has-tabs.has-fragment .product-collection-container {
+    grid-row: 2;
+  }
+
+  /* Row 3: CTA spans full width */
+  .product-collection.has-tabs.has-fragment .product-collection-cta {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+}

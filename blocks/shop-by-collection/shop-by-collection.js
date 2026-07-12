@@ -8,8 +8,14 @@
  *
  * Behaviour: prev/next arrows scroll the track by one card; dot indicators map
  * to card positions; the active dot and arrow disabled-states stay in sync with
- * the scroll position. No autoplay. Dots + arrows come from the shared
- * carousel-controls util; this block owns the scroll engine.
+ * the scroll position. Dots + arrows come from the shared carousel-controls util;
+ * this block owns the scroll engine.
+ *
+ * Variants (opt-in via block class):
+ *   infinite-loop — seamless wrap using cloned card sets
+ *   autoplay      — advances one card every 6 s; pauses on hover and keyboard
+ *                   focus; respects prefers-reduced-motion; wraps to card 0 on
+ *                   non-infinite carousels
  */
 import createCarouselControls from '../../scripts/carousel-controls.js';
 
@@ -30,6 +36,10 @@ function buildCard(row) {
     media.className = 'shop-by-collection-media';
     const pic = imageCell.querySelector('picture');
     if (pic) media.append(pic);
+    const scrim = document.createElement('div');
+    scrim.className = 'shop-by-collection-scrim';
+    scrim.setAttribute('aria-hidden', 'true');
+    media.append(scrim);
     card.append(media);
   }
 
@@ -69,6 +79,20 @@ export default function decorate(block) {
   const uid = `shop-by-collection-${carouselId}`;
 
   const rows = [...block.children];
+
+  // Optional block-level heading — a row with a heading but no card media/link.
+  // Rendered above the carousel; falls back to a section heading authored above
+  // the block when absent.
+  const headingRow = rows.find((row) => !row.querySelector('picture, a[href]')
+    && row.querySelector('h1, h2, h3, h4, h5, h6'));
+  let heading = null;
+  if (headingRow) {
+    const authored = headingRow.querySelector('h1, h2, h3, h4, h5, h6');
+    heading = document.createElement(authored.tagName.toLowerCase());
+    heading.className = 'shop-by-collection-title-heading';
+    heading.textContent = authored.textContent.trim();
+  }
+
   const cards = rows
     .filter((row) => row.querySelector('picture, a[href]'))
     .map((row) => buildCard(row));
@@ -76,10 +100,11 @@ export default function decorate(block) {
   block.textContent = '';
   block.setAttribute('role', 'region');
   block.setAttribute('aria-roledescription', 'carousel');
+  if (heading) block.append(heading);
 
-  // Infinite loop is opt-in via the "infinite-loop" block variant (class).
-  // Default: a finite scroll track with arrows disabling at the ends.
+  // Variants are opt-in via block classes (set by the author in DA).
   const loop = cards.length > 1 && block.classList.contains('infinite-loop');
+  const shouldAutoplay = cards.length > 1 && block.classList.contains('autoplay');
 
   // ----- Track -----
   const viewport = document.createElement('div');
@@ -124,7 +149,11 @@ export default function decorate(block) {
 
   const scrollToCard = (i) => {
     const card = cards[i];
-    if (card) track.scrollTo({ left: pos(card), behavior: 'smooth' });
+    if (!card) return;
+    // In loop mode scroll-snap can overshoot into clone territory and snap there.
+    // Suspend it for programmatic jumps; scrollend restores it.
+    if (loop) track.style.scrollSnapType = 'none';
+    track.scrollTo({ left: pos(card), behavior: 'smooth' });
   };
 
   // Shared dot pager + arrows; this block drives them from scroll position.
@@ -137,14 +166,34 @@ export default function decorate(block) {
     prevLabel: 'Previous collections',
     nextLabel: 'Next collections',
     loop,
-    onSelect: (i) => scrollToCard(i),
+    onSelect: (i) => {
+      controls.setActive(i);
+      scrollToCard(i);
+    },
     onPrev: () => track.scrollBy({ left: -step(), behavior: 'smooth' }),
     onNext: () => track.scrollBy({ left: step(), behavior: 'smooth' }),
+    // Autoplay — opt-in via the "autoplay" variant; scrolls one card and wraps to
+    // card 0 at the end when finite. Hover/focus/reduced-motion handled by the util.
+    autoplay: shouldAutoplay ? {
+      root: block,
+      interval: 6000,
+      onTick: () => {
+        if (loop) {
+          track.scrollBy({ left: step(), behavior: 'smooth' });
+        } else {
+          const maxScroll = track.scrollWidth - track.clientWidth;
+          if (track.scrollLeft >= maxScroll - 1) scrollToCard(0);
+          else track.scrollBy({ left: step(), behavior: 'smooth' });
+        }
+      },
+    } : undefined,
   });
 
   block.append(viewport, controls.prev, controls.next, controls.dotsNav);
 
-  // Seamless wrap when looping: jump a whole set width at the clone boundaries.
+  // Seamless wrap when looping: fires on scrollend so the
+  // instant clone-boundary jump happens after the smooth animation completes,
+  // not mid-scroll where it would cancel the animation prematurely.
   const wrap = () => {
     if (!loop || !setWidth) return;
     if (track.scrollLeft <= leftBound - 1) track.scrollLeft += setWidth;
@@ -152,7 +201,6 @@ export default function decorate(block) {
   };
 
   const sync = () => {
-    wrap();
     if (!loop) {
       const maxScroll = track.scrollWidth - track.clientWidth;
       controls.setArrowsDisabled(track.scrollLeft <= 1, track.scrollLeft >= maxScroll - 1);
@@ -169,8 +217,14 @@ export default function decorate(block) {
     if (media) block.style.setProperty('--sbc-arrow-top', `${Math.round(media.getBoundingClientRect().height / 2)}px`);
   };
 
-  // Keep dots + arrows in sync with the scroll position.
+  // Keep dots + arrows in sync with scroll position.
+  // wrap() fires on scrollend so the instant clone-boundary jump happens after
+  // the smooth animation ends — matching the hero-banner scrollend pattern.
   track.addEventListener('scroll', sync, { passive: true });
+  track.addEventListener('scrollend', () => {
+    if (loop) track.style.scrollSnapType = '';
+    wrap();
+  }, { passive: true });
   window.addEventListener('resize', () => { recalc(); sync(); });
 
   const init = () => {

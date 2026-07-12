@@ -1,0 +1,120 @@
+/* ===== Promo Card (Figma 8873:171432 horizontal / 8904:173014 vertical) =====
+   Pale-peach card: serif "New Arrivals" heading + green "Shop All Collection ›"
+   CTA over a product photo that bleeds into the card corner. Two layouts:
+   horizontal (default, wide) and vertical (.vertical, portrait). */
+
+/* Default (horizontal) — text top-left, photo bleeds into the bottom-right */
+.promo-card .promo-card-card {
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  min-height: 320px;
+  border-radius: var(--radius-lg);
+  background-color: color-mix(in srgb, var(--color-gs-peach) 45%, var(--color-neutral-50));
+}
+
+.promo-card .promo-card-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-medium);
+  max-width: 55%;
+  padding: var(--spacing-big);
+}
+
+/* Figma h2 — Girl Scout Display Light 36/43.2, #2d2e33 */
+.promo-card .promo-card-heading {
+  margin: 0;
+  font: normal normal 300 3.6rem/4.32rem var(--type-display-font-family);
+  letter-spacing: normal;
+  color: var(--color-neutral-800);
+}
+
+/* Preserve the authored line breaks (e.g. "New" / "Arrivals") without paragraph gaps */
+.promo-card .promo-card-heading p {
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+/* Figma CTA — Trefoil Sans Medium 16/19.2, #005640 */
+.promo-card .promo-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xxsmall);
+  font: normal normal 500 1.6rem/1.92rem var(--type-base-font-family);
+  color: var(--color-gs-forest);
+  text-decoration: none;
+}
+
+.promo-card .promo-card-cta::after {
+  content: '›';
+  font-weight: 400;
+}
+
+.promo-card .promo-card-media {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.promo-card .promo-card-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== Stacked variants (Compact = square, Vertical = portrait) — text on top,
+   photo fills the space below. They share the layout; only the height differs. */
+.promo-card.compact .promo-card-card,
+.promo-card.vertical .promo-card-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.promo-card.compact .promo-card-content,
+.promo-card.vertical .promo-card-content {
+  max-width: none;
+}
+
+.promo-card.compact .promo-card-media,
+.promo-card.vertical .promo-card-media {
+  position: relative;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.promo-card.compact .promo-card-card {
+  min-height: 340px;
+}
+
+.promo-card.vertical .promo-card-card {
+  min-height: 420px;
+}
+
+/* ===== Tablet ===== */
+@media (min-width: 768px) {
+  .promo-card .promo-card-content {
+    padding: var(--spacing-xxbig);
+  }
+}
+
+/* ===== Desktop ===== */
+@media (min-width: 1280px) {
+  .promo-card .promo-card-card {
+    min-height: 372px;
+  }
+
+  .promo-card.vertical .promo-card-card {
+    min-height: 420px;
+  }
+}

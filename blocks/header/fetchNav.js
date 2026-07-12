@@ -1,57 +1,83 @@
 import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
+import { CS_FETCH_GRAPHQL } from '../../scripts/commerce.js';
 
 const NAV_CACHE_KEY = 'gs-nav-data';
 const NAV_CACHE_TTL_SEC = 7200;
-export const NAV_MOCK_PATH = '/blocks/header/nav-data.mock.json';
+const DEFAULT_ROOT_CATEGORY_ID = '2';
 
 /**
  * @typedef {Object} NavItem
  * @property {string} label
  * @property {string} href
- * @property {string} [description]
  * @property {NavItem[]} [children]
  */
 
 /**
- * Resolves a configured nav endpoint to an absolute URL.
- * @param {string} endpoint Path or absolute URL from config
- * @returns {string}
+ * @typedef {Object} CategoryView
+ * @property {string} id
+ * @property {string} name
+ * @property {number} position
+ * @property {string} parentId
+ * @property {string} urlPath
  */
-function resolveNavUrl(endpoint) {
-  if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
-    return endpoint;
-  }
-  const path = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
-  return `${window.location.origin}${path}`;
-}
 
 /**
- * Parses a nav API payload into a nav item array.
- * @param {Object} payload JSON response body
+ * Catalog Service category tree used to build the main navigation. The root
+ * category is the menu container (its children are the top-level nav items).
+ */
+const CATEGORIES_QUERY = `query GET_NAV_CATEGORIES($ids: [String!]!) {
+  categories(
+    ids: $ids
+    roles: ["active", "show_in_menu"]
+    subtree: { depth: 3, startLevel: 10 }
+  ) {
+    id
+    name
+    position
+    parentId
+    urlPath
+  }
+}`;
+
+/**
+ * Turns a flat list of categories into the nested nav tree that buildNavMenu
+ * expects. Hierarchy is reconstructed from parentId; siblings are ordered by the
+ * merchandising `position` (the API returns categories in id order, not menu
+ * order). The root category is the container, so its children become the
+ * top-level items. Categories whose parent isn't in the payload are dropped.
+ * @param {CategoryView[]} categories Flat category list from the API
+ * @param {string} rootId Container category id (its children are top-level)
  * @returns {NavItem[]}
  */
-function parseNavPayload(payload) {
-  if (Array.isArray(payload)) return payload;
-  if (Array.isArray(payload?.nav)) return payload.nav;
-  return [];
-}
+function buildNavTree(categories, rootId) {
+  const byId = new Map();
+  categories.forEach((category) => {
+    byId.set(category.id, { ...category, items: [] });
+  });
 
-/**
- * Loads nav JSON from a URL.
- * @param {string} url Absolute nav endpoint URL
- * @returns {Promise<NavItem[]>}
- */
-async function fetchNavJson(url) {
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`Nav fetch failed (${response.status})`);
-  }
-  const payload = await response.json();
-  const nav = parseNavPayload(payload);
-  if (!nav.length) {
-    throw new Error('Nav payload is empty or invalid');
-  }
-  return nav;
+  const roots = [];
+  byId.forEach((node) => {
+    if (node.id === rootId) return;
+    if (node.parentId === rootId) {
+      roots.push(node);
+      return;
+    }
+    const parent = byId.get(node.parentId);
+    if (parent) parent.items.push(node);
+  });
+
+  const byPosition = (a, b) => a.position - b.position;
+  const toNavItem = (node) => {
+    node.items.sort(byPosition);
+    const navItem = { label: node.name, href: `/${node.urlPath}` };
+    if (node.items.length) {
+      navItem.children = node.items.map(toNavItem);
+    }
+    return navItem;
+  };
+
+  roots.sort(byPosition);
+  return roots.map(toNavItem);
 }
 
 /**
@@ -85,30 +111,27 @@ function writeNavCache(nav) {
 }
 
 /**
- * Fetches the main navigation tree from the configured API endpoint.
- * Falls back to the local mock JSON when the remote endpoint fails.
- * Swap `nav-api-endpoint` in config.json when the production API is ready.
+ * Fetches the main navigation tree from the Catalog Service category query and
+ * transforms it into a nested nav tree. Results are cached in sessionStorage.
+ * The root category id can be overridden via the `commerce-root-category-id`
+ * config value (defaults to "2").
  * @returns {Promise<NavItem[]>}
  */
 export async function fetchNav() {
-  const configuredEndpoint = await getConfigValue('nav-api-endpoint');
-  const endpoint = configuredEndpoint || NAV_MOCK_PATH;
-  const primaryUrl = resolveNavUrl(endpoint);
-  const mockUrl = resolveNavUrl(NAV_MOCK_PATH);
-
   const cached = readNavCache();
   if (cached) return cached;
 
-  try {
-    const nav = await fetchNavJson(primaryUrl);
-    writeNavCache(nav);
-    return nav;
-  } catch (error) {
-    if (primaryUrl === mockUrl) throw error;
-    // eslint-disable-next-line no-console
-    console.warn('header: nav API unavailable, using mock data', error);
-    const nav = await fetchNavJson(mockUrl);
-    writeNavCache(nav);
-    return nav;
+  const rootId = (await getConfigValue('commerce-root-category-id')) || DEFAULT_ROOT_CATEGORY_ID;
+  const { data, errors } = await CS_FETCH_GRAPHQL.fetchGraphQl(CATEGORIES_QUERY, {
+    method: 'GET',
+    variables: { ids: [rootId] },
+  });
+
+  if (errors?.length) {
+    throw new Error(`Nav categories query failed: ${errors.map((e) => e.message).join('; ')}`);
   }
+
+  const nav = buildNavTree(data?.categories ?? [], rootId);
+  if (nav.length) writeNavCache(nav);
+  return nav;
 }

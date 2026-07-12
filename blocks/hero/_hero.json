@@ -9,9 +9,11 @@
           "rows": 1,
           "columns": 1,
           "fields": [
-            { "name": "image", "selector": "div>div>picture>img[src]" },
-            { "name": "alt", "selector": "div>div>picture>img[alt]" },
-            { "name": "text", "selector": "div>div>h1" }
+            { "name": "image", "selector": "div>div>p>picture>img[src]" },
+            { "name": "alt", "selector": "div>div>p>picture>img[alt]" },
+            { "name": "heading", "selector": "div>div>h1" },
+            { "name": "body", "selector": "div>div>p:nth-of-type(2)" },
+            { "name": "cta", "selector": "div>div>p>a" }
           ]
         }
       }
@@ -25,22 +27,35 @@
           "component": "reference",
           "valueType": "string",
           "name": "image",
-          "label": "Image",
+          "label": "Background Image",
           "multi": false
         },
         {
           "component": "text",
           "valueType": "string",
           "name": "alt",
-          "label": "Alt",
+          "label": "Background Image Alt",
           "value": ""
         },
         {
           "component": "text",
-          "name": "text",
-          "value": "",
-          "label": "Text",
-          "valueType": "string"
+          "valueType": "string",
+          "name": "heading",
+          "label": "Heading",
+          "value": ""
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "body",
+          "label": "Body",
+          "value": ""
+        },
+        {
+          "component": "aem-content",
+          "valueType": "string",
+          "name": "cta",
+          "label": "CTA Link"
         }
       ]
     }

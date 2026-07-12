@@ -29,7 +29,7 @@ main .section .need-help-wrapper {
   color: var(--color-neutral-900);
 }
 
-/* Link — Trefoil semibold, uppercase, dark-green + underline on mobile */
+
 .need-help a.button.need-help-link {
   display: inline-flex;
   align-items: center;
@@ -51,7 +51,7 @@ main .section .need-help-wrapper {
 
 .need-help a.button.need-help-link:hover,
 .need-help a.button.need-help-link:focus-visible {
-  color: var(--btn-text-secondary-hover);
+  color: var(--color-gs-dark-green);
   text-decoration: underline;
 }
 

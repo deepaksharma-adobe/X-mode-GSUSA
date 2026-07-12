@@ -1,3 +1,23 @@
+import { decorateWave, extractIllustrations, readWaveConfig } from '../../scripts/wave/wave.js';
+
+function isHeadingRow(cells) {
+  const hasHeading = cells.some((cell) => cell.querySelector('h1, h2, h3, h4, h5, h6'));
+  const hasIcon = cells.some((cell) => cell.querySelector('picture, img, .icon'));
+  return hasHeading && !hasIcon;
+}
+
+function buildHeading(row, cells) {
+  const heading = document.createElement('div');
+  heading.classList.add('values-heading');
+  cells.forEach((cell) => {
+    const el = cell.querySelector('h1, h2, h3, h4, h5, h6');
+    if (el) heading.append(el);
+    else heading.append(...cell.childNodes);
+  });
+  row.remove();
+  return heading;
+}
+
 export default async function decorate(block) {
   const rows = [...block.children];
 
@@ -8,19 +28,39 @@ export default async function decorate(block) {
   cardsWrap.classList.add('values-cards');
   grid.append(cardsWrap);
 
-  rows.forEach((row) => {
-    const cells = [...row.children];
-    const [iconCell, textCell] = cells;
+  // Optional authored wave illustrations (rows labelled "Illustration [Left|Right]", any position)
+  const { illustrations, configRows } = extractIllustrations(rows);
+  // Wave key/value rows (e.g. "Wave curve") are config, not cards.
+  const waveConfig = readWaveConfig(block);
 
+  rows.forEach((row) => {
+    if (configRows.has(row)) {
+      row.remove();
+      return;
+    }
+
+    const cells = [...row.children];
+    const key = cells[0]?.textContent.trim().toLowerCase() || '';
+    if (key.startsWith('wave ')) {
+      row.remove();
+      return;
+    }
+
+    if (isHeadingRow(cells)) {
+      grid.insertBefore(buildHeading(row, cells), cardsWrap);
+      return;
+    }
+
+    const [iconCell, textCell] = cells;
     const card = document.createElement('div');
     card.classList.add('values-card');
 
     if (iconCell) {
-      const icon = iconCell.querySelector('picture, img');
+      const icon = iconCell.querySelector('picture, img, .icon');
       if (icon) {
         const figure = document.createElement('div');
         figure.classList.add('values-card-icon');
-        figure.append(icon.closest('picture') || icon);
+        figure.append(icon.closest('picture') || icon.closest('.icon') || icon);
         card.append(figure);
       }
     }
@@ -41,17 +81,23 @@ export default async function decorate(block) {
     row.remove();
   });
 
-  // Decorative wave + trees header (Figma node 5168:208599).
-  // Wave is full-bleed; trees sit inside the centered grid frame.
-  const header = document.createElement('div');
-  header.classList.add('values-header');
-  header.setAttribute('aria-hidden', 'true');
-  const headerInner = document.createElement('div');
-  headerInner.classList.add('values-header-inner');
-  const trees = document.createElement('span');
-  trees.classList.add('values-header-trees');
-  headerInner.append(trees);
-  header.append(headerInner);
+  block.append(grid);
 
-  block.append(header, grid);
+  // Decorative wave header via the shared util — green wave + illustration(s)
+  if (!block.classList.contains('flat')) {
+    if (!illustrations.length) {
+      const trees = document.createElement('img');
+      trees.src = `${window.hlx.codeBasePath}/icons/values-trees.svg`;
+      trees.setAttribute('loading', 'lazy');
+      illustrations.push({ el: trees, alt: '', side: 'right' });
+    }
+
+    // Curve direction is authorable via a "Wave curve" row (peak-left | peak-right);
+    // defaults to peak-right.
+    decorateWave(block, {
+      position: 'top',
+      curve: waveConfig.curve || 'peak-right',
+      illustrations,
+    });
+  }
 }

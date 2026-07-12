@@ -2,22 +2,27 @@
 import { events } from '@dropins/tools/event-bus.js';
 
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
-import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
+import { getConfigValue, getRootPath } from '@dropins/tools/lib/aem/configs.js';
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
-import { fetchPlaceholders, getProductLink, rootLink } from '../../scripts/commerce.js';
+import {
+  fetchPlaceholders, getProductLink, rootLink, decorateLinks,
+} from '../../scripts/commerce.js';
 
 import { setAudience, clearAudience, isLeaderAudience } from '../../scripts/audience.js';
-import { applyApiNavigation, createNavSectionsContainer, layoutMegaMenuRows } from './buildNavMenu.js';
+import { applyApiNavigation, createNavSectionsContainer } from './buildNavMenu.js';
 import { fetchNav } from './fetchNav.js';
-import renderAuthCombine from './renderAuthCombine.js';
-import { renderAuthDropdown } from './renderAuthDropdown.js';
 import renderSellerAssistedBuyingBanner from './renderSellerAssistedBuyingBanner.js';
 
 // Desktop nav layout + hover mega menu (1100px+; mobile header below 1100px)
 const isDesktop = window.matchMedia('(min-width: 1100px)');
 
 const labels = await fetchPlaceholders();
+const {
+  NavToggleEveryone = 'For Everyone',
+  NavToggleLeaders = 'For Leaders',
+  SearchProductsLabel = 'Search Products',
+} = labels.Global ?? {};
 
 const overlay = document.createElement('div');
 overlay.classList.add('overlay');
@@ -230,21 +235,6 @@ subMenuHeader.innerHTML = '<h5 class="back-link">All Categories</h5><hr />';
 const OFFER_DISMISS_KEY = 'gs-header-offer-dismissed';
 
 /**
- * Re-measures open mega menu columns and inserts row dividers after layout.
- * @param {Element|null} navSection Top-level nav item with an open submenu
- * @param {boolean} [immediate=false] Run layout synchronously (menu switch)
- */
-function refreshMegaMenuLayout(navSection, immediate = false) {
-  if (!navSection || !isDesktop.matches) return;
-  const submenu = navSection.querySelector(':scope .submenu-wrapper > ul');
-  if (immediate) {
-    layoutMegaMenuRows(submenu);
-    return;
-  }
-  requestAnimationFrame(() => layoutMegaMenuRows(submenu));
-}
-
-/**
  * Closes the desktop mega menu and restores open/close transitions.
  * @param {Element|null} navSections Nav menu section container
  */
@@ -275,7 +265,6 @@ function openDesktopMegaMenu(navSections, navSection) {
     });
 
   overlay.classList.add('show');
-  refreshMegaMenuLayout(navSection, isSwitch);
 }
 
 /**
@@ -296,12 +285,27 @@ function hasMainNavList(section) {
 }
 
 /**
+ * True when a link targets the site home for the active locale root (e.g. / or /en/).
+ * @param {string} pathname URL pathname
+ * @returns {boolean}
+ */
+function isHomePath(pathname) {
+  const root = getRootPath().replace(/\/$/, '');
+  const normalized = pathname.replace(/\/$/, '') || '/';
+  if (!root || root === '/') {
+    return normalized === '/';
+  }
+  return normalized === root;
+}
+
+/**
  * Promo / offer bar: prose plus CTA links, not the main nav or lone home logo.
  * @param {Element} section Nav fragment section
  * @returns {boolean}
  */
 function isOfferSection(section) {
   if (hasMainNavList(section)) return false;
+  if (isBrandSection(section)) return false;
   const wrapper = sectionContent(section);
   if (wrapper.querySelector('.offer-banner')) return true;
   const links = [...wrapper.querySelectorAll('a')];
@@ -309,7 +313,8 @@ function isOfferSection(section) {
   if (!paragraphs.length || !links.length) return false;
   if (links.length === 1) {
     try {
-      return new URL(links[0].href, window.location.origin).pathname !== '/';
+      const { pathname } = new URL(links[0].href, window.location.origin);
+      return !isHomePath(pathname);
     } catch {
       return true;
     }
@@ -329,7 +334,8 @@ function isBrandSection(section) {
   const links = [...wrapper.querySelectorAll('a')];
   if (links.length !== 1) return false;
   try {
-    return new URL(links[0].href, window.location.origin).pathname === '/';
+    const { pathname } = new URL(links[0].href, window.location.origin);
+    return isHomePath(pathname);
   } catch {
     return false;
   }
@@ -556,13 +562,13 @@ function buildAudienceToggle() {
   const isLeader = isLeaderAudience() || window.location.pathname.startsWith(leadersPath);
   const tabs = [
     {
-      label: 'For Everyone',
+      label: NavToggleEveryone,
       href: rootLink('/'),
       active: !isLeader,
       onSelect: () => clearAudience(),
     },
     {
-      label: 'For Leaders',
+      label: NavToggleLeaders,
       href: leadersPath,
       active: isLeader,
       onSelect: () => setAudience('leader'),
@@ -709,6 +715,35 @@ function setupSubmenu(navSection) {
 }
 
 /**
+ * Loads (once) and injects the promo fragment mapped to this menu into its
+ * mega-menu panel. The menu's path (data-nav-path) is looked up in the nav
+ * placeholder sheet; the fragment is fetched lazily on first hover/focus.
+ * No-op when there's no mapping or no submenu.
+ * @param {Element} navSection Top-level nav `<li>`
+ */
+async function attachNavPromo(navSection) {
+  if (!navSection || navSection.dataset.promoState) return;
+  const menuPath = navSection.dataset.navPath;
+  const wrapper = navSection.querySelector(':scope > .submenu-wrapper');
+  if (!menuPath || !wrapper) return;
+
+  navSection.dataset.promoState = 'loading';
+  const { getNavPromo } = await import('./fetchNavPromos.js');
+  const fragment = await getNavPromo(menuPath);
+  if (!fragment) {
+    navSection.dataset.promoState = 'empty';
+    return;
+  }
+
+  const rail = document.createElement('div');
+  rail.className = 'nav-promo';
+  [...fragment.childNodes].forEach((node) => rail.append(node.cloneNode(true)));
+  wrapper.append(rail);
+  navSection.classList.add('has-nav-promo');
+  navSection.dataset.promoState = 'done';
+}
+
+/**
  * loads and decorates the header, mainly the nav
  * @param {Element} block The header block element
  */
@@ -723,6 +758,9 @@ export default async function decorate(block) {
   const navMeta = getMetadata('nav');
   const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
   const fragment = await loadFragment(navPath);
+
+  // Localize authored links (e.g. logo / -> /en/) for the active language root.
+  if (fragment) decorateLinks(fragment);
 
   // decorate nav DOM
   block.textContent = '';
@@ -744,16 +782,12 @@ export default async function decorate(block) {
     brandLink.closest('.button-container').className = '';
   }
 
-  // Ensure GS logo SVG is used in the brand link
+  // Brand logo: use the authored image/picture when present (author override);
+  // otherwise fall back to the GS logo SVG shipped with the code.
   if (navBrand) {
     const brandAnchor = navBrand.querySelector('a') || navBrand;
-    const existingImg = brandAnchor.querySelector('img');
-    if (existingImg) {
-      existingImg.src = '/icons/gs-logo.svg';
-      existingImg.alt = 'Girl Scouts';
-      existingImg.width = 145;
-      existingImg.height = 48;
-    } else {
+    const authoredLogo = brandAnchor.querySelector('picture, img');
+    if (!authoredLogo) {
       const logoImg = document.createElement('img');
       logoImg.src = '/icons/gs-logo.svg';
       logoImg.alt = 'Girl Scouts';
@@ -769,29 +803,49 @@ export default async function decorate(block) {
 
   let navSections = nav.querySelector('.nav-sections');
   const navApiEndpoint = await getConfigValue('nav-api-endpoint');
-  if (navApiEndpoint && navApiEndpoint !== 'false') {
-    try {
-      const navItems = await fetchNav();
-      if (!navSections) {
-        navSections = createNavSectionsContainer();
-        const insertBefore = nav.querySelector('.nav-tools');
-        if (insertBefore) {
-          nav.insertBefore(navSections, insertBefore);
-        } else {
-          nav.append(navSections);
-        }
-      }
-      if (navItems.length) {
-        applyApiNavigation(navSections, navItems);
-      }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.warn('header: failed to load API navigation', error);
+  const useApiNav = navApiEndpoint && navApiEndpoint !== 'false';
+
+  // A (possibly empty) nav-sections container must exist up front so the mobile
+  // toggle + layout work before the menu itself is populated.
+  if (useApiNav && !navSections) {
+    navSections = createNavSectionsContainer();
+    const insertBefore = nav.querySelector('.nav-tools');
+    if (insertBefore) {
+      nav.insertBefore(navSections, insertBefore);
+    } else {
+      nav.append(navSections);
     }
   }
 
-  if (navSections) {
+  // Fetch categories, render the menu, and wire interactions — at most once.
+  // Desktop top-level links are always visible, so this runs eagerly; on mobile
+  // the menu is hidden behind the hamburger, so the category fetch is deferred
+  // until the menu is first opened (hamburger tap or resize to desktop).
+  let navBuilt = false;
+  const ensureNavMenu = async () => {
+    if (navBuilt || !navSections) return;
+    navBuilt = true;
+
+    if (useApiNav) {
+      try {
+        const navItems = await fetchNav();
+        if (navItems.length) {
+          applyApiNavigation(navSections, navItems);
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.warn('header: failed to load API navigation', error);
+      }
+    }
+
     let hoverTimer;
+    // Each menu's promo fragment (mapped in placeholders/nav.json by menu path)
+    // is only ever seen on a desktop mega-menu open, so it loads lazily on the
+    // first hover/focus of that specific menu (attachNavPromo runs once per menu).
+    navSections.addEventListener('focusin', (event) => {
+      const drop = event.target.closest('.nav-drop');
+      if (drop) attachNavPromo(drop);
+    });
     navSections
       .querySelectorAll(':scope .default-content-wrapper > ul > li')
       .forEach((navSection) => {
@@ -811,12 +865,27 @@ export default async function decorate(block) {
             hoverTimer = setTimeout(() => closeDesktopMegaMenu(navSections), 200);
             return;
           }
+          attachNavPromo(navSection);
           hoverTimer = setTimeout(() => openDesktopMegaMenu(navSections, navSection), 200);
         });
         navSection.addEventListener('mouseleave', () => {
           clearTimeout(hoverTimer);
         });
       });
+
+    // Auth-combine enhances the authored "Account" submenu link, so it must run
+    // after the menu exists. Lazy-loaded; not awaited (kept off the critical path).
+    import('./renderAuthCombine.js').then(({ default: renderAuthCombine }) => {
+      renderAuthCombine(
+        navSections,
+        () => !isDesktop.matches && toggleMenu(nav, navSections, false),
+      );
+    });
+  };
+
+  // Desktop shows the nav immediately; mobile defers the fetch until first open.
+  if (isDesktop.matches) {
+    await ensureNavMenu();
   }
 
   const navTools = nav.querySelector('.nav-tools');
@@ -825,7 +894,7 @@ export default async function decorate(block) {
   navTools.append(navToolIcons);
 
   /** Search — first in tools row per Figma (2697:345653) */
-  const searchLabel = 'Search Products';
+  const searchLabel = SearchProductsLabel;
   const searchFragment = document.createRange().createContextualFragment(`
   <div class="search-wrapper nav-tools-wrapper">
     <button type="button" class="nav-search-button" aria-label="${searchLabel}">
@@ -867,8 +936,8 @@ export default async function decorate(block) {
     window.location.href = rootLink(wishlistPath);
   });
 
-  /** Mini Cart */
-  const excludeMiniCartFromPaths = ['/checkout'];
+  /** Mini Cart — hidden on checkout for every locale root */
+  const checkoutPath = rootLink('/checkout');
 
   const minicart = document.createRange().createContextualFragment(`
      <div class="minicart-wrapper nav-tools-wrapper">
@@ -883,7 +952,8 @@ export default async function decorate(block) {
 
   const cartButton = navTools.querySelector('.nav-cart-button');
 
-  if (excludeMiniCartFromPaths.includes(window.location.pathname)) {
+  if (window.location.pathname === checkoutPath
+    || window.location.pathname.startsWith(`${checkoutPath}/`)) {
     cartButton.style.display = 'none';
   }
 
@@ -1159,8 +1229,6 @@ export default async function decorate(block) {
     navWrapper.classList.remove('active');
     overlay.classList.remove('show');
     toggleMenu(nav, navSections, false);
-    const expandedSection = navSections?.querySelector(':scope .default-content-wrapper > ul > li[aria-expanded="true"]');
-    refreshMegaMenuLayout(expandedSection);
   });
 
   // hamburger for mobile
@@ -1172,6 +1240,7 @@ export default async function decorate(block) {
   hamburger.addEventListener('click', () => {
     navWrapper.classList.toggle('active');
     overlay.classList.toggle('show');
+    ensureNavMenu();
     toggleMenu(nav, navSections);
   });
   nav.prepend(hamburger);
@@ -1181,15 +1250,23 @@ export default async function decorate(block) {
   // prevent mobile nav behavior on window resize
   toggleMenu(nav, navSections, isDesktop.matches);
   isDesktop.addEventListener('change', () => {
+    if (isDesktop.matches) ensureNavMenu();
     placeAudienceToggle(nav);
     toggleMenu(nav, navSections, isDesktop.matches);
   });
 
-  renderAuthCombine(
-    navSections,
-    () => !isDesktop.matches && toggleMenu(nav, navSections, false),
-  );
-  renderAuthDropdown(navToolIcons);
+  // Account icon pulls in the storefront-auth dropins — defer to browser idle so
+  // heavy module parse/eval stays off the critical header render. It's independent
+  // of the nav menu, so it renders regardless of hamburger/menu state.
+  const renderAccountIcon = async () => {
+    const { renderAuthDropdown } = await import('./renderAuthDropdown.js');
+    renderAuthDropdown(navToolIcons);
+  };
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(renderAccountIcon, { timeout: 2000 });
+  } else {
+    setTimeout(renderAccountIcon, 1);
+  }
 
   /** Company Switcher */
   const isAuthenticated = events.lastPayload('authenticated');

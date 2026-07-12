@@ -1,7 +1,25 @@
+// Read an optional authored illustration override from a labelled row
+// (e.g. "Signpost" | <image>). Returns the image source, or '' when absent.
+function readIllustration(rows, label) {
+  const row = rows.find((r) => r.children[0]?.textContent.trim().toLowerCase() === label);
+  const img = row?.querySelector('img');
+  return img?.getAttribute('src') || '';
+}
+
 export default async function decorate(block) {
   const isArt = block.classList.contains('art');
-  const [row] = block.children;
-  const contentCell = row ? row.querySelector(':scope > div') : null;
+  const rows = [...block.children];
+
+  // Optional authored art overrides; fall back to the default SVGs in CSS.
+  const signpostSrc = readIllustration(rows, 'signpost');
+  const flowerSrc = readIllustration(rows, 'flower');
+
+  // Content is the row that isn't a signpost/flower illustration row.
+  const contentRow = rows.find((r) => {
+    const key = r.children[0]?.textContent.trim().toLowerCase();
+    return key !== 'signpost' && key !== 'flower';
+  });
+  const contentCell = contentRow ? contentRow.querySelector(':scope > div') : null;
 
   block.textContent = '';
 
@@ -12,6 +30,7 @@ export default async function decorate(block) {
     const signpost = document.createElement('span');
     signpost.classList.add('mission-banner-signpost');
     signpost.setAttribute('aria-hidden', 'true');
+    if (signpostSrc) signpost.style.backgroundImage = `url("${signpostSrc}")`;
     card.append(signpost);
   }
 
@@ -49,6 +68,7 @@ export default async function decorate(block) {
     const flower = document.createElement('span');
     flower.classList.add('mission-banner-flower');
     flower.setAttribute('aria-hidden', 'true');
+    if (flowerSrc) flower.style.backgroundImage = `url("${flowerSrc}")`;
     card.append(flower);
   }
 

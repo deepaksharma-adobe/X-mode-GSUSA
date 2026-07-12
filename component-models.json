@@ -59,6 +59,18 @@
           {
             "name": "Highlight",
             "value": "highlight"
+          },
+          {
+            "name": "Stories Blue",
+            "value": "stories-blue"
+          },
+          {
+            "name": "Campaign Sky",
+            "value": "campaign-sky"
+          },
+          {
+            "name": "Teaser Doodle",
+            "value": "teaser-doodle"
           }
         ]
       },
@@ -180,6 +192,52 @@
     ]
   },
   {
+    "id": "campaign-highlights-heading",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "content",
+        "label": "Heading + subheading (two lines)",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "campaign-highlights-tile",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image Alt"
+      },
+      {
+        "component": "richtext",
+        "name": "panel",
+        "label": "Text panel copy",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "campaign-highlights-cta",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "cta",
+        "label": "KNOW MORE link",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "card",
     "fields": [
       {
@@ -226,6 +284,18 @@
         "name": "text",
         "label": "Text",
         "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "category-grid",
+    "fields": [
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "heading",
+        "label": "Heading",
+        "description": "Optional heading shown above the grid. Leave empty to use a section heading authored above the block."
       }
     ]
   },
@@ -436,6 +506,17 @@
     ]
   },
   {
+    "id": "feature-highlight-banner",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "content",
+        "label": "Heading, subtext and CTA link",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "fragment",
     "fields": [
       {
@@ -448,6 +529,42 @@
         "component": "text",
         "name": "fragmentUrlText",
         "label": "Fragment URL Text"
+      }
+    ]
+  },
+  {
+    "id": "guided-navigation",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "label",
+        "label": "Label text",
+        "value": "I am looking for"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "button",
+        "label": "Button text",
+        "value": "Go"
+      }
+    ]
+  },
+  {
+    "id": "guided-navigation-link",
+    "fields": [
+      {
+        "component": "aem-content",
+        "valueType": "string",
+        "name": "link",
+        "label": "Link"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "linkText",
+        "label": "Label (shown in the dropdown)"
       }
     ]
   },
@@ -482,21 +599,87 @@
         "component": "reference",
         "valueType": "string",
         "name": "image",
-        "label": "Image",
+        "label": "Background Image",
         "multi": false
       },
       {
         "component": "text",
         "valueType": "string",
         "name": "alt",
-        "label": "Alt",
+        "label": "Background Image Alt",
         "value": ""
       },
       {
         "component": "text",
-        "name": "text",
-        "value": "",
-        "label": "Text",
+        "valueType": "string",
+        "name": "heading",
+        "label": "Heading",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "body",
+        "label": "Body",
+        "value": ""
+      },
+      {
+        "component": "aem-content",
+        "valueType": "string",
+        "name": "cta",
+        "label": "CTA Link"
+      }
+    ]
+  },
+  {
+    "id": "info-feature-callout-content",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "content",
+        "label": "Content (heading + body + CTA link)",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "info-feature-callout-image",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image Alt"
+      }
+    ]
+  },
+  {
+    "id": "info-feature-callout-feature",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "icon",
+        "label": "Icon",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "iconAlt",
+        "label": "Icon Alt"
+      },
+      {
+        "component": "richtext",
+        "name": "content",
+        "label": "Feature (heading + body)",
         "valueType": "string"
       }
     ]
@@ -509,6 +692,33 @@
         "valueType": "string",
         "name": "content",
         "label": "Content"
+      }
+    ]
+  },
+  {
+    "id": "mission-banner-art",
+    "fields": [
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "content",
+        "label": "Content"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "signpost",
+        "label": "Signpost Illustration",
+        "multi": false,
+        "description": "Optional. Overrides the default signpost SVG."
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "flower",
+        "label": "Flower Illustration",
+        "multi": false,
+        "description": "Optional. Overrides the default corner flower SVG."
       }
     ]
   },
@@ -532,6 +742,97 @@
         "valueType": "string",
         "name": "linkText",
         "label": "Link Text"
+      }
+    ]
+  },
+  {
+    "id": "product-collection",
+    "fields": [
+      {
+        "component": "text",
+        "name": "heading",
+        "label": "Heading"
+      },
+      {
+        "component": "text",
+        "name": "skus",
+        "label": "SKUs (comma separated)"
+      },
+      {
+        "component": "text",
+        "name": "categoryId",
+        "label": "Category ID"
+      },
+      {
+        "component": "number",
+        "name": "maxItems",
+        "label": "Max Items",
+        "value": 4
+      },
+      {
+        "component": "text",
+        "name": "badge",
+        "label": "Badge Label"
+      },
+      {
+        "component": "boolean",
+        "name": "showAddToCart",
+        "label": "Show Add to Cart",
+        "value": true
+      },
+      {
+        "component": "text",
+        "name": "bgColor",
+        "label": "Background Color",
+        "description": "Optional. Any CSS color — a hex code (e.g. #f6f3ec) or a color name (e.g. cornsilk). Applied to the full-width section behind the collection."
+      },
+      {
+        "component": "select",
+        "name": "headingAlign",
+        "label": "Heading Alignment",
+        "description": "Optional. Center-aligns the collection heading.",
+        "options": [
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "Center",
+            "value": "center"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "wave",
+        "label": "Decorative Wave",
+        "description": "Bottom wave transition. On by default; select Off to disable it for this block.",
+        "options": [
+          {
+            "name": "On",
+            "value": ""
+          },
+          {
+            "name": "Off",
+            "value": "off"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "waveCurve",
+        "label": "Wave Curve",
+        "description": "Direction the wave peaks. Defaults to Peak Right.",
+        "options": [
+          {
+            "name": "Peak Right",
+            "value": "peak-right"
+          },
+          {
+            "name": "Peak Left",
+            "value": "peak-left"
+          }
+        ]
       }
     ]
   },
@@ -581,6 +882,294 @@
     ]
   },
   {
+    "id": "promo-card",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image Alt"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "heading",
+        "label": "Heading"
+      },
+      {
+        "component": "aem-content",
+        "valueType": "string",
+        "name": "cta",
+        "label": "CTA Link"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "ctaText",
+        "label": "CTA Text"
+      }
+    ]
+  },
+  {
+    "id": "promo-list-item",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "icon",
+        "label": "Icon",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "iconAlt",
+        "label": "Icon Alt"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "text",
+        "label": "Text"
+      }
+    ]
+  },
+  {
+    "id": "shop-by-collection",
+    "fields": [
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "heading",
+        "label": "Heading",
+        "description": "Optional heading shown above the carousel. Leave empty to use a section heading authored above the block."
+      }
+    ]
+  },
+  {
+    "id": "shop-by-collection-card",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image Alt"
+      },
+      {
+        "component": "richtext",
+        "name": "content",
+        "label": "Content (collection title + link)",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "shop-by-navigator",
+    "fields": [
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "heading",
+        "label": "Heading",
+        "description": "Optional heading shown above the tiles. Leave empty to use a section heading authored above the block."
+      }
+    ]
+  },
+  {
+    "id": "shop-by-navigator-tile",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Photo",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Photo Alt"
+      },
+      {
+        "component": "aem-content",
+        "valueType": "string",
+        "name": "label",
+        "label": "Label Link"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "labelText",
+        "label": "Label Text"
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "decoration",
+        "label": "Background Decoration",
+        "options": [
+          {
+            "name": "Cloud + Flower",
+            "value": "cloud-flower"
+          },
+          {
+            "name": "Triangle + Butterfly",
+            "value": "triangle-butterfly"
+          },
+          {
+            "name": "Circle + Star",
+            "value": "circle-star"
+          },
+          {
+            "name": "Diamond + Mushroom",
+            "value": "diamond-mushroom"
+          },
+          {
+            "name": "Square + Rocket",
+            "value": "square-rocket"
+          },
+          {
+            "name": "Badge + Butterfly",
+            "value": "badge-butterfly"
+          },
+          {
+            "name": "Blob + Bird",
+            "value": "blob-bird"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "stories-testimonials",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "illustrationLeft",
+        "label": "Illustration Left",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "illustrationLeftAlt",
+        "label": "Illustration Left Alt"
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "illustrationLeftAnimate",
+        "label": "Illustration Left Animate",
+        "value": "off",
+        "description": "Continuous float loop for the left illustration (fade-in on scroll is automatic)",
+        "options": [
+          {
+            "name": "On",
+            "value": "on"
+          },
+          {
+            "name": "Off",
+            "value": "off"
+          }
+        ]
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "illustrationRight",
+        "label": "Illustration Right",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "illustrationRightAlt",
+        "label": "Illustration Right Alt"
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "illustrationRightAnimate",
+        "label": "Illustration Right Animate",
+        "value": "off",
+        "description": "Continuous float loop for the right illustration (fade-in on scroll is automatic)",
+        "options": [
+          {
+            "name": "On",
+            "value": "on"
+          },
+          {
+            "name": "Off",
+            "value": "off"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "waveCurve",
+        "label": "Wave Curve",
+        "description": "Direction the decorative wave peaks. Defaults to Peak Left.",
+        "options": [
+          {
+            "name": "Peak Left",
+            "value": "peak-left"
+          },
+          {
+            "name": "Peak Right",
+            "value": "peak-right"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "stories-testimonials-slide",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image Alt"
+      },
+      {
+        "component": "aem-content",
+        "valueType": "string",
+        "name": "video",
+        "label": "Video (optional .mp4 — click-to-play, image is the poster)"
+      },
+      {
+        "component": "richtext",
+        "name": "content",
+        "label": "Quote (two lines) + KNOW MORE link",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "targeted-block",
     "fields": [
       {
@@ -615,6 +1204,90 @@
     ]
   },
   {
+    "id": "values",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "illustrationLeft",
+        "label": "Illustration Left",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "illustrationLeftAlt",
+        "label": "Illustration Left Alt"
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "illustrationLeftAnimate",
+        "label": "Illustration Left Animate",
+        "value": "off",
+        "description": "Continuous float loop for the left illustration (fade-in on scroll is automatic)",
+        "options": [
+          {
+            "name": "On",
+            "value": "on"
+          },
+          {
+            "name": "Off",
+            "value": "off"
+          }
+        ]
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "illustrationRight",
+        "label": "Illustration Right",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "illustrationRightAlt",
+        "label": "Illustration Right Alt"
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "illustrationRightAnimate",
+        "label": "Illustration Right Animate",
+        "value": "off",
+        "description": "Continuous float loop for the right illustration (fade-in on scroll is automatic)",
+        "options": [
+          {
+            "name": "On",
+            "value": "on"
+          },
+          {
+            "name": "Off",
+            "value": "off"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "waveCurve",
+        "label": "Wave Curve",
+        "description": "Direction the decorative wave peaks. Defaults to Peak Right.",
+        "options": [
+          {
+            "name": "Peak Right",
+            "value": "peak-right"
+          },
+          {
+            "name": "Peak Left",
+            "value": "peak-left"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "values-card",
     "fields": [
       {
@@ -635,6 +1308,138 @@
         "name": "text",
         "label": "Text",
         "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "wave-header",
+    "fields": [
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "position",
+        "label": "Position",
+        "value": "top",
+        "options": [
+          {
+            "name": "Top",
+            "value": "top"
+          },
+          {
+            "name": "Bottom",
+            "value": "bottom"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "shape",
+        "label": "Shape",
+        "value": "standard",
+        "options": [
+          {
+            "name": "Standard",
+            "value": "standard"
+          },
+          {
+            "name": "Shallow",
+            "value": "shallow"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "curve",
+        "label": "Curve",
+        "value": "peak-left",
+        "options": [
+          {
+            "name": "Peak left",
+            "value": "peak-left"
+          },
+          {
+            "name": "Peak right",
+            "value": "peak-right"
+          }
+        ]
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "color",
+        "label": "Color",
+        "description": "Any CSS colour — e.g. #00AE43 or red"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "opacity",
+        "label": "Opacity",
+        "description": "Optional — e.g. 6% (applied to the colour above)"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "illustrationLeft",
+        "label": "Illustration left",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "leftAlt",
+        "label": "Left alt"
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "leftAnimate",
+        "label": "Left animate",
+        "value": "off",
+        "description": "Continuous float loop for the left illustration (fade-in on scroll is automatic)",
+        "options": [
+          {
+            "name": "On",
+            "value": "on"
+          },
+          {
+            "name": "Off",
+            "value": "off"
+          }
+        ]
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "illustrationRight",
+        "label": "Illustration right",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "rightAlt",
+        "label": "Right alt"
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "rightAnimate",
+        "label": "Right animate",
+        "value": "off",
+        "description": "Continuous float loop for the right illustration (fade-in on scroll is automatic)",
+        "options": [
+          {
+            "name": "On",
+            "value": "on"
+          },
+          {
+            "name": "Off",
+            "value": "off"
+          }
+        ]
       }
     ]
   }

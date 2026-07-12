@@ -509,11 +509,20 @@ export async function fetchPlaceholders(path) {
       promises.push(getOrCreateFetch(fallback, fallback));
     }
 
+    // Extract the {Key,Value} rows from either a single-sheet response
+    // (`json.data` is the row array) or a multi-sheet one (`json.data.data`
+    // holds the "data" sheet's rows alongside sheets like `dnt`).
+    const getSheetRows = (json) => {
+      if (Array.isArray(json?.data)) return json.data;
+      if (Array.isArray(json?.data?.data)) return json.data.data;
+      return [];
+    };
+
     Promise.all(promises)
       // process json from sources and combine them
       .then((jsons) => {
         // Early return if no data
-        const hasData = jsons.some((json) => json.data?.length > 0);
+        const hasData = jsons.some((json) => getSheetRows(json).length > 0);
         if (!hasData) {
           console.warn(`No placeholder data found for path: ${path}${fallback ? ` and fallback: ${fallback}` : ''}`);
           resolve({});
@@ -523,15 +532,16 @@ export async function fetchPlaceholders(path) {
         // Create data object where later values override earlier ones
         const data = {};
 
-        // Process all JSONs in one pass
+        // Process all JSONs in one pass. Column headers may be authored as
+        // Key/Value or key/value, so accept either casing.
         jsons.forEach((json) => {
-          if (json.data?.length) {
-            json.data.forEach(({ Key, Value }) => {
-              if (Key && Value !== undefined) {
-                data[Key] = Value;
-              }
-            });
-          }
+          getSheetRows(json).forEach((row) => {
+            const key = row.Key ?? row.key;
+            const value = row.Value ?? row.value;
+            if (key && value !== undefined) {
+              data[key] = value;
+            }
+          });
         });
 
         // Early return if no valid data

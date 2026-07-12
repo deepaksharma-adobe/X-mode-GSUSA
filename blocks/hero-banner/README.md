@@ -109,6 +109,13 @@ both work, and the plain URL avoids any link-rewriting issues:
 **Defaults:** autoplay is **on** (6s interval) and dots are **shown**. Autoplay pauses on
 hover/focus and is disabled under reduced-motion. Single-slide banners have no controls.
 
+## Pairing with Feature Highlight Banner
+
+To reproduce the Council Home Page layout — where the green Quick Order band overlaps the
+bottom of the hero — author a `Feature Highlight Banner (overlap)` in the section directly
+below this one. The overlap is handled entirely by that block (it lifts itself over the hero);
+no hero-banner class or change is required here.
+
 ## Behaviour & accessibility
 
 - **Navigate:** edge arrows or dot indicators move between slides; autoplay advances every

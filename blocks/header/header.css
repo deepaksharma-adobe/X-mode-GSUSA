@@ -6,6 +6,62 @@
   --desktop-panel-max-height: 600px;
 }
 
+/* Header-only design tokens — scoped to the block (not global :root). Everything
+   that consumes these lives under <header>. Tokens still consumed by styles.css
+   / lazy-styles.css (nav min-heights, mobile logo, accordion transitions) stay
+   global in styles.css. */
+header {
+  --nav-height: 6.4rem;
+
+  /* Search field */
+  --nav-search-label-font: normal normal 300 1.6rem/2.24rem var(--type-base-font-family);
+  --nav-search-label-letter-spacing: 0;
+  --nav-search-field-width: 211px;
+
+  /* Top band zones + logo (Figma 2697:345653) */
+  --nav-top-zone-leading: 387px;
+  --nav-top-zone-trailing: 407px;
+  --nav-top-logo-width: 145px;
+  --nav-top-logo-height: 48px;
+
+  /* Mega menu (Figma 8860:170399 / 8869 / 8904 / 9008) */
+  --nav-mega-menu-shadow: 0 6px 5px rgb(0 0 0 / 0.1);
+  --nav-mega-menu-column-width: 256px; /* Figma column module (1280/5); content ~175px */
+  --nav-mega-menu-max-width: var(--grid-max-width);
+  --nav-mega-menu-height: 485px; /* Figma fixed panel height (min=max); scrolls when content exceeds it */
+  --nav-mega-menu-max-height: var(--nav-mega-menu-height);
+  --nav-mega-menu-promo-min-width: 324px;
+
+  /* Mega menu typography + rhythm (heading 16/20.8 #023729, link 14/19.6 black;
+     column pad 32/12, edge 56, group gap 8, row pad 4) */
+  --nav-mega-menu-heading-font: normal normal 600 1.6rem/2.08rem var(--type-base-font-family);
+  --nav-mega-menu-heading-letter-spacing: 0;
+  --nav-mega-menu-link-font: normal normal 400 1.4rem/1.96rem var(--type-base-font-family);
+  --nav-mega-menu-link-letter-spacing: 0;
+  --nav-mega-menu-row-padding: var(--spacing-xxsmall);
+  --nav-mega-menu-panel-padding: var(--spacing-big) var(--grid-3-margins);
+  --nav-mega-menu-column-pad: var(--spacing-big) var(--spacing-xsmall-plus);
+  --nav-mega-menu-column-edge: var(--grid-3-margins);
+  --nav-mega-menu-column-gap: var(--spacing-medium);
+  --nav-mega-menu-group-gap: var(--spacing-xsmall);
+  --nav-mega-menu-row-gap: var(--spacing-medium);
+  --nav-mega-menu-row-border-color: var(--btn-light-bg);
+  --nav-mega-menu-column-alt-bg: #f7f7f780;
+  --nav-mega-menu-transition: var(--transition-base);
+  --nav-overlay-transition: var(--transition-base);
+
+  /* Mobile nav + audience toggle typography */
+  --nav-mobile-label-font: normal normal 400 1.4rem/1.96rem var(--type-base-font-family);
+  --nav-mobile-label-letter-spacing: 0;
+  --nav-mobile-accordion-font: normal normal 600 1.8rem/2.52rem var(--type-base-font-family);
+  --nav-mobile-accordion-letter-spacing: 0;
+  --nav-audience-tab-active-font: normal normal 400 1.2rem/1.68rem var(--type-base-font-family);
+  --nav-audience-tab-active-letter-spacing: 0;
+  --nav-audience-tab-inactive-font: normal normal 400 1.4rem/1.96rem var(--type-base-font-family);
+  --nav-audience-tab-inactive-letter-spacing: 0;
+  --nav-mobile-accordion-row-height: 48px;
+}
+
 /* header and nav layout */
 header .nav-wrapper {
   background-color: var(--color-neutral-50);
@@ -455,8 +511,6 @@ header nav .nav-sections ul>li:empty {
 
   header nav .nav-sections .default-content-wrapper>ul>li.nav-drop .submenu-wrapper .accordion-content {
     opacity: 1;
-    min-height: unset;
-    overflow: visible;
   }
 
   /* Mega menu panel — closed by default; opens on hover (Figma 2697:357110) */
@@ -481,7 +535,8 @@ header nav .nav-sections ul>li:empty {
       visibility 0s linear var(--nav-mega-menu-transition),
       max-height 0s linear var(--nav-mega-menu-transition);
     visibility: hidden;
-    width: 100vw;
+    width: 100%;
+    max-width: var(--nav-mega-menu-max-width);
     z-index: var(--z-dropdown);
   }
 
@@ -510,76 +565,73 @@ header nav .nav-sections ul>li:empty {
     display: none;
   }
 
+  /* Columns are equal-width and fill the full panel width (flex: 1 0 0), so the
+     menu covers the full 1280px band whatever the data. Even columns get a
+     subtle tint and edge columns carry the 56px page margin (Figma 8860:170399). */
   header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, var(--nav-mega-menu-column-width));
-    align-items: start;
-    gap: 0 var(--nav-mega-menu-column-gap);
+    display: flex;
+    align-items: stretch;
+    gap: 0;
     max-width: var(--nav-mega-menu-max-width);
-    margin: 0;
-    margin-left: max(var(--grid-3-margins), calc((100vw - var(--nav-mega-menu-max-width)) / 2));
-    margin-right: auto;
+    min-height: var(--nav-mega-menu-height);
+    margin: 0 auto;
     overflow: visible;
-    padding: var(--nav-mega-menu-panel-padding);
+    padding: 0;
     width: 100%;
     box-sizing: border-box;
     list-style: none;
-  }
-
-  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li.mega-menu-row-border {
-    grid-column: 1 / -1;
-    height: 0;
-    list-style: none;
-    margin: var(--nav-mega-menu-row-gap) 0 0;
-    padding: 0;
-    border: 0;
-    border-top: 1px solid var(--nav-mega-menu-row-border-color);
-    pointer-events: none;
   }
 
   header nav .nav-sections .default-content-wrapper>ul>li ul::before {
     display: none;
   }
 
-  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li:not(.mega-menu-row-border) {
+  /* Fixed-width columns: they don't stretch, so few columns stay left-aligned
+     (not covering the whole area) while 5 columns fill the 1280 band exactly.
+     Shrinkable so extra columns still fit (Figma 8904:172970). */
+  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li {
+    display: flex;
+    flex: 0 1 var(--nav-mega-menu-column-width);
+    flex-direction: column;
+    gap: var(--nav-mega-menu-group-gap);
     min-width: 0;
-    max-width: var(--nav-mega-menu-column-width);
-    width: 100%;
+    padding: var(--nav-mega-menu-column-pad);
+    box-sizing: border-box;
   }
 
-  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li:has(img) {
-    grid-column: span 2;
-    max-width: var(--nav-mega-menu-promo-min-width);
-    min-width: var(--nav-mega-menu-promo-min-width);
+  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li:nth-child(even) {
+    background: var(--nav-mega-menu-column-alt-bg);
   }
 
-  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li:has(img) img {
-    display: block;
-    width: 100%;
-    height: auto;
-    max-width: 100%;
-    object-fit: cover;
+  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li:first-child {
+    padding-left: var(--nav-mega-menu-column-edge);
   }
 
-  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li>p,
-  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li>p>a {
+  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li:last-child {
+    padding-right: var(--nav-mega-menu-column-edge);
+  }
+
+  /* Divider only after a group that actually has links; childless headings
+     (e.g. "Flags & Banners") get no border/divider (Figma 9008:171000) */
+  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper .mega-menu-group:has(> ul):not(:last-child) {
+    padding-bottom: var(--nav-mega-menu-group-gap);
+    border-bottom: 1px solid var(--nav-mega-menu-row-border-color);
+  }
+
+  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper .mega-menu-group>p,
+  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper .mega-menu-group>p>a {
     display: block;
     margin: 0;
     padding: var(--nav-mega-menu-row-padding);
     font: var(--nav-mega-menu-heading-font);
     letter-spacing: var(--nav-mega-menu-heading-letter-spacing);
-    color: var(--color-neutral-800);
+    color: var(--color-gs-dark-green);
     text-align: start;
     white-space: normal;
     overflow-wrap: break-word;
   }
 
-  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li>p.mega-menu-heading-spacer {
-    visibility: hidden;
-    pointer-events: none;
-  }
-
-  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li>ul {
+  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper .mega-menu-group>ul {
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -588,14 +640,15 @@ header nav .nav-sections ul>li:empty {
     list-style: none;
   }
 
-  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li>ul>li {
+  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper .mega-menu-group>ul>li {
     min-width: 0;
     max-width: none;
     padding: var(--nav-mega-menu-row-padding);
   }
 
-  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li>ul>li a {
-    display: block;
+  /* inline-block so the hover area + underline hug the link text, not the column */
+  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper .mega-menu-group>ul>li a {
+    display: inline-block;
     font: var(--nav-mega-menu-link-font);
     letter-spacing: var(--nav-mega-menu-link-letter-spacing);
     color: var(--color-neutral-900);
@@ -606,24 +659,20 @@ header nav .nav-sections ul>li:empty {
     overflow-wrap: break-word;
   }
 
-  /* Mega menu leaf links hover — Figma Nav & Footer Links Variant7 (4219:86069) */
-  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li>ul>li:hover,
-  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li>ul>li:has(a:focus-visible) {
-    box-shadow: inset 0 calc(-1 * var(--shape-border-width-3)) 0 var(--color-gs-forest);
-  }
-
-  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li>ul>li:hover a,
-  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li>ul>li:has(a:focus-visible) a {
+  /* Hover/focus underline sits under the link text only (Figma Nav & Footer Links Variant7 4219:86069) */
+  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper .mega-menu-group>ul>li a:hover,
+  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper .mega-menu-group>ul>li a:focus-visible {
     color: var(--color-gs-forest);
+    box-shadow: inset 0 calc(-1 * var(--shape-border-width-1)) 0 var(--color-gs-forest);
     text-decoration: none;
   }
 
-  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li>p a {
+  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper .mega-menu-group>p a {
     transition: color var(--transition-fast);
   }
 
-  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li>p a:hover,
-  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul>li>p a:focus-visible {
+  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper .mega-menu-group>p a:hover,
+  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper .mega-menu-group>p a:focus-visible {
     color: var(--color-gs-forest);
     text-decoration: none;
   }
@@ -639,9 +688,9 @@ header nav .nav-sections ul>li:empty {
     gap: var(--spacing-medium);
   }
 
+  /* Narrower page margin on smaller desktops; columns own the padding now */
   header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true'] .submenu-wrapper>ul {
-    margin-left: var(--grid-2-margins);
-    padding: var(--spacing-big) var(--grid-2-margins);
+    --nav-mega-menu-column-edge: var(--grid-2-margins);
   }
 }
 
@@ -681,7 +730,7 @@ header nav .nav-tool-icons {
 }
 
 header nav .nav-tools-wrapper>button {
-  color: var(--color-neutral-800);
+  color: var(--color-gs-footer-border);
   background: transparent;
   padding: var(--spacing-xxsmall);
   border: unset;
@@ -692,11 +741,20 @@ header nav .nav-tools-wrapper>button {
 }
 
 header nav .nav-tools button.nav-cart-button {
-  background-image: url('../../icons/cart.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: var(--spacing-medium);
   position: relative;
+}
+
+header nav .nav-tools button.nav-cart-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--spacing-medium);
+  height: var(--spacing-medium);
+  mask: url('../../icons/cart.svg') center / contain no-repeat;
+  background-color: var(--color-gs-footer-border);
+  pointer-events: none;
 }
 
 header nav .nav-tools button.nav-cart-button[data-count]::after {
@@ -719,10 +777,8 @@ header nav .nav-tools button.nav-cart-button[data-count]::after {
 }
 
 header nav .nav-tools button.nav-wishlist-button {
-  background-image: url('../../icons/heart.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: var(--spacing-medium);
+  mask: url('../../icons/heart.svg') center / var(--spacing-medium) no-repeat;
+  background-color: var(--color-gs-footer-border);
   position: relative;
 }
 
@@ -738,10 +794,8 @@ header nav .nav-tools button.nav-search-button {
   justify-content: center;
   gap: var(--spacing-xsmall);
   font-size: 0;
-  background-image: url('../../icons/search.svg');
-  background-repeat: no-repeat;
-  background-position: right center;
-  background-size: var(--spacing-medium);
+  mask: url('../../icons/search.svg') center / var(--spacing-medium) no-repeat;
+  background-color: var(--color-gs-footer-border);
 }
 
 header nav .nav-search-row,
@@ -790,7 +844,8 @@ header nav .dropdown-wrapper.nav-tools-wrapper {
     padding: var(--spacing-xsmall-plus) 0 0;
     border: 0;
     border-radius: 0;
-    background-image: none;
+    mask: none;
+    background-color: transparent;
     font-size: inherit;
   }
 
@@ -806,7 +861,8 @@ header nav .dropdown-wrapper.nav-tools-wrapper {
     flex-shrink: 0;
     width: var(--spacing-medium);
     height: var(--spacing-medium);
-    background: url('../../icons/search.svg') center / contain no-repeat;
+    mask: url('../../icons/search.svg') center / contain no-repeat;
+    background-color: var(--color-gs-footer-border);
   }
 
   header nav .nav-search-underline {
@@ -835,10 +891,8 @@ header nav .dropdown-wrapper.nav-tools-wrapper {
   }
 
   header nav .dropdown-wrapper.nav-tools-wrapper .nav-dropdown-button {
-    background-image: url('../../icons/account.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: var(--spacing-medium);
+    mask: url('../../icons/account.svg') center / var(--spacing-medium) no-repeat;
+    background-color: var(--color-gs-footer-border);
     height: var(--spacing-big);
     width: var(--spacing-big);
   }
@@ -1349,8 +1403,8 @@ header .nav-search-input .search_autocomplete .popover-container {
     text-decoration: none;
   }
 
-  header nav .nav-sections ul>li.nav-drop .submenu-wrapper>ul>li>p,
-  header nav .nav-sections ul>li.nav-drop .submenu-wrapper>ul>li>p>a {
+  header nav .nav-sections ul>li.nav-drop .submenu-wrapper .mega-menu-group>p,
+  header nav .nav-sections ul>li.nav-drop .submenu-wrapper .mega-menu-group>p>a {
     margin: 0;
     padding: var(--spacing-xsmall-plus) var(--spacing-xxsmall);
     font: var(--type-body-2-semibold-font);
@@ -1361,7 +1415,7 @@ header .nav-search-input .search_autocomplete .popover-container {
     text-decoration: none;
   }
 
-  header nav .nav-sections ul>li.nav-drop .submenu-wrapper>ul>li>ul {
+  header nav .nav-sections ul>li.nav-drop .submenu-wrapper .mega-menu-group>ul {
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -1370,11 +1424,11 @@ header .nav-search-input .search_autocomplete .popover-container {
     list-style: none;
   }
 
-  header nav .nav-sections ul>li.nav-drop .submenu-wrapper>ul>li>ul>li {
+  header nav .nav-sections ul>li.nav-drop .submenu-wrapper .mega-menu-group>ul>li {
     padding: 0;
   }
 
-  header nav .nav-sections ul>li.nav-drop .submenu-wrapper>ul>li>ul>li a {
+  header nav .nav-sections ul>li.nav-drop .submenu-wrapper .mega-menu-group>ul>li a {
     display: block;
     padding: var(--spacing-xsmall-plus) var(--spacing-xxsmall);
     font: var(--nav-mobile-label-font);
@@ -1809,3 +1863,31 @@ header .header-offer.header-offer-entering {
     animation: none;
   }
 }
+
+/* ===== Promo rail (mega menu) — PLACEMENT ONLY =====
+   Each menu's promo is a standalone fragment (mapped in placeholders/nav.json by
+   menu path) appended into its mega panel as `.nav-promo`. Header CSS only
+   *positions* the slot (columns left, promo right, top-aligned) — the fragment
+   owns all of its own styling (card, image, text) via its own block CSS. The
+   panel is capped at the fixed width and clips overflow, so nothing extends
+   beyond it. Scoped to `.has-nav-promo` so menus without a promo are unaffected. */
+@media (min-width: 1100px) {
+  header nav .nav-sections .default-content-wrapper>ul>li.has-nav-promo[aria-expanded='true'] .submenu-wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--nav-mega-menu-column-gap);
+  }
+
+  header nav .nav-sections .default-content-wrapper>ul>li.has-nav-promo[aria-expanded='true'] .submenu-wrapper>ul {
+    flex: 0 1 auto;
+    margin: 0;
+  }
+
+  header nav .nav-sections .nav-promo {
+    align-self: flex-start;
+    min-width: 0;
+    padding: var(--spacing-big);
+  }
+}
+

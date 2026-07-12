@@ -1,0 +1,123 @@
+.gs-toast-region {
+  position: fixed;
+  top: var(--spacing-medium);
+  left: 50%;
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xsmall);
+  align-items: center;
+  width: max-content;
+  max-width: calc(100% - 2 * var(--spacing-small));
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.gs-toast {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  width: 100%;
+  padding: var(--spacing-medium);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  background-color: var(--color-neutral-50);
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(-0.8rem);
+  transition:
+    opacity var(--transition-base),
+    transform var(--transition-base);
+}
+
+.gs-toast[data-state='open'] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gs-toast[data-state='closing'] {
+  opacity: 0;
+  transform: translateY(-0.8rem);
+}
+
+.gs-toast__icon {
+  flex: 0 0 auto;
+  width: 2.4rem;
+  height: 2.4rem;
+  background-color: var(--color-neutral-800);
+  mask: url("/icons/info.svg") center / contain no-repeat;
+}
+
+.gs-toast__body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.gs-toast__title {
+  margin: 0;
+  font: var(--type-body-1-strong-font);
+  letter-spacing: var(--type-body-1-strong-letter-spacing);
+  color: var(--color-neutral-800);
+}
+
+.gs-toast__description {
+  margin: var(--spacing-xxsmall) 0 0;
+  font: var(--type-body-1-default-font);
+  letter-spacing: var(--type-body-1-default-letter-spacing);
+  color: var(--color-neutral-800);
+}
+
+.gs-toast__close {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--spacing-medium);
+  height: var(--spacing-medium);
+  padding: 0;
+  border: 0;
+  background-color: var(--color-neutral-800);
+  cursor: pointer;
+  mask: url("/icons/close.svg") center / 1.2rem no-repeat;
+}
+
+.gs-toast__close:hover {
+  background-color: var(--color-neutral-900);
+}
+
+.gs-toast__close:focus-visible {
+  outline: 2px solid var(--color-gs-forest);
+  outline-offset: 2px;
+}
+
+/* ===== Success variant — bright lime (GS Star Green) fill with dark text and a
+   dark checkmark, matching the design ===== */
+.gs-toast--success {
+  background-color: var(--color-gs-star);
+}
+
+.gs-toast--success .gs-toast__icon {
+  mask-image: url("/icons/check.svg");
+}
+
+/* ===== Error variant — poppy-red surface ===== */
+.gs-toast--error {
+  background-color: var(--color-alert-200);
+}
+
+.gs-toast--error .gs-toast__icon {
+  background-color: var(--color-alert-500);
+  mask-image: url("/icons/info.svg");
+}
+
+/* ===== Info variant — neutral surface ===== */
+.gs-toast--info .gs-toast__icon {
+  mask-image: url("/icons/info.svg");
+}
+
+@media (min-width: 768px) {
+  .gs-toast-region {
+    width: min(42rem, calc(100% - 2 * var(--spacing-small)));
+  }
+}

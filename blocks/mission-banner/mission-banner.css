@@ -4,6 +4,10 @@ main .section .mission-banner-wrapper {
   max-width: none;
 }
 
+.mission-banner-container {
+  padding-block: var(--block-padding-block);
+}
+
 .mission-banner {
   box-sizing: border-box;
   width: 100%;

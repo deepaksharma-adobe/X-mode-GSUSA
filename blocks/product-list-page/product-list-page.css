@@ -1,35 +1,113 @@
 
+/* Horizontal inset comes from main > .section > div (var(--grid-margin)).
+   Do not add block-level horizontal padding on standard pages. */
+.block.product-list-page {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
 .block.product-list-page .search__wrapper {
     display: grid;
     margin-block: var(--spacing-small);
+    grid-template-columns: auto 1fr;
     grid-template-areas:
-        "result-info"
-        "view-facets"
-        "facets"
-        "product-sort"
-        "product-list"
-        "pagination";
+        "view-facets sort"
+        "results results"
+        "product-list product-list"
+        "load-more load-more";
+    align-items: center;
+    gap: var(--spacing-small);
+}
+
+/* Tan bar behind the Filter + Sort row (Figma) — spans the full row width */
+.block.product-list-page .search__wrapper::before {
+    content: "";
+    grid-column: 1 / -1;
+    grid-row: 1;
+    align-self: stretch;
+    background-color: var(--btn-light-bg-active);
+}
+
+/* Flatten so Filter, result count and sort share the wrapper grid (mobile + tablet) */
+.block.product-list-page .search__main,
+.block.product-list-page .search__toolbar {
+    display: contents;
+}
+
+.block.product-list-page .search__view-facets {
+    grid-area: view-facets;
+    min-height: var(--spacing-xxbig);
+}
+
+/* Sort By — shown on all breakpoints (Figma: Filter left, Sort right) */
+.block.product-list-page .search__product-sort {
+    grid-area: sort;
+    display: flex;
+    justify-content: flex-end;
+    justify-self: end;
+    min-width: 0;
+    margin: 0;
+    margin-inline-end: var(--spacing-medium);
+}
+
+.block.product-list-page .product-discovery-product-list__grid {
+    /* Mobile — 2-up; gaps use global grid gutter token */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--grid-gutter);
+}
+
+@media (768px <= width < 1100px) {
+    /* Tablet — 4-up product grid (Filter+Sort bar layout inherited from base) */
+    .block.product-list-page .product-discovery-product-list__grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1100px) {
+    /* Desktop — facet sidebar + 3-up product grid */
+    .block.product-list-page .product-discovery-product-list__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .block.product-list-page .search__product-sort {
+        display: flex;
+    }
 }
 
 .block.product-list-page .search__result-info {
-    grid-area: result-info;
+    grid-area: results;
     align-self: center;
-    margin-block-end: var(--spacing-small);
+    margin: 0;
+    width: 100%;
+    font: var(--type-body-1-default-font);
+    letter-spacing: var(--type-body-1-default-letter-spacing);
+    color: var(--form-field-text);
 }
 
 .block.product-list-page .search__result-info strong {
     font-weight: 600;
 }
 
-.block.product-list-page .search__view-facets {
-    grid-area: view-facets;
-    margin-block-end: var(--spacing-small);
+/* "Filter by" trigger — cream bar, GS display font, filter icon (Figma) */
+.block.product-list-page .search__view-facets-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--spacing-xsmall);
+    width: auto;
+    position: relative;
+    padding: var(--spacing-small) var(--spacing-medium);
+    border: 0;
+    border-inline-end: 2px solid var( --color-neutral-50);
+    background-color: var(--btn-light-bg-active);
+    color: var(--color-neutral-800);
+    font: normal normal 400 1.6rem/1.92rem var(--type-display-font-family);
+    cursor: pointer;
 }
 
-.block.product-list-page .search__view-facets button {
-    justify-content: start;
-    width: 100%;
-    position: relative;
+.block.product-list-page .search__view-facets-icon {
+    flex-shrink: 0;
 }
 
 .block.product-list-page .search__view-facets button[data-count]::after {
@@ -50,29 +128,566 @@
     width: 1.75em;
 }
 
+/* ===== Facet drawer (mobile / tablet) — Figma 5830:197203, 7424:343484 ===== */
+.block.product-list-page .search__facets-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal);
+    visibility: hidden;
+}
+
+.block.product-list-page .search__facets-drawer[data-open="true"] {
+    visibility: visible;
+}
+
+.block.product-list-page .search__facets-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgb(0 0 0 / 0.5);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.block.product-list-page .search__facets-drawer[data-open="true"] .search__facets-overlay {
+    opacity: 1;
+}
+
+.block.product-list-page .search__facets-panel {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    display: flex;
+    flex-direction: column;
+    width: min(420px, 90vw);
+    max-width: 100%;
+    background-color: var(--color-gs-white, #fff);
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+}
+
+.block.product-list-page .search__facets-drawer[data-open="true"] .search__facets-panel {
+    transform: translateX(0);
+}
+
+.block.product-list-page .search__facets-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    gap: var(--spacing-xsmall);
+    padding: var(--spacing-small) var(--spacing-medium);
+    background-color: var(--btn-light-bg);
+}
+
+.block.product-list-page .search__facets-title {
+    font: normal normal 400 1.6rem/1.92rem var(--type-display-font-family);
+    color: var(--color-gs-forest);
+}
+
+.block.product-list-page .search__facets-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--spacing-medium);
+    height: var(--spacing-medium);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-gs-forest);
+    cursor: pointer;
+}
+
+/* Scrollable facet body — pin selected-filter chips to the top */
 .block.product-list-page .search__facets {
-    grid-area: facets;
-    margin-block-end: var(--spacing-small);
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 0 var(--spacing-medium);
+}
+
+.block.product-list-page .search__facets .product-discovery-facet-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.block.product-list-page .search__facets .product-discovery-facet-list__selected-filters {
+    order: -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xxsmall);
+    align-items: center;
+    padding-block: var(--spacing-small);
+}
+
+.block.product-list-page .search__facets .product-discovery-facet-list__selected-filters:not(:has(button)) {
     display: none;
 }
 
-.block.product-list-page .search__facets--visible {
-    display: block;
+/* "Selected filters" heading (left) — label localized via JS custom property */
+.block.product-list-page .search__facets .product-discovery-facet-list__selected-filters::before {
+    content: var(--plp-selected-filters-label, "Selected filters");
+    order: 1;
+    flex: 1 1 auto;
+    font: normal normal 400 1.6rem/1.92rem var(--type-display-font-family);
 }
 
-.block.product-list-page .search__product-sort {
-    grid-area: product-sort;
-    margin-block-end: var(--spacing-small);
+/* Line break so chips wrap onto their own row below the heading / clear-all */
+.block.product-list-page .search__facets .product-discovery-facet-list__selected-filters::after {
+    content: "";
+    order: 3;
+    flex-basis: 100%;
+    height: 0;
+}
+
+.block.product-list-page .search__facets-footer {
+    flex-shrink: 0;
+    padding: var(--spacing-small) var(--spacing-medium);
+    border-top: 1px solid var(--form-border-filled);
+    background-color: var(--color-gs-white, #fff);
+}
+
+.block.product-list-page .search__facets-apply {
+    width: 100%;
+}
+
+/* ===== Facet visual styling (applies to drawer + desktop sidebar) ===== */
+.block.product-list-page .search__facets .product-discovery-facet-list__facet-options {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Accordion group header — GS display font + chevron toggle (Figma 5168:202031) */
+.block.product-list-page .search__facets .product-discovery-facet__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-xsmall);
+    cursor: pointer;
+    user-select: none;
+    font: normal normal 400 1.6rem/1.92rem var(--type-display-font-family);
+}
+
+.block.product-list-page .search__facets .product-discovery-facet__header::after {
+    content: "";
+    flex-shrink: 0;
+    width: 0.5em;
+    height: 0.5em;
+    border: solid var(--color-neutral-800);
+    border-width: 0 2px 2px 0;
+    transform: rotate(-135deg); /* up chevron when expanded */
+    transition: transform 0.2s ease;
+}
+
+.block.product-list-page .search__facets .product-discovery-facet.is-collapsed .product-discovery-facet__header::after {
+    transform: rotate(45deg); /* down chevron when collapsed */
+}
+
+/* Collapsed group — hide its options (the is-color-facet variant needs equal-or-higher
+   specificity, since the swatch grid also sets display on the bucket) */
+.block.product-list-page .search__facets .product-discovery-facet.is-collapsed .product-discovery-facet__bucket,
+.block.product-list-page .search__facets .product-discovery-facet.is-color-facet.is-collapsed .product-discovery-facet__bucket {
+    display: none;
+}
+
+/* Hide the dropin show-more / show-less buttons — all options are expanded via JS */
+.block.product-list-page .search__facets .product-discovery-facet > .dropin-button {
+    display: none;
+}
+
+/* Facet option count — low-emphasis, spaced after the name (Figma 7650:196932) */
+.block.product-list-page .search__facets .plp-facet-bucket__count {
+    margin-inline-start: var(--spacing-xxsmall);
+    color: var(--color-gs-footer-border);
+    font: var(--type-body-2-default-font);
+}
+
+/* ===== Color facet → swatch grid (Figma) ===== */
+.block.product-list-page .search__facets .product-discovery-facet.is-color-facet {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-small) var(--spacing-xsmall);
+    align-items: start;
+}
+
+.block.product-list-page .search__facets .product-discovery-facet.is-color-facet .product-discovery-facet__header,
+.block.product-list-page .search__facets .product-discovery-facet.is-color-facet > .dropin-button {
+    grid-column: 1 / -1;
+}
+
+.block.product-list-page .search__facets .product-discovery-facet.is-color-facet .product-discovery-facet__bucket {
+    display: flex;
+    justify-content: center;
+}
+
+.block.product-list-page .search__facets .product-discovery-facet.is-color-facet .dropin-checkbox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xxsmall);
+    text-align: center;
+    cursor: pointer;
+}
+
+/* The checkbox box becomes the round colour swatch — Figma: 32px dot, 40px hit area */
+.block.product-list-page .search__facets .product-discovery-facet.is-color-facet .dropin-checkbox__box {
+    width: var(--spacing-big);
+    height: var(--spacing-big);
+    border-radius: var(--radius-full);
+    border: 1px solid color-mix(in srgb, var(--color-gs-khaki) 60%, transparent);
+    background-color: var(--swatch-color, color-mix(in srgb, var(--color-gs-khaki) 25%, #fff));
+}
+
+/* Hide the checkmark inside the swatch */
+.block.product-list-page .search__facets .product-discovery-facet.is-color-facet .dropin-checkbox__box > * {
+    display: none;
+}
+
+/* Selected swatch → forest ring with a gap (Figma) */
+.block.product-list-page .search__facets .product-discovery-facet.is-color-facet .dropin-checkbox__box[aria-checked="true"] {
+    outline: 2px solid var(--color-gs-forest);
+    outline-offset: 3px;
+}
+
+/* Swatch label — name (16px) over count (14px), both body colour */
+.block.product-list-page .search__facets .product-discovery-facet.is-color-facet .plp-facet-bucket__name {
+    display: block;
+    font: var(--type-body-1-default-font);
+    color: var(--color-neutral-800);
+}
+
+.block.product-list-page .search__facets .product-discovery-facet.is-color-facet .plp-facet-bucket__count {
+    display: block;
+    margin: 0;
+    font: var(--type-body-2-default-font);
+    color: var(--color-neutral-800);
+}
+
+/* Checkbox — Figma 7650:196932: 1.4px #a8a8a8 border, 2px radius, white fill */
+.block.product-list-page .search__facets .dropin-checkbox__box {
+    border: var(--form-choice-border-width) solid var(--form-choice-border);
+    border-radius: var(--radius-xxs);
+    background-color: var(--color-gs-white, #fff);
+}
+
+.block.product-list-page .search__facets .dropin-checkbox__box[aria-checked="true"] {
+    background-color: var(--color-gs-forest);
+    border-color: var(--color-gs-forest);
+    color: var(--color-gs-white, #fff);
+}
+
+/* Hover — keep GS colors (dropin defaults swap the box to neutral-800) */
+.block.product-list-page .search__facets .dropin-checkbox__box:hover {
+    border: var(--form-choice-border-width) solid var(--color-gs-forest);
+}
+
+.block.product-list-page .search__facets .dropin-checkbox__box[aria-checked="true"]:hover {
+    border: var(--form-choice-border-width) solid var(--color-gs-forest);
+    background-color: var(--color-gs-forest);
+}
+
+.block.product-list-page .search__facets .dropin-checkbox__box[aria-checked="true"] .dropin-checkbox__checkmark:hover {
+    background-color: var(--color-gs-forest);
+}
+
+/* Selected-filter chips (have an X icon) — cream pill, tan border, forest remove icon */
+.block.product-list-page .search__facets .product-discovery-facet-list__selected-filters .dropin-button:has(svg) {
+    order: 4;
+    gap: var(--spacing-xxsmall);
+    padding-block: var(--spacing-xxsmall);
+    padding-inline: var(--spacing-xsmall);
+    border: 1px solid var(--form-border-filled);
+    border-radius: var(--radius-sm);
+    background-color: var(--btn-light-bg);
+    color: inherit;
+    font: var(--type-body-2-default-font);
+    letter-spacing: var(--type-body-2-default-letter-spacing);
+    text-transform: none;
+}
+
+.block.product-list-page .search__facets .product-discovery-facet-list__selected-filters .dropin-button:has(svg) svg {
+    color: var(--color-gs-forest);
+}
+
+/* Clear all (text-only, no icon) — underlined forest link (Figma "CLEAR ALL"), top-right */
+.block.product-list-page .search__facets .product-discovery-facet-list__selected-filters .dropin-button:not(:has(svg)) {
+    order: 2;
+    align-self: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-gs-forest);
+    font: var(--type-body-2-semibold-font);
+    letter-spacing: var(--type-body-2-semibold-letter-spacing);
+    text-decoration: underline;
+    text-transform: uppercase;
+}
+
+/* Sort By — Figma 2999:53872 (trigger), 3080:53502 (menu options) */
+.block.product-list-page .search__product-sort .dropin-picker {
+    display: inline-grid;
+    grid-template-columns: auto minmax(0, auto);
+    align-items: center;
+    column-gap: var(--spacing-xsmall);
+    max-width: 100%;
+    position: relative;
+    background-color: transparent;
+}
+
+.block.product-list-page .search__product-sort .dropin-picker__floatingLabel {
+    position: static;
+    transform: none;
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+    font: var(--type-body-2-default-font);
+    letter-spacing: var(--type-body-2-default-letter-spacing);
+    color: var(--color-gs-footer-border);
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.block.product-list-page .search__product-sort .dropin-picker__select {
+    grid-column: 2;
+    grid-row: 1;
+    box-sizing: border-box;
+    width: 168px;
+    max-width: 100%;
+    min-height: 32px;
+    height: 40px;
+    margin: 0;
+    padding-block: var(--spacing-xxsmall);
+    padding-inline: var(--spacing-small) calc(var(--spacing-small) + 20px);
+    border: var(--form-field-border-width) solid var(--form-border-filled);
+    border-radius: var(--form-field-radius);
+    background-color: var(--form-field-bg);
+    color: var(--form-field-text);
+    font: var(--type-body-2-default-font);
+    letter-spacing: var(--type-body-2-default-letter-spacing);
+    line-height: 1.4;
+    appearance: none;
+    cursor: pointer;
+}
+
+.block.product-list-page .search__product-sort .dropin-picker__select:hover {
+    border-color: var(--form-border-hover);
+}
+
+.block.product-list-page .search__product-sort .dropin-picker__select:focus,
+.block.product-list-page .search__product-sort .dropin-picker__select:focus-visible {
+    border-color: var(--form-border-focus);
+    outline: none;
+}
+
+.block.product-list-page .search__product-sort .dropin-picker__chevronDown {
+    grid-column: 2;
+    grid-row: 1;
+    place-self: center end;
+    width: 20px;
+    height: 20px;
+    margin-inline-end: var(--spacing-xsmall);
+    pointer-events: none;
+    color: var(--color-neutral-700);
+}
+
+.block.product-list-page .search__product-sort .dropin-picker__option {
+    font: var(--type-body-1-default-font);
+    letter-spacing: var(--type-body-1-default-letter-spacing);
+    color: var(--form-field-text);
+    background-color: var(--form-field-bg);
+}
+
+/* ===== Custom Sort dropdown — Figma menu (native <select> hidden) 3080:53502 ===== */
+.block.product-list-page .search__product-sort .dropin-picker__select,
+.block.product-list-page .search__product-sort .dropin-picker__chevronDown {
+    display: none;
+}
+
+.block.product-list-page .search__product-sort .plp-sort {
+    grid-column: 2;
+    grid-row: 1;
+    position: relative;
+}
+
+.block.product-list-page .search__product-sort .plp-sort__trigger {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-xsmall);
+    width: 168px;
+    max-width: 100%;
+    height: 40px;
+    padding-inline: var(--spacing-small);
+    border: var(--form-field-border-width) solid var(--form-border-filled);
+    border-radius: var(--form-field-radius);
+    background-color: var(--form-field-bg);
+    color: var(--form-field-text);
+    font: var(--type-body-2-default-font);
+    letter-spacing: var(--type-body-2-default-letter-spacing);
+    cursor: pointer;
+}
+
+.block.product-list-page .search__product-sort .plp-sort__trigger:hover {
+    border-color: var(--form-border-hover);
+}
+
+.block.product-list-page .search__product-sort .plp-sort__value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.block.product-list-page .search__product-sort .plp-sort__chevron {
+    flex-shrink: 0;
+    color: var(--color-neutral-700);
+    transition: transform var(--transition-base);
+}
+
+.block.product-list-page .search__product-sort .plp-sort__trigger[aria-expanded="true"] .plp-sort__chevron {
+    transform: rotate(180deg);
+}
+
+/* Fixed positioning (placed via JS) so no ancestor overflow can clip the menu */
+.block.product-list-page .search__product-sort .plp-sort__menu {
+    position: fixed;
+    z-index: var(--z-modal);
+    min-width: 168px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background-color: var(--color-gs-white, #fff);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.block.product-list-page .search__product-sort .plp-sort__menu[hidden] {
+    display: none;
+}
+
+.block.product-list-page .search__product-sort .plp-sort__option {
+    padding: var(--spacing-xsmall) var(--spacing-small);
+    font: var(--type-body-1-default-font);
+    letter-spacing: var(--type-body-1-default-letter-spacing);
+    color: var(--color-neutral-800);
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.block.product-list-page .search__product-sort .plp-sort__option:hover,
+.block.product-list-page .search__product-sort .plp-sort__option:focus-visible {
+    background-color: color-mix(in srgb, var(--color-gs-green) 6%, transparent);
+    outline: none;
+}
+
+.block.product-list-page .search__product-sort .plp-sort__option[aria-selected="true"] {
+    background-color: color-mix(in srgb, var(--color-gs-green) 6%, transparent);
 }
 
 .block.product-list-page .search__product-list {
     grid-area: product-list;
+    min-width: 0;
+    margin: 0;
+}
+
+.block.product-list-page .product-list-page__card-host {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+.block.product-list-page .product-list-page__card-host .commerce-product-card {
+    flex: 1;
+    height: 100%;
+}
+
+/* PLP card — Figma mobile/tablet footer ATC (5168:174792, 6336:121041) */
+.block.product-list-page .commerce-product-card--layout-plp .commerce-product-card__media > .commerce-product-card__actions {
+    display: none;
+}
+
+.block.product-list-page .commerce-product-card--layout-plp .commerce-product-card__actions--footer {
+    position: static;
+    opacity: 1;
+    transform: none;
+    width: 100%;
+    margin-top: auto;
+}
+
+.block.product-list-page .commerce-product-card--layout-plp .commerce-product-card__body {
+    flex: 1;
+    gap: var(--spacing-small);
+}
+
+.block.product-list-page .commerce-product-card--layout-plp .commerce-product-card__content {
+    gap: var(--spacing-xsmall);
+}
+
+.block.product-list-page .commerce-product-card--layout-plp a.commerce-product-card__title {
+    font: var(--type-body-2-semibold-font);
+    letter-spacing: var(--type-body-2-semibold-letter-spacing);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.block.product-list-page .commerce-product-card--layout-plp .commerce-product-card__rating {
+    font-size: var(--btn-font-size-sm);
+}
+
+.block.product-list-page .commerce-product-card--layout-plp .commerce-product-card__star {
+    width: 1em;
+    height: 1em;
+}
+
+.block.product-list-page .commerce-product-card--layout-plp .commerce-product-card__price-current {
+    font: var(--type-body-2-semibold-font);
+    letter-spacing: var(--type-body-2-semibold-letter-spacing);
+}
+
+.block.product-list-page .commerce-product-card--layout-plp .commerce-product-card__price-regular {
+    font: var(--type-details-caption-2-font);
+    letter-spacing: var(--type-details-caption-2-letter-spacing);
+}
+
+.block.product-list-page .commerce-product-card--layout-plp .commerce-product-card__actions--footer .dropin-button {
+    width: 100%;
+    max-width: none;
+    height: var(--btn-height-sm);
+    min-height: var(--btn-height-sm);
+    padding-inline: var(--spacing-small);
+    border-width: 1px;
+}
+
+/* Desktop — hover overlay on media; hide footer ATC */
+@media (min-width: 1100px) {
+    .block.product-list-page .commerce-product-card--layout-plp .commerce-product-card__actions--footer {
+        display: none;
+    }
+
+    .block.product-list-page .commerce-product-card--layout-plp .commerce-product-card__media > .commerce-product-card__actions {
+        display: flex;
+    }
+
+    .block.product-list-page .commerce-product-card--layout-plp .commerce-product-card__body {
+        gap: var(--spacing-xsmall);
+    }
+}
+
+.block.product-list-page .search__load-more {
+    grid-area: load-more;
+    display: flex;
+    justify-content: center;
     margin-block-end: var(--spacing-small);
 }
 
-.block.product-list-page .search__pagination {
-    grid-area: pagination;
-    margin-block-end: var(--spacing-small);
+.block.product-list-page .search__load-more[hidden] {
+    display: none;
 }
 
 .block.product-list-page .product-discovery-product-actions {
@@ -90,11 +705,14 @@
     grid-template-columns: 1fr;
 }
 
+.block.product-list-page.product-list-page--empty .search__toolbar,
 .block.product-list-page.product-list-page--empty .search__result-info,
 .block.product-list-page.product-list-page--empty .search__view-facets,
-.block.product-list-page.product-list-page--empty .search__facets,
+.block.product-list-page.product-list-page--empty .search__facets-drawer,
 .block.product-list-page.product-list-page--empty .search__product-sort,
-.block.product-list-page.product-list-page--empty .search__pagination {
+.block.product-list-page.product-list-page--empty .search__load-more,
+.block.product-list-page.product-list-page--empty .search__wrapper::before,
+.block.product-list-page.product-list-page--empty .search__wrapper::after {
     display: none;
 }
 
@@ -113,27 +731,137 @@
     z-index: 2;
 }
 
-/* Media Queries */
-@media only screen and (min-width: 768px) {
+/* Media Queries — Figma 5168:202005: 296px facets | main content (desktop 1100px+) */
+@media only screen and (min-width: 1100px) {
     .block.product-list-page .search__wrapper {
         grid-template-areas:
-            "result-info product-sort"
-            "facets product-list"
-            ". pagination";
-        grid-template-columns: 270px 1fr;
+            "filter-by toolbar"
+            "facet-filters selected-filters"
+            "facet-filters product-list"
+            "facet-filters load-more";
+        grid-template-columns: 296px 1fr;
+        gap: var(--spacing-small) var(--spacing-medium);
+        align-items: start;
     }
 
-    .block.product-list-page .search__view-facets {
+    .block.product-list-page .search__wrapper::before {
         display: none;
     }
 
-    .block.product-list-page .search__facets {
-        display: unset;
-        margin-right: var(--spacing-small);
+    /* Desktop sidebar — right divider down the full facet column (Figma 8361:168776) */
+    .block.product-list-page .search__wrapper::after {
+        content: "";
+        grid-column: 1;
+        grid-row: 1 / -1;
+        align-self: stretch;
+        border-inline-end: 1px solid var(--form-border-default);
+        pointer-events: none;
+    }
+
+    /* Desktop — "Filter by" becomes the sidebar heading (top of the facet column) */
+    .block.product-list-page .search__view-facets {
+        grid-area: filter-by;
+        margin-right: var(--spacing-medium);
+    }
+
+    .block.product-list-page .search__view-facets-btn {
+        width: 100%;
+        border-inline-end: 0;
+        cursor: default;
+    }
+
+    /* Flatten wrappers so children participate in the page grid */
+    .block.product-list-page .search__facets-drawer,
+    .block.product-list-page .search__facets-panel,
+    .block.product-list-page .search__facets,
+    .block.product-list-page .search__main,
+    .block.product-list-page .search__facets .product-discovery-facet-list {
+        display: contents;
+    }
+
+    /* Drawer chrome is mobile/tablet only — hide in the desktop sidebar */
+    .block.product-list-page .search__facets-overlay,
+    .block.product-list-page .search__facets-header,
+    .block.product-list-page .search__facets-footer {
+        display: none;
+    }
+
+    /* Desktop drawer wrapper must not trap the fixed positioning */
+    .block.product-list-page .search__facets-drawer {
+        position: static;
+        visibility: visible;
+    }
+
+    /* No selected chips — drop the empty row so the grid starts under the toolbar */
+    .block.product-list-page .search__wrapper:not(:has(.product-discovery-facet-list__selected-filters button)) {
+        grid-template-areas:
+            "filter-by toolbar"
+            "facet-filters product-list"
+            "facet-filters load-more";
+    }
+
+    .block.product-list-page .search__facets .product-discovery-facet-list__facet-options {
+        grid-area: facet-filters;
+        padding-inline-end: var(--spacing-medium);
+    }
+
+    .block.product-list-page .search__facets .product-discovery-facet-list__selected-filters {
+        grid-area: selected-filters;
+        padding: var(--spacing-small);
+        border-radius: var(--radius-md);
+        background-color: var(--btn-light-bg);
+        row-gap: var(--spacing-xxsmall);
+    }
+
+    /* Restore the toolbar as a container: results count (left) + Sort (right) */
+    .block.product-list-page .search__toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-small);
+        min-height: 40px;
+        grid-area: toolbar;
+        align-self: start;
+    }
+
+    /* Result info & sort live inside the toolbar again — clear the mobile grid areas */
+    .block.product-list-page .search__result-info,
+    .block.product-list-page .search__product-sort {
+        grid-area: auto;
     }
 
     .block.product-list-page .search__product-sort {
-        display: flex;
-        justify-content: flex-end;
+        justify-self: auto;
+        margin-inline-end: 0;
     }
+
+    .block.product-list-page .search__product-list {
+        grid-area: product-list;
+        align-self: start;
+    }
+
+    .block.product-list-page .search__load-more {
+        grid-area: load-more;
+    }
+}
+
+/* Columns layout strips section > div padding — restore global grid margin */
+body.columns main > .section > div:has(.block.product-list-page) {
+    padding-inline: var(--grid-margin);
+    box-sizing: border-box;
+}
+
+.is-color-facet .dropin-checkbox__label--medium {
+  text-align: center;
+  padding-left: 0;
+}
+
+.product-discovery-facet:not(.is-color-facet) .dropin-checkbox__label  > div[data-slot="FacetBucketLabel"] {
+  display: flex;
+  align-items: center;
+}
+
+.plp-facet-bucket__name {
+    width: 100%;
+    display: inline-block;
 }

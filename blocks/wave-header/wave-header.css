@@ -1,0 +1,8 @@
+/* ===== Wave header block =====
+   Thin wrapper around the shared wave util (scripts/wave/wave.js). The wave
+   visuals live in scripts/wave/wave.css; this only makes the block full-bleed. */
+
+main .section .wave-header-wrapper {
+  max-width: none;
+  padding: 0;
+}

@@ -13,16 +13,19 @@
  * shows the selected option, opening a listbox of the authored options. Fully
  * keyboard- and screen-reader-driven.
  */
-const DEFAULTS = {
-  label: 'I am looking for',
-  button: 'Go',
-};
+import { fetchPlaceholders } from '../../scripts/commerce.js';
 
 let comboCount = 0;
 
-export default function decorate(block) {
+export default async function decorate(block) {
+  const placeholders = await fetchPlaceholders();
+  const {
+    LabelTextGuidedNavigation: labelText = 'I am looking for',
+    CTALabelGuidedNavigation: buttonText = 'Go',
+    SelectOptionsGuidedNavigation: selectText = 'Select',
+  } = placeholders.Global ?? {};
   const rows = [...block.children];
-  const config = { ...DEFAULTS };
+  const config = { label: labelText, button: buttonText };
   const links = [];
 
   rows.forEach((row) => {
@@ -30,6 +33,7 @@ export default function decorate(block) {
     if (link) {
       links.push({
         href: link.getAttribute('href'),
+        title: (link.title || '').trim(),
         text: (link.textContent || '').trim(),
       });
       return;
@@ -40,7 +44,7 @@ export default function decorate(block) {
     const value = (cells[1]?.textContent || '').trim();
     if (key && value && key in config) config[key] = value;
   });
-
+  
   comboCount += 1;
   const uid = `guided-navigation-${comboCount}`;
   const listId = `${uid}-list`;
@@ -84,6 +88,7 @@ export default function decorate(block) {
     li.setAttribute('role', 'option');
     li.dataset.href = link.href;
     li.textContent = link.text;
+    li.title = link.title;
     list.append(li);
     return li;
   });
@@ -205,7 +210,12 @@ export default function decorate(block) {
 
   // Initialise selection (first option by default).
   if (selectedIndex >= 0) setSelected(selectedIndex);
-  else triggerText.textContent = config.label;
+  else triggerText.textContent = selectText;
+
+  if (!links.length) {
+    trigger.disabled = true;
+    go.disabled = true;
+  }
 
   block.replaceChildren(label, combo, go);
 }

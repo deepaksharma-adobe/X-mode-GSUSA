@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Product List Page block powers search and category listing pages using the storefront-product-discovery dropin. It renders faceted search results with sort, filters, pagination, product cards (with add-to-cart and wishlist), and keeps the URL in sync with search state. The block supports two modes: **search page** (full-text search with optional filters) and **category page** (products in a category, optionally filtered).
+The Product List Page block powers search and category listing pages using the storefront-product-discovery dropin. It renders faceted search results with sort, filters, a load-more control, product cards (with add-to-cart and wishlist), and keeps the URL in sync with search state. The block supports two modes: **search page** (full-text search with optional filters) and **category page** (products in a category, optionally filtered).
 
 ## Configuration Options
 
@@ -11,7 +11,10 @@ Block configuration is read via `readBlockConfig(block)`.
 | Option   | Effect |
 |----------|--------|
 | `urlpath` | When set, the block runs in **category page** mode: it filters by `categoryPath` and shows all products in that category. When absent, the block runs in **search page** mode and uses the `q` URL parameter as the search phrase. The value is also stored on the block as `data-urlpath` for use by other blocks (e.g. enrichment). |
-| `pageSize` | Number of products per page. Defaults to `9` if not set or invalid. |
+
+Product batch sizes are fixed by viewport: **6 items on mobile** (<768px), **15 on tablet and desktop** (768px+). A centered secondary **Load more…** button appears when more results exist.
+
+Responsive layout: **mobile** (<768px, 2-column grid), **tablet** (768px–1099px, 4-column full-width), **desktop** (1100px+, facet sidebar + 3-column grid).
 
 ## Integration
 
@@ -22,7 +25,7 @@ Search state is read from and written to the URL by this project (see `search-ur
 | Parameter | Description |
 |-----------|-------------|
 | `q`       | Search phrase (search page only). |
-| `page`    | Current page number (1-based). |
+| `page`    | Legacy page number (1-based). Load-more resets to page 1; this param is not updated when loading more items. |
 | `sort`    | Sort spec: comma-separated `attribute_DIRECTION` (e.g. `price_ASC,name_DESC`). |
 | `filter`  | Filters: pipe-separated segments. Each segment is `attribute:value`; multiple values for the same attribute use multiple segments (e.g. `categories:val1\|categories:val2`). Supports `in` (single/multi-value) and numeric `range` (e.g. `price:0-100`). |
 
@@ -33,7 +36,8 @@ On load, the block normalizes the URL (e.g. filter format) with `replaceState`. 
 #### Event Listeners
 
 - `events.on('search/result', callback, { eager: true })` – Runs before the block re-renders. Updates empty-state class, result count text, and the facets button’s filter count.
-- `events.on('search/result', callback, { eager: false })` – Runs after the block is rendered. Writes the search request (phrase, page, sort, filter) to the URL and calls `history.pushState`.
+- `events.on('search/result', callback, { eager: false })` – Runs after the block is rendered. Writes the search request (phrase, sort, filter; page forced to 1) to the URL and calls `history.pushState`.
+- `events.on('search/result', callback, { scope: 'plp-load-more' })` – Append-only handler for load-more fetches; appends new product cards without replacing the grid.
 
 The block does not emit events; it calls the dropin’s `search()` API and reacts to `search/result`.
 
@@ -55,7 +59,7 @@ A visibility filter `{ attribute: 'visibility', in: ['Search', 'Catalog, Search'
 1. **Initial load**: Block reads URL via `getSearchStateFromUrl`, normalizes the URL, then calls `search()` with phrase, page, sort, and filter (including visibility and, on category pages, categoryPath).
 2. **Sort change**: User changes sort via SortBy; dropin calls `search()` with updated sort; block receives `search/result` and updates the URL.
 3. **Filter change**: User toggles facets; dropin calls `search()` with updated filter; block updates result count and URL.
-4. **Pagination**: User changes page; dropin calls `search()` with new page; block scrolls to top and URL is updated.
+4. **Load more**: User clicks the load-more button; block calls scoped `search()` for the next page and appends GS product cards to the existing grid. URL is unchanged (page stays 1). Sort or filter changes reset the list to the first batch.
 5. **Add to cart / wishlist**: Product cards include add-to-cart and wishlist actions; cart and wishlist behavior are handled by their respective dropins. For simple products, the add-to-cart button is disabled when `product.inStock` is falsy. Complex products always link to the PDP where stock is validated by the PDP drop-in.
 
 ### Error Handling

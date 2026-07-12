@@ -1,0 +1,150 @@
+/* ===== Shared wave effect =====
+   Rendered by scripts/wave/wave.js so any block can add the same decorative wave.
+   One SVG (wave-left) is mirrored via CSS: --wave-flip-x (peak left/right),
+   --wave-flip-y (top/bottom). Colour comes from --wave-color. */
+
+.wave {
+  position: relative;
+  width: 100%;
+  height: 121px;
+}
+
+.wave--shape-shallow {
+  height: 95px;
+}
+
+.wave .wave__shape {
+  position: absolute;
+  inset: 0;
+  background-color: var(--wave-color, color-mix(in srgb, var(--color-gs-marine) 15%, transparent));
+  mask-image: url('/icons/wave-left.svg');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: 100% 100%;
+  transform: scaleX(var(--wave-flip-x, 1)) scaleY(var(--wave-flip-y, 1));
+  pointer-events: none;
+}
+
+.wave--shape-shallow .wave__shape {
+  mask-image: url('/icons/wave-shallow.svg');
+}
+
+.wave--peak-right {
+  --wave-flip-x: -1;
+}
+
+.wave--bottom {
+  --wave-flip-y: -1;
+}
+
+/* Inner frame — keeps illustrations aligned to the centered grid */
+.wave .wave__inner {
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--grid-max-width);
+  height: 100%;
+  margin-inline: auto;
+  padding-inline: var(--grid-1-margins);
+}
+
+.wave .wave__icon {
+  position: absolute;
+  top: 14px;
+  width: 83px;
+  height: 92px;
+}
+
+.wave .wave__icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.wave .wave__icon--left {
+  left: var(--grid-1-margins);
+}
+
+.wave .wave__icon--right {
+  right: var(--grid-1-margins);
+}
+
+/* Scroll-into-view fade-in — automatic for every illustration (enabled by JS;
+   without IntersectionObserver they simply show, no animation) */
+.wave--reveal .wave__icon {
+  opacity: 0;
+  transform: translateY(var(--spacing-medium));
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.wave--reveal.is-in-view .wave__icon {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.wave--reveal.is-in-view .wave__icon--right {
+  transition-delay: 0.15s;
+}
+
+/* Continuous gentle float — opt-in per illustration via authoring. On the image
+   so it doesn't fight the figure's fade-in transform */
+@keyframes wave-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.wave--reveal.is-in-view .wave__icon--float img {
+  animation: wave-float 3.5s ease-in-out infinite;
+}
+
+.wave--reveal.is-in-view .wave__icon--right.wave__icon--float img {
+  animation-delay: 0.6s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wave--reveal .wave__icon {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .wave--reveal.is-in-view .wave__icon--float img {
+    animation: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .wave .wave__inner {
+    padding-inline: var(--grid-3-margins);
+  }
+
+  .wave .wave__icon--left {
+    left: var(--grid-3-margins);
+  }
+
+  .wave .wave__icon--right {
+    right: var(--grid-3-margins);
+  }
+}
+
+@media (min-width: 1280px) {
+  .wave .wave__inner {
+    padding-inline: var(--grid-4-margins);
+  }
+
+  .wave .wave__icon--left {
+    left: var(--grid-4-margins);
+  }
+
+  .wave .wave__icon--right {
+    right: var(--grid-4-margins);
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "definitions": [
+    {
+      "title": "Icon List",
+      "id": "promo-list",
+      "model": "promo-list",
+      "filter": "promo-list"
+    },
+    {
+      "title": "Icon List Item",
+      "id": "promo-list-item",
+      "model": "promo-list-item",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 2,
+          "fields": [
+            { "name": "icon", "selector": "div:nth-child(1)>picture>img[src]" },
+            { "name": "iconAlt", "selector": "div:nth-child(1)>picture>img[alt]" },
+            { "name": "text", "selector": "div:nth-child(2)" }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "promo-list-item",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "icon",
+          "label": "Icon",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "iconAlt",
+          "label": "Icon Alt"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "promo-list",
+      "components": ["promo-list-item"]
+    }
+  ]
+}

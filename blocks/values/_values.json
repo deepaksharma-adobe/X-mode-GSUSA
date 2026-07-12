@@ -7,6 +7,17 @@
       "filter": "values"
     },
     {
+      "title": "Values (Flat)",
+      "id": "values-flat",
+      "model": "values",
+      "filter": "values",
+      "plugins": {
+        "da": {
+          "classes": ["flat"]
+        }
+      }
+    },
+    {
       "title": "Value Card",
       "id": "values-card",
       "model": "values-card",
@@ -24,6 +35,72 @@
     }
   ],
   "models": [
+    {
+      "id": "values",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "illustrationLeft",
+          "label": "Illustration Left",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "illustrationLeftAlt",
+          "label": "Illustration Left Alt"
+        },
+        {
+          "component": "select",
+          "valueType": "string",
+          "name": "illustrationLeftAnimate",
+          "label": "Illustration Left Animate",
+          "value": "off",
+          "description": "Continuous float loop for the left illustration (fade-in on scroll is automatic)",
+          "options": [
+            { "name": "On", "value": "on" },
+            { "name": "Off", "value": "off" }
+          ]
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "illustrationRight",
+          "label": "Illustration Right",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "illustrationRightAlt",
+          "label": "Illustration Right Alt"
+        },
+        {
+          "component": "select",
+          "valueType": "string",
+          "name": "illustrationRightAnimate",
+          "label": "Illustration Right Animate",
+          "value": "off",
+          "description": "Continuous float loop for the right illustration (fade-in on scroll is automatic)",
+          "options": [
+            { "name": "On", "value": "on" },
+            { "name": "Off", "value": "off" }
+          ]
+        },
+        {
+          "component": "select",
+          "valueType": "string",
+          "name": "waveCurve",
+          "label": "Wave Curve",
+          "description": "Direction the decorative wave peaks. Defaults to Peak Right.",
+          "options": [
+            { "name": "Peak Right", "value": "peak-right" },
+            { "name": "Peak Left", "value": "peak-left" }
+          ]
+        }
+      ]
+    },
     {
       "id": "values-card",
       "fields": [

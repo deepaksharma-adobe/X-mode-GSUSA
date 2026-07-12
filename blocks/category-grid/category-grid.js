@@ -18,7 +18,27 @@ function readOptions(cell) {
 export default async function decorate(block) {
   const rows = [...block.children];
 
-  rows.forEach((row) => {
+  // Optional block-level heading — a single-cell row whose only content is a
+  // heading element (no image). Rendered above the grid; falls back to a
+  // section heading authored above the block when absent.
+  const headingRow = rows.find((row) => {
+    const cells = [...row.children];
+    return cells.length === 1
+      && !cells[0].querySelector('picture, img')
+      && cells[0].querySelector('h1, h2, h3, h4, h5, h6');
+  });
+  let heading = null;
+  if (headingRow) {
+    const authored = headingRow.querySelector('h1, h2, h3, h4, h5, h6');
+    heading = document.createElement(authored.tagName.toLowerCase());
+    heading.className = 'category-grid-title';
+    heading.textContent = authored.textContent.trim();
+    headingRow.remove();
+  }
+
+  const cardRows = rows.filter((row) => row !== headingRow);
+
+  cardRows.forEach((row) => {
     const cells = [...row.children];
     const imageCell = cells[0];
     const contentCell = cells[1];
@@ -39,7 +59,7 @@ export default async function decorate(block) {
     const hasLink = contentCell && contentCell.querySelector('a[href]');
 
     if (hasHeading && hasLink) {
-      // Banner card — overlaid content, options come from cell 3.
+      // Banner card — entire card is one link; CTA is a span to avoid nested anchors.
       card.classList.add('category-grid-banner');
       const content = document.createElement('div');
       content.classList.add('category-grid-content');
@@ -47,13 +67,25 @@ export default async function decorate(block) {
       card.append(content);
 
       const link = content.querySelector('a[href]');
+      const href = link.getAttribute('href');
       const wrapper = link.closest('p') || link.parentElement;
       wrapper.classList.add('category-grid-cta-wrapper');
-      link.classList.add('button', 'text-secondary', 'category-grid-cta');
+      const cta = document.createElement('span');
+      cta.classList.add('button', 'text-secondary', 'category-grid-cta');
+      cta.append(...link.childNodes);
+      link.replaceWith(cta);
 
       const { size } = readOptions(cells[2]);
       if (size) card.dataset.size = size;
-    } else if (contentCell) {
+
+      const anchor = document.createElement('a');
+      anchor.href = href;
+      anchor.classList.add('category-grid-card', 'category-grid-banner', 'category-grid-link');
+      if (size) anchor.dataset.size = size;
+      while (card.firstChild) anchor.append(card.firstChild);
+      row.replaceWith(anchor);
+      return;
+    } if (contentCell) {
       // Label card — colored bar; options come from cell 3.
       card.classList.add('category-grid-label');
 
@@ -84,4 +116,6 @@ export default async function decorate(block) {
 
     row.replaceWith(card);
   });
+
+  if (heading) block.prepend(heading);
 }

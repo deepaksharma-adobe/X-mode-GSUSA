@@ -13,17 +13,19 @@
   position: relative;
 }
 
-/* Section heading — authored as default content above the block.
-   Figma: 26px mobile/tablet, 36px desktop (Girl Scout light). */
+/* Section heading — layout only; spacing + typography from global default-content-wrapper */
 .shop-by-collection-container .default-content-wrapper h2 {
-  margin: 0 0 var(--spacing-medium);
-  font: normal normal 300 2.6rem/3.1rem var(--type-display-font-family);
+  text-align: center;
+}
+
+/* Block-level heading — centered above the carousel (typography from global scale). */
+.shop-by-collection > .shop-by-collection-title-heading {
   text-align: center;
 }
 
 /* Figma section vertical padding: 48px mobile / 56px tablet / 80px desktop. */
 .shop-by-collection-container {
-  padding-block: var(--spacing-xxbig);
+  padding-block: var(--block-padding-block)
 }
 
 /* ===== Track ===== */
@@ -62,7 +64,7 @@
   position: relative;
   width: 100%;
   height: 182px; /* Figma mobile image height (242x182); object-fit covers the flexing width */
-  overflow: clip;
+  overflow: hidden;
 }
 
 /* Absolutely-position the picture so the media height is driven purely by the
@@ -77,12 +79,34 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--transition-slow);
+  transition: transform var(--transition-medium);
 }
 
-.shop-by-collection .shop-by-collection-card:hover .shop-by-collection-media img,
+/* Scrim — dark tint fades in over the image on card hover/focus. */
+.shop-by-collection .shop-by-collection-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 0.15);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-medium);
+}
+
+/* ===== Focus-within — keyboard navigation (always active) ===== */
 .shop-by-collection .shop-by-collection-card:focus-within .shop-by-collection-media img {
   transform: scale(1.05);
+}
+
+.shop-by-collection .shop-by-collection-card:focus-within .shop-by-collection-scrim {
+  opacity: 1;
+}
+
+.shop-by-collection .shop-by-collection-card:focus-within .shop-by-collection-title {
+  transform: translateY(-2px);
+}
+
+.shop-by-collection .shop-by-collection-card:focus-within a.button.shop-by-collection-cta::after {
+  transform: translateX(4px);
 }
 
 .shop-by-collection .shop-by-collection-content {
@@ -95,6 +119,7 @@
   margin: 0;
   font: normal normal 400 1.6rem/1.9rem var(--type-display-font-family);
   color: var(--color-neutral-900);
+  transition: transform var(--transition-fast);
 }
 
 .shop-by-collection .shop-by-collection-cta-wrapper {
@@ -102,8 +127,7 @@
 }
 
 /* CTA — "Collection" text link with a trailing chevron.
-   Mobile/tablet: dark-green 14px semibold. Desktop: forest-green 16px medium.
-   The label underlines on hover/focus only (not by default). */
+   Underlined by default on mobile/tablet (Figma); suppressed at desktop. */
 .shop-by-collection a.button.shop-by-collection-cta {
   display: inline-flex;
   align-items: center;
@@ -113,14 +137,9 @@
   border: none;
   background: transparent;
   font: var(--type-body-2-semibold-font);
-  color: var(--color-gs-dark-green);
-  text-decoration: none;
+  color: var(--color-gs-forest);
+  text-decoration: underline;
   text-transform: none;
-}
-
-/* Label text underlines on hover/focus only — never on default, never the arrow. */
-.shop-by-collection .shop-by-collection-cta-text {
-  text-decoration: none;
 }
 
 /* Trailing chevron — masked SVG icon so it inherits the link colour. */
@@ -131,17 +150,36 @@
   height: 16px;
   background-color: currentcolor;
   mask: url('../../icons/chevron-right.svg') center / contain no-repeat;
+  transition: transform var(--transition-base);
+}
+
+.shop-by-collection a.button.shop-by-collection-cta:focus-visible::after {
+  transform: translateX(4px);
 }
 
 .shop-by-collection a.button.shop-by-collection-cta:hover,
 .shop-by-collection a.button.shop-by-collection-cta:focus-visible {
   background: transparent;
-  color: var(--color-gs-dark-green);
+  color: var(--color-gs-forest);
+  text-decoration: none;
 }
 
-.shop-by-collection a.button.shop-by-collection-cta:hover .shop-by-collection-cta-text,
-.shop-by-collection a.button.shop-by-collection-cta:focus-visible .shop-by-collection-cta-text {
-  text-decoration: underline;
+/* ===== Pointer-device hover states (avoids sticky-tap on touch) ===== */
+@media (hover: hover) {
+  .shop-by-collection .shop-by-collection-card:hover .shop-by-collection-media img {
+    transform: scale(1.05);
+  }
+
+  .shop-by-collection .shop-by-collection-card:hover .shop-by-collection-scrim {
+    opacity: 1;
+  }
+
+  /* Prevent global .button:hover fill and underline from bleeding in. */
+  .shop-by-collection a.button.shop-by-collection-cta:hover {
+    background: transparent;
+    color: var(--color-gs-forest);
+    text-decoration: none;
+  }
 }
 
 /* ===== Arrows — 40px solid pale-green circles =====
@@ -161,18 +199,21 @@
   border: 1px solid var(--color-gs-green-hover-surface);
   border-radius: var(--radius-full);
   background: var(--color-positive-200);
+  color: var(--color-gs-forest);
   transform: translateY(-50%);
   cursor: pointer;
-  transition: background-color var(--transition-base);
+  transition:
+    background var(--transition-base),
+    color var(--transition-base);
   z-index: 2;
 }
 
-/* Chevron glyph via mask so it inherits a tokenised colour. */
+/* Chevron glyph via mask — uses currentcolor so it turns white on hover. */
 .shop-by-collection .shop-by-collection-arrow::before {
   content: '';
   width: 20px;
   height: 20px;
-  background-color: var(--color-gs-forest);
+  background-color: currentcolor;
   mask: url('../../icons/chevron-right.svg') center / contain no-repeat;
 }
 
@@ -182,7 +223,8 @@
 
 .shop-by-collection .shop-by-collection-arrow:hover:not(:disabled),
 .shop-by-collection .shop-by-collection-arrow:focus-visible:not(:disabled) {
-  background: color-mix(in srgb, var(--color-gs-green) 12%, var(--color-positive-200));
+  background: var(--color-gs-forest);
+  color: var(--color-neutral-50);
 }
 
 .shop-by-collection .shop-by-collection-arrow:disabled {
@@ -204,26 +246,25 @@
   list-style: none;
 }
 
-/* Each list item is a fixed 10px slot (the largest dot size) that centres its
-   dot. Fixed slots keep the row's total width constant as dots resize, so the
-   cluster never shifts horizontally when the active dot moves. */
+/* Each list item is a fixed slot (active dot size) that centres its dot.
+   Fixed slots keep the row's total width constant as dots resize. */
 .shop-by-collection .shop-by-collection-dots li {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 10px;
-  height: 10px;
+  width: var(--carousel-dot-size-active);
+  height: var(--carousel-dot-size-active);
 }
 
 .shop-by-collection .shop-by-collection-dot {
   display: block;
-  width: 6px;
-  height: 6px;
+  width: var(--carousel-dot-size);
+  height: var(--carousel-dot-size);
   padding: 0;
   border: 0;
   border-radius: var(--radius-full);
   background: var(--color-gs-forest);
-  opacity: 0.5;
+  opacity: var(--carousel-dot-opacity);
   cursor: pointer;
   transition:
     width var(--transition-base),
@@ -233,20 +274,24 @@
 
 /* Dynamic taper: dots farther from the active one shrink (Swiper-style). */
 .shop-by-collection .shop-by-collection-dot[data-distance='2'] {
-  width: 5px;
-  height: 5px;
+  width: var(--carousel-dot-size-far);
+  height: var(--carousel-dot-size-far);
 }
 
 .shop-by-collection .shop-by-collection-dot[data-distance='3'] {
-  width: 4px;
-  height: 4px;
-  opacity: 0.35;
+  width: var(--carousel-dot-size-far);
+  height: var(--carousel-dot-size-far);
+  opacity: var(--carousel-dot-opacity-far);
 }
 
-/* Active dot — larger solid forest-green circle (Figma: 10px #005640). */
+/* Active dot — larger solid forest-green circle (Figma: 10px). */
 .shop-by-collection .shop-by-collection-dot[aria-current='true'] {
-  width: 10px;
-  height: 10px;
+  width: var(--carousel-dot-size-active);
+  height: var(--carousel-dot-size-active);
+  opacity: 1;
+}
+
+.shop-by-collection .shop-by-collection-dot:hover:not([aria-current='true']) {
   opacity: 1;
 }
 
@@ -266,10 +311,6 @@
     --sbc-peek: calc(var(--spacing-xxlarge) + var(--spacing-xlarge));
   }
 
-  .shop-by-collection-container {
-    padding-block: calc(var(--spacing-xxbig) + var(--spacing-xsmall)); /* 56px (Figma) */
-  }
-
   .shop-by-collection .shop-by-collection-media {
     height: 191px; /* Figma tablet image height (255×191) */
   }
@@ -281,15 +322,11 @@
     --sbc-cards: 3;
     --sbc-gap: var(--spacing-medium);       /* 24px (Figma) */
 
-    /* Negative peek removes the phantom trailing gap from the formula so that
-       3 cards × 374px fill the 1168px track exactly (≈373px per card).
-       Formula: (1168 − (−24) − 3×24) / 3 = (1168+24−72)/3 = 1120/3 ≈ 373px */
-    --sbc-peek: calc(-1 * var(--sbc-gap));
+    /* 48px peek shows the left edge of the 4th card (Figma desktop).
+       Formula: (1168 − 48 − 3×24) / 3 = 1048/3 ≈ 349px per card */
+    --sbc-peek: var(--spacing-xxbig);
   }
 
-  .shop-by-collection-container {
-    padding-block: calc(var(--spacing-large) + var(--spacing-small)); /* 80px (Figma) */
-  }
 
   /* Arrows are desktop-only; dots are tablet/mobile-only (Figma). */
   .shop-by-collection .shop-by-collection-arrow {
@@ -303,20 +340,15 @@
   }
 
   .shop-by-collection .shop-by-collection-arrow-next {
-    right: calc(-1 * 40px / 2);
+    right: calc(var(--sbc-peek) + var(--sbc-gap) - 40px / 2);
   }
 
   .shop-by-collection .shop-by-collection-dots {
     display: none;
   }
 
-  .shop-by-collection-container .default-content-wrapper h2 {
-    margin: 0 0 var(--spacing-big);
-    font: normal normal 300 3.6rem/4.3rem var(--type-display-font-family);
-  }
-
   .shop-by-collection .shop-by-collection-media {
-    height: 468px; /* Figma desktop image height (374x468) */
+    height: 434px; /* Figma desktop image height (374×434) */
   }
 
   .shop-by-collection .shop-by-collection-content {
@@ -327,9 +359,10 @@
     font: normal normal 400 1.8rem/2.2rem var(--type-display-font-family);
   }
 
-  /* Desktop CTA: forest-green 16px medium (underline-on-hover is inherited). */
+  /* Desktop CTA: forest-green 16px medium, no underline. */
   .shop-by-collection a.button.shop-by-collection-cta {
     font: normal normal 500 1.6rem/1.9rem var(--type-base-font-family);
     color: var(--color-gs-forest);
+    text-decoration: none;
   }
 }

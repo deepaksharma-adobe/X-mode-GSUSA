@@ -1,0 +1,101 @@
+{
+  "definitions": [
+    {
+      "title": "Shop by Navigator",
+      "id": "shop-by-navigator",
+      "model": "shop-by-navigator",
+      "filter": "shop-by-navigator",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            { "name": "heading", "selector": "div:nth-child(1)" }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Grade Tile",
+      "id": "shop-by-navigator-tile",
+      "model": "shop-by-navigator-tile",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 3,
+          "fields": [
+            { "name": "image", "selector": "div:nth-child(1)>picture>img[src]" },
+            { "name": "imageAlt", "selector": "div:nth-child(1)>picture>img[alt]" },
+            { "name": "label", "selector": "div:nth-child(2)" },
+            { "name": "decoration", "selector": "div:nth-child(3)" }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "shop-by-navigator",
+      "fields": [
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "heading",
+          "label": "Heading",
+          "description": "Optional heading shown above the tiles. Leave empty to use a section heading authored above the block."
+        }
+      ]
+    },
+    {
+      "id": "shop-by-navigator-tile",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Photo",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "imageAlt",
+          "label": "Photo Alt"
+        },
+        {
+          "component": "aem-content",
+          "valueType": "string",
+          "name": "label",
+          "label": "Label Link"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "labelText",
+          "label": "Label Text"
+        },
+        {
+          "component": "select",
+          "valueType": "string",
+          "name": "decoration",
+          "label": "Background Decoration",
+          "options": [
+            { "name": "Cloud + Flower", "value": "cloud-flower" },
+            { "name": "Triangle + Butterfly", "value": "triangle-butterfly" },
+            { "name": "Circle + Star", "value": "circle-star" },
+            { "name": "Diamond + Mushroom", "value": "diamond-mushroom" },
+            { "name": "Square + Rocket", "value": "square-rocket" },
+            { "name": "Badge + Butterfly", "value": "badge-butterfly" },
+            { "name": "Blob + Bird", "value": "blob-bird" }
+          ]
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "shop-by-navigator",
+      "components": ["shop-by-navigator-tile"]
+    }
+  ]
+}

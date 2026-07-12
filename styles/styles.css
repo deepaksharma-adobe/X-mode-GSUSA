@@ -26,9 +26,10 @@
   --color-neutral-400: #d9d9d9; /* GS Cloud */
   --color-neutral-500: #a8a8a8; /* GS Stone */
   --color-neutral-600: #8f8f8f;
-  --color-neutral-700: #666;
+  --color-neutral-700: #626262; /* updated to match Figma "light-grey low emphasis" */
   --color-neutral-800: #2d2e33; /* GS Dark Grey (body text) */
   --color-neutral-900: #000; /* GS Black */
+  --color-text-light: #4e4e4e; /* Figma "light_text" — secondary text, review counts */
 
   /* Girl Scouts brand palette */
   --color-gs-green: #00b451;
@@ -39,23 +40,34 @@
   --color-gs-deep-cyan: #006973;
   --color-gs-ocean: #004987;
   --color-gs-deep-purple: #5c1f8b;
+  --color-gs-deep-purple-surface: rgb(92 31 139 / 0.07); /* pale purple tint — section backgrounds */
+  --color-gs-warm-surface: #fefaed;
+  --color-gs-tab-surface: #f6f3ec;  /* tab bar container background */
+  --color-gs-tab-border: #e7def7;   /* tab bar container border */
   --color-gs-plum: #af0061;
   --color-gs-cherry: #9c0000;
   --color-gs-brown: #763a16;
   --color-gs-desert: #a86b1d;
   --color-gs-teal: #00b2be;
+  --color-gs-teal-light: #c0d4d5;
   --color-gs-river: #1496d4;
   --color-gs-violet: #9e5fd6;
   --color-gs-fuchsia: #fd329e;
   --color-gs-poppy: #ee3124;
   --color-gs-flame: #ff830c;
   --color-gs-gold: #f7be00;
+  --color-gs-yellow-surface: #fce8a6; /* light gold tint — discount badge background */
+  --color-gs-gold-surface: color-mix(in srgb, var(--color-gs-gold) 15%, var(--color-neutral-50)); /* opaque cream — the 15% gold tint composited over white, so it stays visible over product photos (badge pending / Almost Gone) */
+  --color-gs-light-red: #fce0de; /* badge surface — Sold out */
+  --color-gs-light-orange: #ffebdc; /* badge surface — Back Soon */
+  --color-gs-light-yellow: #fce8a6; /* badge surface — discount % off */
   --color-gs-sea-foam: #a3edd6;
   --color-gs-sky: #a0def1;
   --color-gs-lilac: #ccb3fa;
   --color-gs-bubblegum: #f7abd6;
   --color-gs-peach: #fcb89d;
   --color-gs-khaki: #d5ca9f;
+  --color-gs-sand-surface: rgb(226 219 193 / 0.22);
   --color-divider-subtle: color-mix(in srgb, var(--color-gs-khaki) 20%, transparent);
   --color-gs-sunshine: #fff441;
   --color-gs-marine: #004b8c; /* GS Marine blue — stories/testimonials section bg */
@@ -121,6 +133,7 @@
   --spacing-large: 64px;
   --spacing-xlarge: 72px;
   --spacing-xxlarge: 96px;
+  --spacing-section-gap: 80px; /* desktop section top gap */
   --spacing-huge: 120px;
   --spacing-xhuge: 144px;
   --spacing-xxhuge: 192px;
@@ -161,6 +174,8 @@
   --type-body-1-default-letter-spacing: 0.04em;
   --type-body-1-strong-font: normal normal 700 1.6rem/2.4rem var(--type-base-font-family);
   --type-body-1-strong-letter-spacing: 0.04em;
+  --type-body-1-semibold-font: normal normal 600 1.6rem/2.4rem var(--type-base-font-family);
+  --type-body-1-semibold-letter-spacing: 0.04em;
   --type-body-1-emphasized-font: normal normal 700 1.6rem/2.4rem var(--type-base-font-family);
   --type-body-1-emphasized-letter-spacing: 0.04em;
   --type-body-2-default-font: normal normal 400 1.4rem/2rem var(--type-base-font-family);
@@ -187,8 +202,6 @@
   --type-details-overline-letter-spacing: 0.16em;
   --type-fixed-font-family: adobe-clean, "Roboto Mono", menlo, consolas, "Liberation Mono", monospace, system-ui, sans-serif;
   --background-color: var(--color-neutral-50);
-  --nav-height: 6.4rem;
-  --nav-compact-height: 6.2rem;
 
   /* Figma 2697:345643 stack — offer py8 + row36 + nav-top py16/logo48 + strip py12/text22.4 */
   --header-offer-bar-min-height: 52px;
@@ -207,54 +220,17 @@
   --header-mobile-nav-min-height: calc(
     var(--nav-top-band-min-height) + var(--header-mobile-experience-min-height)
   );
-  --nav-search-label-font: normal normal 300 1.6rem/2.24rem var(--type-base-font-family);
-  --nav-search-label-letter-spacing: 0;
   --header-nav-blur: 15px;
   --header-nav-glass-bg: rgb(255 255 255 / 0.7);
   --color-gs-nav-surface: rgb(226 219 193 / 0.22);
-  --nav-search-field-width: 211px;
   --color-gs-green-hover-surface: rgb(0 174 67 / 0.1);
   --color-gs-green-surface: color-mix(in srgb, var(--color-gs-green) 6%, transparent); /* pale green panel — values block (Figma) */
-  --nav-top-zone-leading: 387px;
-  --nav-top-zone-trailing: 407px;
-  --nav-top-logo-width: 145px;
-  --nav-top-logo-height: 48px;
 
   /* Figma 3876:50943 mobile header logo */
   --nav-mobile-logo-width: 102px;
   --nav-mobile-logo-height: 34px;
-  --nav-mega-menu-shadow: 0 6px 5px rgb(0 0 0 / 0.1);
-  --nav-mega-menu-column-width: 175px;
-  --nav-mega-menu-max-width: var(--grid-max-width);
-  --nav-mega-menu-max-height: 635px;
-  --nav-mega-menu-promo-min-width: 324px;
-
-  /* Mega menu typography + rhythm — Figma 2697:357110 (Shop by Grade) */
-  --nav-mega-menu-heading-font: normal normal 600 1.6rem/2.08rem var(--type-base-font-family);
-  --nav-mega-menu-heading-letter-spacing: 0;
-  --nav-mega-menu-link-font: normal normal 400 1.6rem/2.24rem var(--type-base-font-family);
-  --nav-mega-menu-link-letter-spacing: 0;
-  --nav-mega-menu-row-padding: var(--spacing-xsmall-plus) var(--spacing-xxsmall);
-  --nav-mega-menu-panel-padding: var(--spacing-big) var(--grid-3-margins);
-  --nav-mega-menu-column-gap: var(--spacing-medium);
-  --nav-mega-menu-row-gap: var(--spacing-medium);
-  --nav-mega-menu-row-border-color: var(--btn-light-bg);
-  --nav-mega-menu-transition: var(--transition-base);
   --nav-accordion-panel-transition: 320ms cubic-bezier(0.4, 0, 0.2, 1);
   --nav-accordion-content-transition: opacity 240ms cubic-bezier(0.4, 0, 0.2, 1);
-  --nav-accordion-transition: var(--nav-accordion-panel-transition);
-  --nav-overlay-transition: var(--transition-base);
-
-  /* Header mobile nav typography (Figma Body Small_L / Body Large_SB / Body Extra Small_R) */
-  --nav-mobile-label-font: normal normal 400 1.4rem/1.96rem var(--type-base-font-family);
-  --nav-mobile-label-letter-spacing: 0;
-  --nav-mobile-accordion-font: normal normal 600 1.8rem/2.52rem var(--type-base-font-family);
-  --nav-mobile-accordion-letter-spacing: 0;
-  --nav-audience-tab-active-font: normal normal 400 1.2rem/1.68rem var(--type-base-font-family);
-  --nav-audience-tab-active-letter-spacing: 0;
-  --nav-audience-tab-inactive-font: normal normal 400 1.4rem/1.96rem var(--type-base-font-family);
-  --nav-audience-tab-inactive-letter-spacing: 0;
-  --nav-mobile-accordion-row-height: 48px;
 
   /* Breakpoints — reference only; @media queries must hardcode 768px / 1280px */
   --bp-tablet: 768px;
@@ -442,11 +418,13 @@
   /* ===== Motion / transition tokens ===== */
   --transition-fast: 150ms ease; /* micro interactions */
   --transition-base: 250ms ease; /* standard hover/focus */
+  --transition-medium: 300ms linear; /* image zoom, Figma Smart Animate */
   --transition-slow: 400ms ease; /* panels, drawers */
   --transition-bounce: 300ms cubic-bezier(0.34, 1.56, 0.64, 1); /* spring */
 
   /* ===== GS border-radius scale (additive — does NOT redefine --shape-border-radius-*) ===== */
   --radius-none: 0px;
+  --radius-xxs: 2px; /* subtle rounding, dividers, tiny UI elements */
   --radius-xs: 4px; /* tags, chips, small badges */
   --radius-sm: 6px; /* inputs, small buttons (matches --btn-radius-sm) */
   --radius-md: 8px; /* cards, large buttons (matches --btn-radius-lg) */
@@ -504,6 +482,13 @@
   --skeleton-radius: var(--radius-xs);
   --skeleton-animation: skeleton-shimmer 1.5s ease-in-out infinite;
 
+  /* ===== Carousel dots ===== */
+  --carousel-dot-size: 6px;         /* default / adjacent dot */
+  --carousel-dot-size-active: 10px; /* active (current slide) */
+  --carousel-dot-size-far: 3px;     /* distance ≥2 from active */
+  --carousel-dot-opacity: 0.5;      /* inactive dot opacity */
+  --carousel-dot-opacity-far: 0.35; /* far dot opacity */
+
   /* ===== Z-index scale ===== */
   --z-below: -1; /* background elements */
   --z-base: 0; /* default flow */
@@ -513,6 +498,10 @@
   --z-overlay: 300; /* modal/drawer backdrop */
   --z-modal: 400; /* modal content, mini-cart */
   --z-toast: 500; /* notification toasts */
+
+   /* ===== GS block container spacing ===== */
+ --block-padding-block: 48px;
+
 
   /* 501–9999998 intentionally empty — reserved for third-party widgets */
 
@@ -524,6 +513,7 @@
     --grid-columns: var(--grid-2-columns); /* 12 tablet */
     --grid-margin: var(--grid-2-margins); /* 20px tablet */
     --grid-gutter: var(--grid-2-gutters); /* 16px tablet */
+    --block-padding-block: 80px;
   }
 }
 
@@ -541,6 +531,7 @@
     --transition-fast: 0ms;
     --transition-base: 0ms;
     --transition-slow: 0ms;
+    --transition-medium: 0ms;
     --transition-bounce: 0ms;
     --nav-accordion-panel-transition: 0ms;
     --nav-accordion-content-transition: opacity 0ms;
@@ -623,46 +614,87 @@ footer .footer[data-block-status="loaded"] {
   visibility: visible;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin-top: 0.8em;
-  margin-bottom: 0.25em;
-  line-height: 1.25;
-  scroll-margin: 40px;
+.block h1,
+.block h2,
+.block h3,
+.block h4,
+.block h5,
+.block h6 {
+  margin: 0;
+  margin-bottom: var(--spacing-small);
+  scroll-margin: 0;
 }
 
+@media (min-width: 768px) {
+  .block h1,
+  .block h2,
+  .block h3,
+  .block h4,
+  .block h5,
+  .block h6 {
+    margin-bottom: var(--spacing-big);
+  }
+}
+
+h1:not(.block h1),
+h2:not(.block h2),
+h3:not(.block h3),
+h4:not(.block h4),
+h5:not(.block h5),
+h6:not(.block h6) {
+  margin-top: 0.8em;
+  margin-bottom: 0.25em;
+  scroll-margin: var(--spacing-large);
+}
+
+
+/* Global heading type scale (mobile-first) — H1/H2 Girl Scout display, H3–H6 Trefoil Sans.
+   Blocks/dropins may still override per-component. */
 h1 {
-  font: var(--type-display-0-font);
-  letter-spacing: var(--type-display-0-letter-spacing);
+  font: normal normal 300 3rem/3.6rem var(--type-display-font-family);
 }
 
 h2 {
-  font: var(--type-display-2-font);
-  letter-spacing: var(--type-display-2-letter-spacing);
+  font: normal normal 300 2.6rem/3.12rem var(--type-display-font-family);
 }
 
 h3 {
-  font: var(--type-display-3-font);
-  letter-spacing: var(--type-display-3-letter-spacing);
+  font: normal normal 300 2.4rem/2.88rem var(--type-base-font-family);
 }
 
 h4 {
-  font: var(--type-headline-1-font);
-  letter-spacing: var(--type-headline-1-letter-spacing);
+  font: normal normal 300 2.2rem/2.64rem var(--type-base-font-family);
 }
 
 h5 {
-  font: var(--type-headline-2-strong-font);
-  letter-spacing: var(--type-headline-2-strong-letter-spacing);
+  font: normal normal 300 2rem/2.4rem var(--type-base-font-family);
 }
 
 h6 {
   font: var(--type-headline-2-default-font);
-  letter-spacing: var(--type-headline-2-default-letter-spacing);
+  letter-spacing: 0;
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font: normal normal 300 4rem/4.8rem var(--type-display-font-family);
+  }
+
+  h2 {
+    font: normal normal 300 3.6rem/4.32rem var(--type-display-font-family);
+  }
+
+  h3 {
+    font: normal normal 300 3.2rem/3.84rem var(--type-base-font-family);
+  }
+
+  h4 {
+    font: normal normal 300 2.8rem/3.36rem var(--type-base-font-family);
+  }
+
+  h5 {
+    font: normal normal 300 2.4rem/2.88rem var(--type-base-font-family);
+  }
 }
 
 p,
@@ -1025,22 +1057,11 @@ main img {
   object-fit: contain;
 }
 
-/* sections */
+/* sections — top margin only; sections own no bottom margin by default */
 main > .section {
-  margin: var(--spacing-xxbig) 0; /* 48px mobile — GS 3XL */
+  margin: 0;
 }
 
-@media (min-width: 768px) {
-  main > .section {
-    margin: var(--spacing-large) 0; /* 64px tablet — GS 4XL */
-  }
-}
-
-@media (min-width: 1280px) {
-  main > .section {
-    margin: var(--spacing-xxlarge) 0; /* 96px desktop — GS 5XL */
-  }
-}
 
 .section:empty {
   display: none;
@@ -1051,6 +1072,58 @@ main > .section > div {
   max-width: var(--grid-max-width);
   margin: auto;
   padding: 0 var(--grid-margin);
+}
+
+/* Default content — authored copy outside blocks (headings, paragraphs, lists).
+   Typography per Figma Girl Scouts design system (node 3:440). */
+main .section > .default-content-wrapper {
+  color: var(--color-neutral-800);
+}
+
+/* Headings — Figma node 3:440 typography + default spacing outside blocks */
+main .section > .default-content-wrapper :is(h1, h2, h3, h4, h5, h6) {
+  margin-block: 0 var(--spacing-medium);
+  letter-spacing: 0;
+}
+
+main .section > .default-content-wrapper :is(h1, h2, h3, h4, h5, h6):not(:first-child) {
+  margin-block-start: var(--spacing-medium);
+}
+
+/* Body — Figma Body medium Regular (16px) */
+main .section > .default-content-wrapper p {
+  font: var(--type-body-1-default-font);
+  letter-spacing: 0;
+  margin-block: var(--spacing-small);
+}
+
+main .section > .default-content-wrapper p + p {
+  margin-block-start: var(--spacing-small);
+}
+
+main .section > .default-content-wrapper strong {
+  font: var(--type-body-1-strong-font);
+  letter-spacing: 0;
+}
+
+main .section > .default-content-wrapper ol,
+main .section > .default-content-wrapper ul {
+  font: var(--type-body-1-default-font);
+  letter-spacing: 0;
+  margin-block: var(--spacing-small);
+  padding-inline-start: var(--spacing-medium);
+}
+
+main .section > .default-content-wrapper li {
+  margin-block: var(--spacing-xxsmall);
+}
+
+main .section > .default-content-wrapper blockquote {
+  font: var(--type-body-1-default-font);
+  letter-spacing: 0;
+  margin-block: var(--spacing-small);
+  padding-inline-start: var(--spacing-medium);
+  border-inline-start: var(--shape-border-width-3) solid var(--color-brand-500);
 }
 
 /* First section — no top gap ever */
@@ -1095,6 +1168,34 @@ main .section.stories-blue {
 /* Campaign Sky — light river-blue backdrop for the campaign-highlights block. */
 main .section.campaign-sky {
   background-color: color-mix(in srgb, var(--color-gs-river) 15%, transparent);
+}
+
+/* Teaser Doodle — light sky-blue backdrop for the info-feature-callout
+   (image-left) block. The hand-drawn doodle illustration drops in as a PNG via
+   --teaser-doodle; until present, the tint alone shows. */
+main .section.teaser-doodle {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: color-mix(in srgb, var(--color-gs-sky) 35%, transparent);
+}
+
+main .section.teaser-doodle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--teaser-doodle, none) center / cover no-repeat;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+main .section[data-padding-bottom="none"] {
+    padding-bottom: 0;
+}
+
+main .section[data-padding-top="none"] {
+    padding-bottom: 0;
 }
 
 main .section[data-padding="default"] {
@@ -1182,6 +1283,13 @@ main .section[data-padding="5xl"] {
     padding: var(--spacing-huge) 0; /* 120px */
 }
 
+main .section[data-margin-top="none"] {
+    margin-bottom: 0;
+}
+
+main .section[data-margin-bottom="none"] {
+    margin-bottom: 0;
+}
 
 main .section[data-margin="small"] {
     margin: var(--spacing-xsmall) 0;
@@ -1240,20 +1348,20 @@ main .section[data-margin="md"] {
     margin: var(--spacing-small) 0; /* 16px */
 }
 
-/* default — responsive, mirrors the global default section margin */
+/* default — responsive, mirrors the global default section margin (top only) */
 main .section[data-margin="default"] {
-    margin: var(--spacing-xxbig) 0; /* 48px mobile */
+    margin: var(--spacing-xxbig) 0 0; /* 48px mobile */
 }
 
 @media (min-width: 768px) {
     main .section[data-margin="default"] {
-        margin: var(--spacing-large) 0; /* 64px tablet */
+        margin: var(--spacing-large) 0 0; /* 64px tablet */
     }
 }
 
 @media (min-width: 1280px) {
     main .section[data-margin="default"] {
-        margin: var(--spacing-xxlarge) 0; /* 96px desktop */
+        margin: var(--spacing-xxlarge) 0 0; /* 96px desktop */
     }
 }
 

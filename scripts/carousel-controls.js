@@ -23,9 +23,19 @@
  * @param {(i:number)=>void} [opts.onSelect] Dot click handler.
  * @param {()=>void} [opts.onPrev]  Prev arrow click handler.
  * @param {()=>void} [opts.onNext]  Next arrow click handler.
+ * @param {object}  [opts.autoplay] Opt-in autoplay. When present, advances on a
+ *   timer by invoking onTick (defaults to onNext). Honors prefers-reduced-motion
+ *   and pauses on hover/focus of `root` and while the tab is hidden. This is NOT
+ *   a slider engine — it just re-fires the caller's navigation callback.
+ * @param {number} [opts.autoplay.interval=6000] Milliseconds between advances.
+ * @param {HTMLElement} [opts.autoplay.root]     Element watched for hover/focus pause.
+ * @param {boolean}[opts.autoplay.pauseOnHover=true] Pause while pointer is over root.
+ * @param {boolean}[opts.autoplay.pauseOnFocus=true] Pause while focus is within root.
+ * @param {()=>void}[opts.autoplay.onTick]      Advance callback; defaults to onNext.
  * @returns {{prev:HTMLButtonElement, next:HTMLButtonElement, dotsNav:HTMLElement,
  *            dots:HTMLButtonElement[], setActive:(i:number)=>void,
- *            setArrowsDisabled:(p:boolean, n:boolean)=>void}}
+ *            setArrowsDisabled:(p:boolean, n:boolean)=>void,
+ *            startAutoplay:()=>void, stopAutoplay:()=>void}}
  */
 export default function createCarouselControls({
   prefix,
@@ -39,6 +49,7 @@ export default function createCarouselControls({
   onSelect,
   onPrev,
   onNext,
+  autoplay,
 } = {}) {
   // ----- Arrows -----
   const makeArrow = (dir, ariaLabel, handler) => {
@@ -93,7 +104,55 @@ export default function createCarouselControls({
     next.disabled = !!nextDisabled;
   };
 
+  // ----- Autoplay (opt-in) -----
+  // A timer that re-fires the caller's advance callback; still block-owned
+  // navigation, just driven on an interval. Skipped entirely when the visitor
+  // prefers reduced motion.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let autoplayTimer = null;
+  let autoplayPaused = false;
+
+  const startAutoplay = () => {
+    if (!autoplay || reduceMotion || autoplayPaused || autoplayTimer !== null) return;
+    const tick = autoplay.onTick || onNext;
+    if (!tick) return;
+    autoplayTimer = window.setInterval(tick, autoplay.interval || 6000);
+  };
+  const stopAutoplay = () => {
+    if (autoplayTimer !== null) {
+      window.clearInterval(autoplayTimer);
+      autoplayTimer = null;
+    }
+  };
+
+  if (autoplay && !reduceMotion) {
+    const { root, pauseOnHover = true, pauseOnFocus = true } = autoplay;
+    const pause = () => { autoplayPaused = true; stopAutoplay(); };
+    const resume = () => { autoplayPaused = false; startAutoplay(); };
+    if (root && pauseOnHover) {
+      root.addEventListener('mouseenter', pause);
+      root.addEventListener('mouseleave', resume);
+    }
+    if (root && pauseOnFocus) {
+      root.addEventListener('focusin', pause);
+      root.addEventListener('focusout', resume);
+    }
+    // Pause while the tab is backgrounded so slides don't race by unseen.
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopAutoplay();
+      else startAutoplay();
+    });
+    startAutoplay();
+  }
+
   return {
-    prev, next, dotsNav, dots, setActive, setArrowsDisabled,
+    prev,
+    next,
+    dotsNav,
+    dots,
+    setActive,
+    setArrowsDisabled,
+    startAutoplay,
+    stopAutoplay,
   };
 }

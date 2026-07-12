@@ -9,11 +9,22 @@ prev/next arrows and dot indicators control the scroll. No autoplay.
 
 Shows **1 card on mobile, 2 on tablet (≥768px), 4 on desktop (≥1280px)**.
 
+## Heading
+
+The "Shop By Collection" heading can be authored two ways — both render centered
+above the carousel:
+
+1. **Block-level heading (optional):** a single text-only row at the top of the
+   block containing a heading. This is exposed as the **Heading** field in the
+   block model.
+2. **Section heading (fallback):** a normal `H2` authored above the block in the
+   same section (the way `category-grid` does it). Used only when no block-level
+   heading is present.
+
 ## Authoring
 
-The section heading is authored as **default content above the block** (a normal
-`H2`), the same way `category-grid` does it. Each block row is **one card**:
-cell 1 = image, cell 2 = content (a heading + a link).
+Each block row is **one card**: cell 1 = image, cell 2 = content (a heading + a
+link). An optional first text-only row provides the block-level heading.
 
 | shop-by-collection |                                       |
 |--------------------|---------------------------------------|

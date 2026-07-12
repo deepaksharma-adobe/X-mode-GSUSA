@@ -1,0 +1,153 @@
+{
+  "definitions": [
+    {
+      "title": "Info Feature Callout",
+      "id": "info-feature-callout",
+      "model": "info-feature-callout",
+      "filter": "info-feature-callout"
+    },
+    {
+      "title": "Info Feature Callout (Image Left)",
+      "id": "info-feature-callout-image-left",
+      "model": "info-feature-callout",
+      "filter": "info-feature-callout",
+      "plugins": {
+        "da": {
+          "classes": ["image-left"]
+        }
+      }
+    },
+    {
+      "title": "Info Feature Callout (Feature List)",
+      "id": "info-feature-callout-list",
+      "model": "info-feature-callout",
+      "filter": "info-feature-callout",
+      "plugins": {
+        "da": {
+          "classes": ["list"]
+        }
+      }
+    },
+    {
+      "title": "Info Feature Callout (Teal Gradient)",
+      "id": "info-feature-callout-teal-gradient",
+      "model": "info-feature-callout",
+      "filter": "info-feature-callout",
+      "plugins": {
+        "da": {
+          "classes": ["teal-gradient"]
+        }
+      }
+    },
+    {
+      "title": "Callout Feature",
+      "id": "info-feature-callout-feature",
+      "model": "info-feature-callout-feature",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 2,
+          "fields": [
+            { "name": "icon", "selector": "div:nth-child(1)>picture>img[src]" },
+            { "name": "iconAlt", "selector": "div:nth-child(1)>picture>img[alt]" },
+            { "name": "content", "selector": "div:nth-child(2)" }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Callout Content",
+      "id": "info-feature-callout-content",
+      "model": "info-feature-callout-content",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            { "name": "content", "selector": "div:nth-child(1)" }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Callout Image",
+      "id": "info-feature-callout-image",
+      "model": "info-feature-callout-image",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            { "name": "image", "selector": "div:nth-child(1)>picture>img[src]" },
+            { "name": "imageAlt", "selector": "div:nth-child(1)>picture>img[alt]" }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "info-feature-callout-content",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "content",
+          "label": "Content (heading + body + CTA link)",
+          "valueType": "string"
+        }
+      ]
+    },
+    {
+      "id": "info-feature-callout-image",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "imageAlt",
+          "label": "Image Alt"
+        }
+      ]
+    },
+    {
+      "id": "info-feature-callout-feature",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "icon",
+          "label": "Icon",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "iconAlt",
+          "label": "Icon Alt"
+        },
+        {
+          "component": "richtext",
+          "name": "content",
+          "label": "Feature (heading + body)",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "info-feature-callout",
+      "components": [
+        "info-feature-callout-content",
+        "info-feature-callout-image",
+        "info-feature-callout-feature"
+      ]
+    }
+  ]
+}

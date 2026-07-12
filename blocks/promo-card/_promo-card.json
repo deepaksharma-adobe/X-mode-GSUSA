@@ -1,0 +1,99 @@
+{
+  "definitions": [
+    {
+      "title": "Promo Card",
+      "id": "promo-card",
+      "model": "promo-card",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 3,
+          "fields": [
+            { "name": "image", "selector": "div:nth-child(1)>picture>img[src]" },
+            { "name": "imageAlt", "selector": "div:nth-child(1)>picture>img[alt]" },
+            { "name": "heading", "selector": "div:nth-child(2)" },
+            { "name": "cta", "selector": "div:nth-child(3)>a[href]" },
+            { "name": "ctaText", "selector": "div:nth-child(3)>a" }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Promo Card (Compact)",
+      "id": "promo-card-compact",
+      "model": "promo-card",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 3,
+          "classes": ["compact"],
+          "fields": [
+            { "name": "image", "selector": "div:nth-child(1)>picture>img[src]" },
+            { "name": "imageAlt", "selector": "div:nth-child(1)>picture>img[alt]" },
+            { "name": "heading", "selector": "div:nth-child(2)" },
+            { "name": "cta", "selector": "div:nth-child(3)>a[href]" },
+            { "name": "ctaText", "selector": "div:nth-child(3)>a" }
+          ]
+        }
+      }
+    },
+    {
+      "title": "Promo Card (Vertical)",
+      "id": "promo-card-vertical",
+      "model": "promo-card",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 3,
+          "classes": ["vertical"],
+          "fields": [
+            { "name": "image", "selector": "div:nth-child(1)>picture>img[src]" },
+            { "name": "imageAlt", "selector": "div:nth-child(1)>picture>img[alt]" },
+            { "name": "heading", "selector": "div:nth-child(2)" },
+            { "name": "cta", "selector": "div:nth-child(3)>a[href]" },
+            { "name": "ctaText", "selector": "div:nth-child(3)>a" }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "promo-card",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "imageAlt",
+          "label": "Image Alt"
+        },
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "heading",
+          "label": "Heading"
+        },
+        {
+          "component": "aem-content",
+          "valueType": "string",
+          "name": "cta",
+          "label": "CTA Link"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "ctaText",
+          "label": "CTA Text"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

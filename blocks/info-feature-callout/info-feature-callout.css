@@ -1,0 +1,275 @@
+/* ===== Info Feature Callout (Figma 2734:46116 default / 5168:284082 image-left)
+   50-50 teaser: content column (icon, heading, divider, body, CTA) + media.
+   Mobile-first; px-perfect at 375 / 768 / 1280. The .image-left variant flips
+   to a single square image + bordered CTA on the doodle section backdrop. */
+
+.info-feature-callout {
+  /* ===== TOKENS ===== */
+  --ifc-columns-gap: var(--spacing-xxlarge); /* 96px → 120px at desktop below */
+  --ifc-content-gap: var(--spacing-medium); /* 24px icon→heading→…→cta block */
+  --ifc-inner-gap: var(--spacing-small);    /* 16px heading/divider/body/cta */
+  --ifc-icon-width: 72px;
+  --ifc-icon-height: 84px;
+  --ifc-divider-width: 60px;
+  --ifc-divider-thickness: 3px;
+  --ifc-body-max: 464px;
+  --ifc-heading-font: normal normal 300 2.6rem/3.1rem var(--type-display-font-family); /* 26/31 */
+  --ifc-heading-font-desktop: normal normal 300 3.6rem/4.3rem var(--type-display-font-family); /* 36/43 */
+  --ifc-body-font: normal normal 400 1.6rem/1.9rem var(--type-base-font-family); /* 16/19 */
+  --ifc-body-font-desktop: normal normal 400 2rem/2.4rem var(--type-base-font-family); /* 20/24 */
+  --ifc-icon: url('/icons/teaser-flower.svg');
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium); /* content → media stack (mobile) */
+  padding-block: var(--ifc-section-py);
+}
+
+.info-feature-callout-container {
+  padding-block: var(--block-padding-block);
+}
+
+.info-feature-callout.image-left {
+  --ifc-icon: url('/icons/lightbulb.svg');
+}
+
+/* Mobile/tablet: content above image (DOM order is media→content for image-left). */
+.info-feature-callout.image-left .info-feature-callout-content {
+  order: -1;
+}
+
+/* Mobile/tablet: content above image (DOM order is media→content for image-left). */
+.info-feature-callout.image-left .info-feature-callout-content {
+  order: -1;
+}
+
+/* Mobile/tablet: content above image (DOM order is media→content for image-left). */
+.info-feature-callout.image-left .info-feature-callout-content {
+  order: -1;
+}
+
+/* Teal-gradient backdrop — applied on the section container so it is naturally
+   full-bleed (the section element spans the full viewport width with no padding). */
+.info-feature-callout-container:has(.info-feature-callout.teal-gradient) {
+  background-image: linear-gradient(
+    197.94deg,
+    color-mix(in srgb, var(--color-gs-teal-light) 30%, transparent) 30.415%,
+    transparent 52.038%
+  );
+}
+
+/* ===== Content column ===== */
+.info-feature-callout .info-feature-callout-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ifc-content-gap);
+}
+
+.info-feature-callout .info-feature-callout-icon {
+  width: var(--ifc-icon-width);
+  height: var(--ifc-icon-height);
+  background: var(--ifc-icon) no-repeat left center / contain;
+}
+
+/* Authored image icon overrides the CSS-drawn flower/bulb default. */
+.info-feature-callout .info-feature-callout-icon-image {
+  background: none;
+}
+
+.info-feature-callout .info-feature-callout-icon-image picture,
+.info-feature-callout .info-feature-callout-icon-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.info-feature-callout .info-feature-callout-heading {
+  margin: 0;
+  font: var(--ifc-heading-font);
+  color: var(--color-gs-dark-green);
+}
+
+/* Divider — 60px hairline, ~10px above/below (Figma). */
+.info-feature-callout .info-feature-callout-divider {
+  width: var(--ifc-divider-width);
+  height: 0;
+  margin-block: calc(-1 * var(--spacing-xsmall)); /* tighten the 24px content gap to Figma's ~10px */
+  border-top: var(--ifc-divider-thickness) solid var(--color-neutral-500);
+}
+
+.info-feature-callout .info-feature-callout-body {
+  max-width: var(--ifc-body-max);
+  margin: 0;
+  font: var(--ifc-body-font);
+  color: var(--color-neutral-800);
+}
+
+/* ===== CTA ===== */
+.info-feature-callout .info-feature-callout-cta-wrapper {
+  margin: 0;
+}
+
+/* Default — text link: forest green, uppercase, trailing chevron. Base link
+   treatment (no border/fill, forest text) comes from the global
+   `.button.text-secondary` variant; this block only adds the gap + chevron,
+   uppercase label, and a custom font. */
+.info-feature-callout a.button.info-feature-callout-cta {
+  gap: var(--spacing-xxsmall);
+  padding: var(--spacing-xsmall) 0;
+  font: normal normal 500 1.6rem/2.1rem var(--type-base-font-family);
+  text-transform: uppercase;
+}
+
+.info-feature-callout a.button.info-feature-callout-cta::after {
+  content: '';
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  background-color: currentcolor;
+  mask: url('../../icons/chevron-right.svg') center / contain no-repeat;
+}
+
+.info-feature-callout .info-feature-callout-cta-text {
+  text-decoration: none;
+}
+
+.info-feature-callout a.button.info-feature-callout-cta:hover .info-feature-callout-cta-text,
+.info-feature-callout a.button.info-feature-callout-cta:focus-visible .info-feature-callout-cta-text {
+  text-decoration: underline;
+}
+
+/* image-left — bordered secondary button (border/fill from `.button.secondary`,
+   no chevron). Just resize it to the pill dimensions. */
+.info-feature-callout.image-left a.button.info-feature-callout-cta {
+  height: 52px;
+  padding: var(--spacing-small) var(--spacing-big);
+}
+
+.info-feature-callout.image-left a.button.info-feature-callout-cta::after {
+  content: none;
+}
+
+/* ===== Media — a single image (the collage is one authored/exported image) ===== */
+.info-feature-callout .info-feature-callout-media {
+  width: 100%;
+}
+
+.info-feature-callout .info-feature-callout-figure {
+  overflow: clip;
+}
+
+.info-feature-callout .info-feature-callout-figure picture {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.info-feature-callout .info-feature-callout-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Default media — single image (collage exported as one), ~4:3. */
+.info-feature-callout:not(.image-left) .info-feature-callout-figure {
+  aspect-ratio: 4 / 3;
+}
+
+/* image-left media — single square image. */
+.info-feature-callout.image-left .info-feature-callout-figure {
+  aspect-ratio: 1 / 1;
+}
+
+/* ===== List variant — feature cards (icon + heading + body), 3-up ===== */
+.info-feature-callout.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-big);
+}
+
+.info-feature-callout.list .info-feature-callout-list-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-big);
+}
+
+.info-feature-callout.list .info-feature-callout-feature {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+}
+
+.info-feature-callout.list .info-feature-callout-feature-icon {
+  width: 48px;
+  height: 48px;
+}
+
+.info-feature-callout.list .info-feature-callout-feature-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.info-feature-callout.list .info-feature-callout-feature-heading {
+  margin: 0;
+  font: normal normal 500 2rem/2.4rem var(--type-display-font-family);
+  color: var(--color-gs-dark-green);
+}
+
+.info-feature-callout.list .info-feature-callout-feature-body {
+  margin: 0;
+  font: var(--ifc-body-font);
+  color: var(--color-neutral-800);
+}
+
+/* ===== Tablet (768) ===== */
+@media (min-width: 768px) {
+  .info-feature-callout.list .info-feature-callout-list-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-medium);
+  }
+}
+
+/* ===== Desktop (1280) — two columns ===== */
+@media (min-width: 1280px) {
+  .info-feature-callout {
+    --ifc-columns-gap: var(--spacing-huge); /* 120px */
+
+    flex-direction: row;
+    align-items: center;
+    gap: var(--ifc-columns-gap);
+  }
+
+  .info-feature-callout .info-feature-callout-content {
+    flex: 1 1 0;
+  }
+
+  .info-feature-callout .info-feature-callout-heading {
+    font: var(--ifc-heading-font-desktop);
+  }
+
+  .info-feature-callout .info-feature-callout-body {
+    font: var(--ifc-body-font-desktop);
+  }
+
+  /* Default media column — fixed 572px wide single image (~4:3). */
+  .info-feature-callout:not(.image-left) .info-feature-callout-media {
+    flex: 0 0 572px;
+  }
+
+  /* image-left — fixed 516px square image; reset content order (DOM order gives image-left). */
+  .info-feature-callout.image-left .info-feature-callout-media {
+    flex: 0 0 516px;
+  }
+
+  .info-feature-callout.image-left .info-feature-callout-content {
+    order: 0;
+  }
+
+  .info-feature-callout.image-left .info-feature-callout-figure {
+    width: 516px;
+    height: 516px;
+    aspect-ratio: auto;
+  }
+}

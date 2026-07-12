@@ -1,0 +1,41 @@
+import { Base } from "./Base";
+import { EventHandler } from "./types/events";
+export default class UnsubscribeManager extends Base {
+    addToCart(handler: EventHandler): void;
+    addToRequisitionList(handler: EventHandler): void;
+    createAccount(handler: EventHandler): void;
+    createRequisitionList(handler: EventHandler): void;
+    deleteRequisitionList(handler: EventHandler): void;
+    custom(handler: EventHandler): void;
+    customUrl(handler: EventHandler): void;
+    editAccount(handler: EventHandler): void;
+    dataLayerChange(handler: EventHandler): void;
+    dataLayerEvent(handler: EventHandler): void;
+    initiateCheckout(handler: EventHandler): void;
+    openCart(handler: EventHandler): void;
+    pageActivitySummary(handler: EventHandler): void;
+    pageView(handler: EventHandler): void;
+    placeOrder(handler: EventHandler): void;
+    productPageView(handler: EventHandler): void;
+    recsItemAddToCartClick(handler: EventHandler): void;
+    recsItemClick(handler: EventHandler): void;
+    recsRequestSent(handler: EventHandler): void;
+    recsResponseReceived(handler: EventHandler): void;
+    recsUnitRender(handler: EventHandler): void;
+    recsUnitView(handler: EventHandler): void;
+    referrerUrl(handler: EventHandler): void;
+    removeFromCart(handler: EventHandler): void;
+    removeFromRequisitionList(handler: EventHandler): void;
+    searchCategoryClick(handler: EventHandler): void;
+    searchProductClick(handler: EventHandler): void;
+    searchRequestSent(handler: EventHandler): void;
+    searchResponseReceived(handler: EventHandler): void;
+    searchResultsView(handler: EventHandler): void;
+    categoryResultsView(handler: EventHandler): void;
+    searchSuggestionClick(handler: EventHandler): void;
+    shoppingCartView(handler: EventHandler): void;
+    signIn(handler: EventHandler): void;
+    signOut(handler: EventHandler): void;
+    updateCart(handler: EventHandler): void;
+}
+//# sourceMappingURL=UnsubscribeManager.d.ts.map

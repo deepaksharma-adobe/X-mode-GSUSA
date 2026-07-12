@@ -15,6 +15,17 @@ await initializeDropin(async () => {
     },
   };
 
-  // Initialize search
-  return initializers.mountImmediately(initialize, { langDefinitions });
+  // Initialize search — preserve options on Product for GS card swatches on PLP
+  return initializers.mountImmediately(initialize, {
+    langDefinitions,
+    models: {
+      Product: {
+        transformer: (raw) => ({
+          options: raw?.options ?? [],
+          // Merchandising labels for card badges (see commerce-product-card).
+          product_labels: raw?.product_labels ?? [],
+        }),
+      },
+    },
+  });
 })();

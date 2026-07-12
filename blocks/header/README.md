@@ -78,37 +78,22 @@ Commerce tools (wishlist, mini cart, search, auth, and optionally company switch
 
 ### API-Driven Main Menu
 
-When `nav-api-endpoint` is set in `config.json`, the header **replaces** the main menu links with data from that endpoint. Offer bar, brand, tools, and any authored **Account** item in the nav fragment are preserved.
+When `nav-api-endpoint` is enabled in `config.json`, the header **replaces** the main menu links with the Catalog Service category tree. Offer bar, brand, tools, and any authored **Account** item in the nav fragment are preserved.
+
+The nav tree is fetched by `fetchNav.js`, which runs a Catalog Service `categories` query (via the shared `CS_FETCH_GRAPHQL` instance) and transforms the flat category list into a nested `NavItem[]` tree (`{ label, href, children }`).
 
 | Config key | Purpose |
 |---|---|
-| `nav-api-endpoint` | Path or absolute URL returning `{ "nav": [...] }`. Set to `false` to disable and use fragment-only menu. |
+| `nav-api-endpoint` | Feature flag. Any truthy value enables the API-driven menu; set to `false` to disable and use the fragment-only menu. |
+| `commerce-root-category-id` | *(Optional)* Root category id whose children become the top-level nav. Defaults to `"2"`. |
 
-**Current default (mock):** `/blocks/header/nav-data.mock.json`
+**How it maps categories → nav:**
 
-**Swap for production:** update `nav-api-endpoint` to the real nav API URL. The response must match the mock shape:
-
-```json
-{
-  "nav": [
-    {
-      "label": "Girls",
-      "href": "/girls",
-      "description": "Optional — not rendered yet",
-      "children": [
-        { "label": "New & Featured Items", "href": "/girls/new" },
-        {
-          "label": "Uniforms",
-          "href": "/girls/uniforms",
-          "children": [
-            { "label": "Daisy", "href": "/girls/uniforms/daisy" }
-          ]
-        }
-      ]
-    }
-  ]
-}
-```
+- The root category (`commerce-root-category-id`, default `"2"`) is the container — its children become the top-level items.
+- Hierarchy is rebuilt from each category's `parentId`; siblings are ordered by the merchandising `position` (the API returns categories in id order, so `position` is what puts them in the intended menu order).
+- `href` is `/{urlPath}` (the API returns the full path per category); links are localized via `rootLink`.
+- Only categories with the `active` + `show_in_menu` roles are returned (enforced by the query).
+- The query depth is 3, matching the mega-menu's supported nesting.
 
 **DOM mapping:**
 
@@ -120,7 +105,27 @@ When `nav-api-endpoint` is set in `config.json`, the header **replaces** the mai
 | Wrapped rows | Full-width horizontal rule between rows (Figma `2697:357110`) |
 | Empty `children` | Top-level link only (no dropdown) |
 
-Nav data is cached in `sessionStorage` (`gs-nav-data`, 2h TTL). If the configured endpoint fails, the header falls back to the mock JSON and logs a console warning.
+Nav data is cached in `sessionStorage` (`gs-nav-data`, 2h TTL). If the category query fails, the header logs a console warning and leaves the authored fragment menu in place.
+
+### Mega-Menu Promo Rail (authored)
+
+The category **columns** come from the API; the **promo rail** on the right of a mega menu (Figma `8860:170399` — e.g. "New Arrivals" banners) is a **standalone DA fragment per menu**, mapped in a placeholder sheet. `fetchNavPromos.js` (`getNavPromo`) reads the sheet and, on first hover/focus of a menu, lazy-loads that menu's fragment and injects it into the panel.
+
+**1. Map menus → fragments** in the `placeholders/nav.json` sheet (tab named `data`, columns `Key`/`Value`):
+
+| Key | Value |
+|---|---|
+| `/new` | `fragments/promo-card` |
+| `/uniforms` | `fragments/uniforms-promo` |
+
+- **`Key`** = the top-level menu **path** — the category `urlPath` with a leading slash (e.g. `New` → `/new`, `New & Featured` → `/new-and-featured`). It must match the menu's link path exactly.
+- **`Value`** = the fragment path (leading slash optional; the locale root is added automatically).
+
+**2. Author each fragment** as a normal DA document (e.g. `/fragments/promo-card`) — image + heading + link, offer cards, whatever. The fragment styles its own content; the rail just sizes/places it (~324px, right side, desktop only).
+
+- Menus with **no row** in the sheet render **columns only** (no error). A missing sheet or fragment is non-fatal.
+- Loads **lazily per menu** on first hover/focus, and each fragment is fetched at most once — nothing is on the initial header path.
+- The rail shows on desktop mega menus (≥1100px) only; the mobile accordion hides it.
 
 ### Offer / Code Bar
 
@@ -285,9 +290,9 @@ When the user is authenticated **and** `commerce-companies-enabled` is true in A
 ## Files
 
 - `header.js` - Main block logic, nav classification, offer bar, audience toggle, and tool integrations
-- `fetchNav.js` - Loads nav tree from configured API with mock fallback and session cache
-- `buildNavMenu.js` - Converts nav JSON into mega-menu DOM
-- `nav-data.mock.json` - Sample nav tree used until production API is available
+- `fetchNav.js` - Runs the Catalog Service category query and transforms it into the nav tree (session cached)
+- `fetchNavPromos.js` - Maps a menu path → promo fragment via `placeholders/nav.json` and lazy-loads that fragment on hover (`getNavPromo`)
+- `buildNavMenu.js` - Converts the nav tree into mega-menu DOM
 - `header.css` - Styles for navigation, offer bar, panels, and responsive layouts
 - `renderAuthCombine.js` - Authentication modal triggered from Account nav submenu
 - `renderAuthDropdown.js` - Authentication dropdown for desktop with sign in form and user menu

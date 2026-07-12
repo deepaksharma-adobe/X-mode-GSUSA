@@ -6,6 +6,7 @@ footer {
   --footer-font-medium-strong: normal var(--btn-font-weight) var(--btn-font-size-md)/2.4rem var(--type-base-font-family);
   --footer-font-medium-default: normal 400 var(--btn-font-size-md)/2.4rem var(--type-base-font-family);
   --footer-font-small-default: normal 400 var(--btn-font-size-sm)/2rem var(--type-base-font-family);
+  --footer-font-title-size: 1.8rem;
 
   background-color: var(--color-gs-dark-green);
   color: var(--color-neutral-50);
@@ -77,6 +78,10 @@ footer .footer-column {
   border-bottom: 1px solid var(--color-gs-footer-border);
 }
 
+footer .footer-column.footer-column--social {
+  border-bottom: 0;
+}
+
 footer .footer-column-title {
   margin: 0;
   font: var(--footer-font-medium-strong);
@@ -98,6 +103,7 @@ footer .footer-column-title button {
   letter-spacing: inherit;
   text-align: left;
   cursor: pointer;
+  font-size: var(--footer-font-title-size);
 }
 
 footer .footer-column-title button::after {
@@ -127,7 +133,7 @@ footer .footer-column:has(button[aria-expanded="true"]) .footer-column-list {
 }
 
 footer .footer-column-list a {
-  display: block;
+  display: inline-block;
   padding: var(--spacing-xsmall) 0;
   font: var(--footer-font-small-default);
   letter-spacing: var(--type-body-2-default-letter-spacing);
@@ -166,6 +172,7 @@ footer .footer-column-list a {
     padding: 0 0 var(--spacing-xsmall);
     cursor: default;
     pointer-events: none;
+    font: inherit;
   }
 
   footer .footer-column-title button::after {

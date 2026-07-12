@@ -1,0 +1,41 @@
+import { Base } from "./Base";
+import { ListenerOptions, EventHandler } from "./types/events";
+export default class SubscribeManager extends Base {
+    addToCart(handler: EventHandler, options?: ListenerOptions): void;
+    addToRequisitionList(handler: EventHandler, options?: ListenerOptions): void;
+    createAccount(handler: EventHandler, options?: ListenerOptions): void;
+    createRequisitionList(handler: EventHandler, options?: ListenerOptions): void;
+    deleteRequisitionList(handler: EventHandler, options?: ListenerOptions): void;
+    custom(handler: EventHandler, options?: ListenerOptions): void;
+    customUrl(handler: EventHandler, options?: ListenerOptions): void;
+    editAccount(handler: EventHandler, options?: ListenerOptions): void;
+    dataLayerChange(handler: EventHandler, options?: ListenerOptions): void;
+    dataLayerEvent(handler: EventHandler, options?: ListenerOptions): void;
+    initiateCheckout(handler: EventHandler, options?: ListenerOptions): void;
+    openCart(handler: EventHandler, options?: ListenerOptions): void;
+    pageActivitySummary(handler: EventHandler, options?: ListenerOptions): void;
+    pageView(handler: EventHandler, options?: ListenerOptions): void;
+    placeOrder(handler: EventHandler, options?: ListenerOptions): void;
+    productPageView(handler: EventHandler, options?: ListenerOptions): void;
+    recsItemAddToCartClick(handler: EventHandler, options?: ListenerOptions): void;
+    recsItemClick(handler: EventHandler, options?: ListenerOptions): void;
+    recsRequestSent(handler: EventHandler, options?: ListenerOptions): void;
+    recsResponseReceived(handler: EventHandler, options?: ListenerOptions): void;
+    recsUnitRender(handler: EventHandler, options?: ListenerOptions): void;
+    recsUnitView(handler: EventHandler, options?: ListenerOptions): void;
+    referrerUrl(handler: EventHandler, options?: ListenerOptions): void;
+    removeFromCart(handler: EventHandler, options?: ListenerOptions): void;
+    removeFromRequisitionList(handler: EventHandler, options?: ListenerOptions): void;
+    searchCategoryClick(handler: EventHandler): void;
+    searchProductClick(handler: EventHandler): void;
+    searchRequestSent(handler: EventHandler): void;
+    searchResponseReceived(handler: EventHandler): void;
+    searchResultsView(handler: EventHandler): void;
+    categoryResultsView(handler: EventHandler): void;
+    searchSuggestionClick(handler: EventHandler): void;
+    shoppingCartView(handler: EventHandler): void;
+    signIn(handler: EventHandler, options?: ListenerOptions): void;
+    signOut(handler: EventHandler, options?: ListenerOptions): void;
+    updateCart(handler: EventHandler): void;
+}
+//# sourceMappingURL=SubscribeManager.d.ts.map

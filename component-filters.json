@@ -12,8 +12,15 @@
       "hero-banner",
       "need-help",
       "values",
+      "values-flat",
+      "wave-header",
       "mission-banner",
       "category-grid",
+      "shop-by-collection",
+      "stories-testimonials",
+      "campaign-highlights",
+      "info-feature-callout",
+      "guided-navigation",
       "accordion",
       "cards",
       "carousel",
@@ -59,6 +66,14 @@
     ]
   },
   {
+    "id": "campaign-highlights",
+    "components": [
+      "campaign-highlights-heading",
+      "campaign-highlights-tile",
+      "campaign-highlights-cta"
+    ]
+  },
+  {
     "id": "cards",
     "components": [
       "card"
@@ -94,9 +109,47 @@
     ]
   },
   {
+    "id": "guided-navigation",
+    "components": [
+      "guided-navigation-link"
+    ]
+  },
+  {
     "id": "hero-banner",
     "components": [
       "hero-banner-item"
+    ]
+  },
+  {
+    "id": "info-feature-callout",
+    "components": [
+      "info-feature-callout-content",
+      "info-feature-callout-image",
+      "info-feature-callout-feature"
+    ]
+  },
+  {
+    "id": "promo-list",
+    "components": [
+      "promo-list-item"
+    ]
+  },
+  {
+    "id": "shop-by-collection",
+    "components": [
+      "shop-by-collection-card"
+    ]
+  },
+  {
+    "id": "shop-by-navigator",
+    "components": [
+      "shop-by-navigator-tile"
+    ]
+  },
+  {
+    "id": "stories-testimonials",
+    "components": [
+      "stories-testimonials-slide"
     ]
   },
   {

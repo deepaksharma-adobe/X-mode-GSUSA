@@ -32,6 +32,10 @@
             {
               "name": "Campaign Sky",
               "value": "campaign-sky"
+            },
+            {
+              "name": "Teaser Doodle",
+              "value": "teaser-doodle"
             }
           ]
         },
@@ -140,11 +144,14 @@
         "hero-banner",
         "need-help",
         "values",
+        "values-flat",
+        "wave-header",
         "mission-banner",
         "category-grid",
         "shop-by-collection",
         "stories-testimonials",
         "campaign-highlights",
+        "info-feature-callout",
         "guided-navigation",
         "accordion",
         "cards",
